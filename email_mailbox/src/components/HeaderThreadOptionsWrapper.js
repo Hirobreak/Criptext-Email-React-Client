@@ -149,24 +149,25 @@ class HeaderThreadOptionsWrapper extends Component {
   handleClickDeleteThread = () => {
     this.setState({
       popupContent: {
-        title: "Warning!",
-        message: "This elements will be permanently deleted and you will not be able to recover them. Are you sure?",
-        leftButtonLabel: "Cancel",
-        rightButtonLabel: "Confirm"
+        title: 'Warning!',
+        message:
+          'This elements will be permanently deleted and you will not be able to recover them. Are you sure?',
+        leftButtonLabel: 'Cancel',
+        rightButtonLabel: 'Confirm'
       }
-    })
+    });
   };
-  
+
   handlePopupConfirm = () => {
     const backFirst = true;
     this.setState({ popupContent: undefined }, () => {
       this.props.onRemoveThreads(this.props.threadsSelected, backFirst);
-    })
-  }
+    });
+  };
 
   dismissPopup = () => {
-    this.setState({ popupContent: undefined })
-  }
+    this.setState({ popupContent: undefined });
+  };
 
   handleClickDiscardDrafts = () => {
     this.props.onDiscardDrafts(this.props.threadsSelected);

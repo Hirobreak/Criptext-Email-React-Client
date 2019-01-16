@@ -11,14 +11,21 @@ import { EmailStatus } from './../utils/const';
 import string from '../lang';
 import './email.scss';
 
-const DeletePermanenltyPopup = PopupHOC(DialogPopup)
+const DeletePermanenltyPopup = PopupHOC(DialogPopup);
 const PopOverEmailMoreInfo = MenuHOC(EmailMoreInfo);
 const PopOverEmailActions = MenuHOC(EmailActions);
 const draftText = 'Draft';
 
 const Email = props => (
   <div>
-    {props.popupContent && <DeletePermanenltyPopup popupPosition={{left: '45%', top: '45%'}} {...props.popupContent} onRightButtonClick={props.handlePopupConfirm} onLeftButtonClick={props.dismissPopup} />}
+    {props.popupContent && (
+      <DeletePermanenltyPopup
+        popupPosition={{ left: '45%', top: '45%' }}
+        {...props.popupContent}
+        onRightButtonClick={props.handlePopupConfirm}
+        onLeftButtonClick={props.dismissPopup}
+      />
+    )}
     <div
       className={`email-container ${defineEmailState(
         props.displayEmail,

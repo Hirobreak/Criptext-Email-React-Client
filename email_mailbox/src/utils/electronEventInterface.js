@@ -263,6 +263,7 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     ccArray,
     date,
     fileKey,
+    fileKeys,
     files,
     from,
     labels,
@@ -277,7 +278,6 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     messageId,
     external
   } = params;
-
   const recipientId =
     external === true
       ? EXTERNAL_RECIPIENT_ID_SERVER
@@ -310,9 +310,25 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     } catch (e) {
       body = 'Content unencrypted';
     }
-
-    let fileKeyParams;
-    if (fileKey) {
+    let myFileKeys;
+    if (fileKeys) {
+      myFileKeys = await Promise.all(
+        fileKeys.map(async fileKey => {
+          try {
+            const decrypted = await signal.decryptFileKey({
+              fileKey,
+              messageType,
+              recipientId,
+              deviceId
+            });
+            const [key, iv] = decrypted.split(':');
+            return { key, iv };
+          } catch (e) {
+            return { key: undefined, iv: undefined };
+          }
+        })
+      );
+    } else if (fileKey) {
       try {
         const decrypted = await signal.decryptFileKey({
           fileKey,
@@ -321,9 +337,9 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
           deviceId
         });
         const [key, iv] = decrypted.split(':');
-        fileKeyParams = { key, iv };
+        myFileKeys = files.map(() => ({ key, iv }));
       } catch (e) {
-        fileKeyParams = undefined;
+        myFileKeys = undefined;
       }
     }
     const unread = isFromMe && !isToMe ? false : true;
@@ -348,7 +364,8 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
       files && files.length
         ? await formFilesFromData({
             files,
-            date
+            date,
+            fileKeys: myFileKeys
           })
         : null;
 
@@ -363,7 +380,6 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
       email,
       labels,
       files: filesData,
-      fileKeyParams,
       recipients
     };
     const [newEmailId] = await createEmail(emailData);

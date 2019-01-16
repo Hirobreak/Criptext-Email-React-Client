@@ -35,7 +35,9 @@ class EmailWrapper extends Component {
         popupContent={this.state.popupContent}
         handlePopupConfirm={this.handlePopupConfirm}
         dismissPopup={this.dismissPopup}
-        handleClickPermanentlyDeleteEmail={this.handleClickPermanentlyDeleteEmail}
+        handleClickPermanentlyDeleteEmail={
+          this.handleClickPermanentlyDeleteEmail
+        }
       />
     );
   }
@@ -114,25 +116,26 @@ class EmailWrapper extends Component {
   handleClickPermanentlyDeleteEmail = () => {
     this.setState({
       popupContent: {
-        title: "Warning!",
-        message: "This elements will be permanently deleted and you will not be able to recover them. Are you sure?",
-        leftButtonLabel: "Cancel",
-        rightButtonLabel: "Confirm"
+        title: 'Warning!',
+        message:
+          'This elements will be permanently deleted and you will not be able to recover them. Are you sure?',
+        leftButtonLabel: 'Cancel',
+        rightButtonLabel: 'Confirm'
       }
-    })
-  }
+    });
+  };
 
   handlePopupConfirm = ev => {
     ev.stopPropagation();
     ev.preventDefault();
-    this.setState({popupContent: undefined}, this.props.onDeletePermanently)
-  }
+    this.setState({ popupContent: undefined }, this.props.onDeletePermanently);
+  };
 
   dismissPopup = () => {
     this.setState({
       popupContent: undefined
-    })
-  }
+    });
+  };
 }
 
 EmailWrapper.propTypes = {

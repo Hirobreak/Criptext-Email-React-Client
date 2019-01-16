@@ -99,13 +99,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           break;
         }
         case actionHandlerKeys.advice.trash: {
-          console.log("HABLA")
           ownProps.setPopupContent({
-            title: "Warning!",
-            message: "This elements will be permanently deleted and you will not be able to recover them. Are you sure?",
-            leftButtonLabel: "Cancel",
-            rightButtonLabel: "Confirm"
-          })
+            title: 'Warning!',
+            message:
+              'This elements will be permanently deleted and you will not be able to recover them. Are you sure?',
+            leftButtonLabel: 'Cancel',
+            rightButtonLabel: 'Confirm'
+          });
           break;
         }
         case actionHandlerKeys.suggestion.update: {

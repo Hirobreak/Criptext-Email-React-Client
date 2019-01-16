@@ -127,16 +127,16 @@ class ThreadsWrapper extends Component {
   };
 
   handlePopupConfirm = () => {
-    this.setState({popupContent: undefined}, this.props.onEmptyTrash)
-  }
+    this.setState({ popupContent: undefined }, this.props.onEmptyTrash);
+  };
 
   setPopupContent = popupContent => {
-    this.setState({popupContent})
-  }
+    this.setState({ popupContent });
+  };
 
   dismissPopup = () => {
-    this.setState({popupContent: undefined})
-  }
+    this.setState({ popupContent: undefined });
+  };
 }
 
 ThreadsWrapper.propTypes = {

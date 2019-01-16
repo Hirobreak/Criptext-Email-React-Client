@@ -6,7 +6,7 @@ import ItemTooltip from './ItemTooltip';
 import ThreadItem from '../containers/ThreadItem';
 import Message from './../containers/Message';
 import PopupHOC from './PopupHOC';
-import DialogPopup from './DialogPopup'
+import DialogPopup from './DialogPopup';
 import ReactTooltip from 'react-tooltip';
 import { Switch } from 'react-switch-input';
 import string from './../lang';
@@ -24,12 +24,14 @@ const Threads = props => (
       threadsCount={props.threads.size}
       setPopupContent={props.setPopupContent}
     />
-    {props.popupContent && <EmptyTrashPopover
+    {props.popupContent && (
+      <EmptyTrashPopover
         {...props.popupContent}
         popupPosition={{ left: '45%', top: '45%' }}
         onLeftButtonClick={props.dismissPopup}
         onRightButtonClick={props.handlePopupConfirm}
-      />}
+      />
+    )}
     <div className="threads-header">
       <div className="threads-header-title-container">
         <h1 className="threads-mailbox-title">{props.mailboxTitle}</h1>

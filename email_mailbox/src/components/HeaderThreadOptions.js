@@ -101,7 +101,13 @@ class HeaderThreadOptions extends Component {
             </li>
           </ul>
         </TooltipMenu>
-        {popupContent && <DeleteThreadsPopup {...popupContent} onLeftButtonClick={dismissPopup} onRightButtonClick={handlePopupConfirm} />}
+        {popupContent && (
+          <DeleteThreadsPopup
+            {...popupContent}
+            onLeftButtonClick={dismissPopup}
+            onRightButtonClick={handlePopupConfirm}
+          />
+        )}
       </div>
     );
   }
