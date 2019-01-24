@@ -176,7 +176,7 @@ const encryptPostEmail = async ({
       [item.recipientId]: item.deviceIds.split(',').map(Number)
     };
   }, {});
-  const keyBundles = await getKeyBundlesOfRecipients(
+  const { keyBundles } = await getKeyBundlesOfRecipients(
     recipientIds,
     knownAddresses
   );

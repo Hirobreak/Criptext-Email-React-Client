@@ -168,7 +168,7 @@ const getDataReady = async () => {
 const getEmailBody = async bodyKey => {
   const res = await client.getEmailBody(bodyKey);
   return res.status === 200
-    ? res
+    ? { status: res.status, body: res.body }
     : checkExpiredSession(res, getEmailBody, bodyKey);
 };
 

@@ -254,7 +254,8 @@ export const formIncomingEmailFromData = ({
   threadId,
   unread,
   messageId,
-  replyTo
+  replyTo,
+  boundary
 }) => {
   const content = body ? Utf8Decode(sanitize(body)) : '';
   const preview = body
@@ -273,7 +274,6 @@ export const formIncomingEmailFromData = ({
     key: metadataKey,
     threadId,
     s3Key: metadataKey,
-    content,
     preview,
     subject,
     date,
@@ -283,7 +283,9 @@ export const formIncomingEmailFromData = ({
     isMuted: false,
     messageId,
     replyTo,
-    fromAddress: from
+    fromAddress: from,
+    boundary,
+    content: ''
   };
   return { email, recipients };
 };
