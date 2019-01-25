@@ -68,6 +68,10 @@ export const sendPrintThreadEvent = threadId => {
   callMain('print-to-pdf', { threadId });
 };
 
+export const sendOpenEmailSource = metadataKey => {
+  callMain('open-email-source', metadataKey)
+}
+
 /* File System
    ----------------------------- */
 
