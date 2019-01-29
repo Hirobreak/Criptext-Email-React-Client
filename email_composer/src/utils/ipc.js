@@ -47,7 +47,7 @@ export const postEmail = async params => {
 /* File System
    ----------------------------- */
 export const saveEmailBody = async params => {
-  return await callMain('client-save-email-body', params);
+  return await callMain('fs-save-email-body', params);
 };
 
 export const getEmailByKeyWithbody = async params => {

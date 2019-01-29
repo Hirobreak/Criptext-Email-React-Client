@@ -88,7 +88,7 @@ ipc.answerRenderer('db-delete-email-by-keys', async keys => {
   );
 });
 
-ipc.answerRenderer('client-save-email-body', async params => {
+ipc.answerRenderer('fs-save-email-body', async params => {
   const newParams = Object.assign(params, {
     metadataKey: parseInt(params.metadataKey),
     username: getUsername()
@@ -96,7 +96,7 @@ ipc.answerRenderer('client-save-email-body', async params => {
   await fileUtils.saveEmailBody(newParams);
 });
 
-ipc.answerRenderer('client-delete-email-content', async params => {
+ipc.answerRenderer('fs-delete-email-content', async params => {
   const newParams = Object.assign(params, {
     metadataKey: parseInt(params.metadataKey),
     username: getUsername()
