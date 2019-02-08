@@ -108,13 +108,15 @@ const createContactsIfOrNotStore = async (contacts, trx) => {
 };
 
 const updateContactScore = (emailId, trx) => {
-  return trx.raw(
-    `UPDATE ${
-      Table.CONTACT
-    } SET SCORE = SCORE + 1 WHERE id IN (SELECT contactId from ${
-      Table.EMAIL_CONTACT
-    } where emailId = ${emailId} AND type <> '${EMAIL_CONTACT_TYPE_FROM}')`
-  );
+  const subquery = trx
+    .table(Table.EMAIL_CONTACT)
+    .select('contactId')
+    .where('emailId', emailId)
+    .andWhere('type', '<>', EMAIL_CONTACT_TYPE_FROM);
+  return trx
+    .table(Table.CONTACT)
+    .whereIn('id', subquery)
+    .increment('score', 1);
 };
 
 const filterUniqueContacts = contacts => {
@@ -151,7 +153,7 @@ const getContactByEmail = (email, trx) => {
 const getContactByEmails = (emails, trx) => {
   const knex = trx || db;
   return knex
-    .select('id', 'email')
+    .select('id', 'email', 'score')
     .from(Table.CONTACT)
     .whereIn('email', emails);
 };
