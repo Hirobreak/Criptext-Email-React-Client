@@ -1,5 +1,7 @@
 const ipc = require('@criptext/electron-better-ipc');
 const dbManager = require('./../DBManager');
+const fileUtils = require('./../utils/FileUtils');
+const { APP_DOMAIN } = require('./../utils/const');
 
 ipc.answerRenderer('db-clean-data-logout', recipientId =>
   dbManager.cleanDataLogout(recipientId)
@@ -47,6 +49,10 @@ ipc.answerRenderer('db-create-signed-prekey-record', params =>
 
 ipc.answerRenderer('db-create-tables', () => dbManager.createTables());
 
+ipc.answerRenderer('db-define-active-account-by-id', accountId =>
+  dbManager.defineActiveAccountById(accountId)
+);
+
 ipc.answerRenderer('db-delete-email-label', params =>
   dbManager.deleteEmailLabel(params)
 );
@@ -68,6 +74,20 @@ ipc.answerRenderer('db-delete-session-record', params =>
 );
 
 ipc.answerRenderer('db-get-account', () => dbManager.getAccount());
+
+ipc.answerRenderer('db-delete-account-by-params', async params => {
+  const accounts = await dbManager.getAccountByParams(params);
+  if (!accounts.length) return;
+  for (const account of accounts) {
+    const username = `${account.recipientId}@${APP_DOMAIN}`;
+    await fileUtils.removeUserDir(username);
+  }
+  return await dbManager.deleteAccountByParams(params);
+});
+
+ipc.answerRenderer('db-get-account-by-params', params =>
+  dbManager.getAccountByParams(params)
+);
 
 ipc.answerRenderer('db-get-all-contacts', () => dbManager.getAllContacts());
 

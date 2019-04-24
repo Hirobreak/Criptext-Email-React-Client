@@ -20,11 +20,51 @@ const EMAIL_CONTACT_TYPE_FROM = 'from';
 /* Account
 ----------------------------- */
 const createAccount = params => {
-  return db.table(Table.ACCOUNT).insert(params);
+  return db.transaction(async trx => {
+    const [accountId] = await trx.table(Table.ACCOUNT).insert(params);
+    await defineActiveAccountById(accountId, trx);
+    return [accountId];
+  });
+};
+
+const defineActiveAccountById = async (accountId, prevTrx) => {
+  const transaction = prevTrx ? fn => fn(prevTrx) : db.transaction;
+  await transaction(async trx => {
+    await trx
+      .table(Table.ACCOUNT)
+      .where({ isActive: true })
+      .update({ isActive: false });
+    await trx
+      .table(Table.ACCOUNT)
+      .where('id', accountId)
+      .update({ isActive: true });
+    const [activeAccount] = await trx
+      .table(Table.ACCOUNT)
+      .select('*')
+      .where({ isActive: true });
+    myAccount.initialize(activeAccount);
+  });
+};
+
+const deleteAccountByParams = params => {
+  return db
+    .table(Table.ACCOUNT)
+    .where(params)
+    .del();
 };
 
 const getAccount = () => {
-  return db.table(Table.ACCOUNT).select('*');
+  return db
+    .table(Table.ACCOUNT)
+    .select('*')
+    .where({ isActive: true });
+};
+
+const getAccountByParams = params => {
+  return db
+    .table(Table.ACCOUNT)
+    .select('*')
+    .where(params);
 };
 
 const updateAccount = async ({
@@ -37,7 +77,9 @@ const updateAccount = async ({
   recipientId,
   registrationId,
   signature,
-  signatureEnabled
+  signatureEnabled,
+  isLoggedIn,
+  isActive
 }) => {
   const params = noNulls({
     deviceId,
@@ -49,7 +91,9 @@ const updateAccount = async ({
     registrationId,
     signature,
     signatureEnabled:
-      typeof signatureEnabled === 'boolean' ? signatureEnabled : undefined
+      typeof signatureEnabled === 'boolean' ? signatureEnabled : undefined,
+    isLoggedIn: typeof isLoggedIn === 'boolean' ? isLoggedIn : undefined,
+    isActive: typeof isActive === 'boolean' ? isActive : undefined
   });
   const response = await db
     .table(Table.ACCOUNT)
@@ -61,8 +105,30 @@ const updateAccount = async ({
 
 /* Contact
 ----------------------------- */
+const createAccountContact = (params, trx) => {
+  const knex = trx || db;
+  return knex.table(Table.ACCOUNT_CONTACT).insert(params);
+};
+
+const deleteAccountContact = ({ accountId }, trx) => {
+  const knex = trx || db;
+  return knex
+    .table(Table.ACCOUNT_CONTACT)
+    .where({ accountId })
+    .del();
+};
+
+/* Contact
+----------------------------- */
 const createContact = params => {
-  return db.table(Table.CONTACT).insert(params);
+  return db.transaction(async trx => {
+    const { accountId } = params;
+    const contactData = Object.assign({}, params);
+    delete contactData.accountId;
+    const [contactId] = await trx.table(Table.CONTACT).insert(contactData);
+    await createAccountContact({ contactId, accountId }, trx);
+    return contactId;
+  });
 };
 
 const createContactsIfOrNotStore = async (contacts, trx) => {
@@ -532,7 +598,7 @@ const getEmailsByThreadId = threadId => {
       `${Table.EMAIL_LABEL}.emailId`,
       `${Table.EMAIL}.id`
     )
-    .where({ threadId })
+    .where({ threadId, accountId: myAccount.id })
     .groupBy(`${Table.EMAIL}.id`);
 };
 
@@ -559,7 +625,8 @@ const getEmailsGroupByThreadByParams = (params = {}) => {
     contactFilter,
     rejectedLabelIds,
     threadIdRejected,
-    unread
+    unread,
+    accountId = myAccount.id
   } = params;
 
   let queryDb = baseThreadQuery({
@@ -569,7 +636,8 @@ const getEmailsGroupByThreadByParams = (params = {}) => {
     contactTypes,
     contactFilter,
     rejectedLabelIds,
-    threadIdRejected
+    threadIdRejected,
+    accountId
   });
 
   if (plain) {
@@ -657,7 +725,8 @@ const baseThreadQuery = ({
   contactTypes,
   contactFilter,
   rejectedLabelIds,
-  threadIdRejected
+  threadIdRejected,
+  accountId
 }) => {
   const {
     labelsQuery,
@@ -717,6 +786,7 @@ const baseThreadQuery = ({
   }
   return query
     .andWhere(`${Table.EMAIL}.date`, '<', date || 'now')
+    .andWhere(`${Table.EMAIL}.accountId`, accountId)
     .groupBy('uniqueId')
     .orderBy(`${Table.EMAIL}.date`, 'DESC')
     .limit(limit || 20);
@@ -1189,6 +1259,7 @@ module.exports = {
   cleanDataLogout,
   closeDB,
   createAccount,
+  createAccountContact,
   createContact,
   createFile,
   createLabel,
@@ -1202,6 +1273,9 @@ module.exports = {
   createSignedPreKeyRecord,
   createSignalTables,
   createTables,
+  defineActiveAccountById,
+  deleteAccountByParams,
+  deleteAccountContact,
   deleteEmailsByIds,
   deleteEmailByKeys,
   deleteEmailsByThreadIdAndLabelId,
@@ -1209,11 +1283,12 @@ module.exports = {
   deleteEmailContactByEmailId,
   deleteEmailLabel,
   deleteEmailLabelsByEmailId,
-  deletePendingEventsByIds,
   deleteFeedItemById,
+  deletePendingEventsByIds,
   deletePreKeyPair,
   deleteSessionRecord,
   getAccount,
+  getAccountByParams,
   getAllContacts,
   getAllFeedItems,
   getAllLabels,

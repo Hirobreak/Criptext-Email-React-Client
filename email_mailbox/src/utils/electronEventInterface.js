@@ -5,7 +5,8 @@ import {
   myAccount,
   mySettings,
   getNews,
-  getDeviceType
+  getDeviceType,
+  reloadWindow
 } from './electronInterface';
 import {
   cleanDatabase,
@@ -60,7 +61,11 @@ import {
 import Messages from './../data/message';
 import { MessageType } from './../components/Message';
 import { AttachItemStatus } from '../components/AttachItem';
-import { getShowEmailPreviewStatus, getUserGuideStepStatus } from './storage';
+import {
+  getShowEmailPreviewStatus,
+  getUserGuideStepStatus,
+  setPendingMessageToDisplay
+} from './storage';
 import {
   fetchAcknowledgeEvents,
   fetchEvents,
@@ -864,6 +869,20 @@ ipcRenderer.on('socket-message', async (ev, message) => {
 ipc.answerMain('get-events', () => {
   sendLoadEventsEvent({});
 });
+
+ipcRenderer.on('refresh-window-logged-as', (ev, email) => {
+  showLoggedAsMessage(email);
+});
+
+export const showLoggedAsMessage = email => {
+  const messageData = {
+    ...Messages.success.loggedAs,
+    description: Messages.success.loggedAs.description + email,
+    type: MessageType.SUCCESS
+  };
+  setPendingMessageToDisplay(JSON.stringify(messageData));
+  reloadWindow();
+};
 
 ipcRenderer.on('update-drafts', (ev, shouldUpdateBadge) => {
   const labelId = shouldUpdateBadge ? LabelType.draft.id : undefined;

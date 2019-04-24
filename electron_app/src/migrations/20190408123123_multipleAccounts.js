@@ -1,7 +1,10 @@
 const { Table, fieldTypes } = require('./../models');
 const {
+  TINY_STRING_SIZE,
   XSMALL_STRING_SIZE,
   LARGE_STRING_SIZE,
+  MEDIUM_STRING_SIZE,
+  SMALL_STRING_SIZE,
   XLARGE_STRING_SIZE
 } = fieldTypes;
 
@@ -29,7 +32,7 @@ const updateAccountTable = async trx => {
     table.string('signature', XLARGE_STRING_SIZE).defaultTo('');
     table.boolean('signatureEnabled').defaultTo(false);
     table.integer('domain').nullable();
-    table.boolean('isActive').defaultTo(false);
+    table.boolean('isActive').defaultTo(true);
     table.boolean('isLoggedIn').defaultTo(true);
   });
   const prevAccountValues = await trx
@@ -57,7 +60,7 @@ const rollbackAccountTable = async knex => {
 
 /*   Account Contact table
 ------------------------------*/
-const createAccountContactTable = async trx => {
+const createAccountContactTable = async (trx, accountId) => {
   const tableExists = await trx.schema.hasTable(Table.ACCOUNT_CONTACT);
   if (tableExists) return;
 
@@ -70,12 +73,7 @@ const createAccountContactTable = async trx => {
       .references('id')
       .inTable(Table.ACCOUNT);
   });
-
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
+  if (!accountId) return;
 
   let shouldGetMoreContacIds = true;
   const batch = 100;
@@ -88,7 +86,7 @@ const createAccountContactTable = async trx => {
       .whereBetween('id', [minId, maxId]);
     if (ids.length > 0) {
       const accountContactsToInsert = ids.map(row => ({
-        accountId: accountValue.id,
+        accountId,
         contactId: row.id
       }));
       await trx.table(Table.ACCOUNT_CONTACT).insert(accountContactsToInsert);
@@ -106,23 +104,52 @@ const rollbackAccountContactTable = knex => {
 
 /*   Email table
 ----------------------*/
-const addAccountIdToEmailTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
-
-  return trx.schema
-    .table(Table.EMAIL, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(() => {
-      return trx.raw(`
-        UPDATE ${Table.EMAIL}
-        SET accountId = ${accountValue.id};
-      `);
-    });
+const addAccountIdToEmailTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.EMAIL,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  // Duplicate table
+  const tempTablename = `old${Table.EMAIL}`;
+  await trx.schema.renameTable(Table.EMAIL, tempTablename);
+  await trx.schema.createTable(Table.EMAIL, table => {
+    table.increments('id').primary();
+    table.string('key', SMALL_STRING_SIZE).notNullable();
+    table.string('threadId', SMALL_STRING_SIZE);
+    table.string('s3Key', SMALL_STRING_SIZE);
+    table.string('subject').notNullable();
+    table.text('content').notNullable();
+    table.string('preview', LARGE_STRING_SIZE).notNullable();
+    table.dateTime('date').notNullable();
+    table.integer('status').notNullable();
+    table.boolean('unread').notNullable();
+    table.boolean('secure').notNullable();
+    table.boolean('isMuted').notNullable();
+    table.dateTime('unsendDate');
+    table.dateTime('trashDate');
+    table.string('messageId', SMALL_STRING_SIZE);
+    table
+      .string('fromAddress', MEDIUM_STRING_SIZE)
+      .notNullable()
+      .defaultTo('');
+    table.string('replyTo', MEDIUM_STRING_SIZE).nullable();
+    table.string('boundary', LARGE_STRING_SIZE);
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+  });
+  // Insert values
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.EMAIL).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+  if (accountId) {
+    await trx.raw(`UPDATE ${Table.EMAIL} SET accountId = ${accountId};`);
+  }
 };
 
 const rollbackEmailTable = async knex => {
@@ -135,27 +162,45 @@ const rollbackEmailTable = async knex => {
 
 /*   Label table
 ---------------------*/
-const addAccountIdToLabelTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
-
-  return trx.schema
-    .table(Table.LABEL, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(async () => {
-      await trx
-        .table(Table.LABEL)
-        .where({ type: 'system' })
-        .update({ accountId: null });
-      return trx
-        .table(Table.LABEL)
-        .where({ type: 'custom' })
-        .update({ accountId: accountValue.id });
-    });
+const addAccountIdToLabelTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.LABEL,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  // Duplicate table
+  const tempTablename = `old${Table.LABEL}`;
+  await trx.schema.renameTable(Table.LABEL, tempTablename);
+  await trx.schema.createTable(Table.LABEL, table => {
+    table.increments('id').primary();
+    table.string('text', MEDIUM_STRING_SIZE).notNullable();
+    table.string('color', TINY_STRING_SIZE).notNullable();
+    table.string('type', TINY_STRING_SIZE).defaultTo('custom');
+    table.boolean('visible').defaultTo(true);
+    table.uuid('uuid').notNullable();
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+    table.unique(['text', 'accountId']);
+  });
+  // Insert values
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.LABEL).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+  await trx
+    .table(Table.LABEL)
+    .where({ type: 'system' })
+    .update({ accountId: null });
+  if (accountId) {
+    await trx
+      .table(Table.LABEL)
+      .where({ type: 'custom' })
+      .update({ accountId });
+  }
 };
 
 const rollbackLabelTable = async knex => {
@@ -166,25 +211,55 @@ const rollbackLabelTable = async knex => {
   });
 };
 
-/*   Pending event
-----------------------*/
-const addAccountIdToPendingEventTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
+/*   EmailLabel table
+--------------------------*/
+const updateEmailLabelTable = async trx => {
+  const tempTablename = `old${Table.EMAIL_LABEL}`;
+  await trx.schema.renameTable(Table.EMAIL_LABEL, tempTablename);
+  await trx.schema.createTable(Table.EMAIL_LABEL, table => {
+    table.increments('id').primary();
+    table.integer('labelId').notNullable();
+    table.string('emailId', SMALL_STRING_SIZE).notNullable();
+    table
+      .foreign('labelId')
+      .references('id')
+      .inTable(Table.LABEL);
+    table
+      .foreign('emailId')
+      .references('id')
+      .inTable(Table.EMAIL);
+  });
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.EMAIL_LABEL).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+};
 
-  return trx.schema
-    .table(Table.PENDINGEVENT, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(() => {
-      return trx.raw(`
-        UPDATE ${Table.PENDINGEVENT}
-        SET accountId = ${accountValue.id};
-      `);
-    });
+const rollbackEmailLabelTable = async knex => {
+  await knex.schema.table(Table.EMAIL_LABEL, table => {
+    table.unique(['emailId', 'labelId']);
+  });
+};
+
+/*   Pending event
+-----------------------*/
+const addAccountIdToPendingEventTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.PENDINGEVENT,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  await trx.schema.table(Table.PENDINGEVENT, table => {
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+  });
+  if (accountId) {
+    await trx.raw(`UPDATE ${Table.PENDINGEVENT} SET accountId = ${accountId};`);
+  }
 };
 
 const rollbackPendingEventTable = async knex => {
@@ -200,23 +275,37 @@ const rollbackPendingEventTable = async knex => {
 
 /*   IdentityKeyRecord table
 --------------------------------*/
-const addAccountIdToIdentityKeyRecordTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
-
-  return trx.schema
-    .table(Table.IDENTITYKEYRECORD, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(() => {
-      return trx.raw(`
-        UPDATE ${Table.IDENTITYKEYRECORD}
-        SET accountId = ${accountValue.id};
-      `);
-    });
+const addAccountIdToIdentityKeyRecordTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.IDENTITYKEYRECORD,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  // Duplicate table
+  const tempTablename = `old${Table.IDENTITYKEYRECORD}`;
+  await trx.schema.renameTable(Table.IDENTITYKEYRECORD, tempTablename);
+  await trx.schema.createTable(Table.IDENTITYKEYRECORD, table => {
+    table.increments('id').primary();
+    table.string('recipientId', XSMALL_STRING_SIZE).notNullable();
+    table.integer('deviceId').notNullable();
+    table.string('identityKey', LARGE_STRING_SIZE).notNullable();
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+  });
+  // Insert values
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.IDENTITYKEYRECORD).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+  if (accountId) {
+    await trx.raw(
+      `UPDATE ${Table.IDENTITYKEYRECORD} SET accountId = ${accountId};`
+    );
+  }
 };
 
 const rollbackIdentityKeyRecordTable = async knex => {
@@ -232,23 +321,35 @@ const rollbackIdentityKeyRecordTable = async knex => {
 
 /*   PreKeyRecord table
 --------------------------*/
-const addAccountIdToPreKeyRecordTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
-
-  return trx.schema
-    .table(Table.PREKEYRECORD, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(() => {
-      return trx.raw(`
-        UPDATE ${Table.PREKEYRECORD}
-        SET accountId = ${accountValue.id};
-      `);
-    });
+const addAccountIdToPreKeyRecordTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.PREKEYRECORD,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  // Duplicate table
+  const tempTablename = `old${Table.PREKEYRECORD}`;
+  await trx.schema.renameTable(Table.PREKEYRECORD, tempTablename);
+  await trx.schema.createTable(Table.PREKEYRECORD, table => {
+    table.increments('id').primary();
+    table.integer('preKeyId').notNullable();
+    table.string('preKeyPrivKey', LARGE_STRING_SIZE).notNullable();
+    table.string('preKeyPubKey', LARGE_STRING_SIZE).notNullable();
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+  });
+  // Insert values
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.PREKEYRECORD).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+  if (accountId) {
+    await trx.raw(`UPDATE ${Table.PREKEYRECORD} SET accountId = ${accountId};`);
+  }
 };
 
 const rollbackPreKeyRecordTable = async knex => {
@@ -264,23 +365,37 @@ const rollbackPreKeyRecordTable = async knex => {
 
 /*   SessionRecord table
 ---------------------------*/
-const addAccountIdToSessionRecordTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
-
-  return trx.schema
-    .table(Table.SESSIONRECORD, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(() => {
-      return trx.raw(`
-        UPDATE ${Table.SESSIONRECORD}
-        SET accountId = ${accountValue.id};
-      `);
-    });
+const addAccountIdToSessionRecordTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.SESSIONRECORD,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  // Duplicate table
+  const tempTablename = `old${Table.SESSIONRECORD}`;
+  await trx.schema.renameTable(Table.SESSIONRECORD, tempTablename);
+  await trx.schema.createTable(Table.SESSIONRECORD, table => {
+    table.increments('id').primary();
+    table.string('recipientId', XSMALL_STRING_SIZE).notNullable();
+    table.integer('deviceId').notNullable();
+    table.text('record').notNullable();
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+  });
+  // Insert values
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.SESSIONRECORD).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+  if (accountId) {
+    await trx.raw(
+      `UPDATE ${Table.SESSIONRECORD} SET accountId = ${accountId};`
+    );
+  }
 };
 
 const rollbackSessionRecordTable = async knex => {
@@ -296,23 +411,37 @@ const rollbackSessionRecordTable = async knex => {
 
 /*   SignedPreKeyRecord table
 --------------------------------*/
-const addAccountIdToSignedPreKeyRecordTable = async trx => {
-  const accountValue = await trx
-    .select('id')
-    .from(Table.ACCOUNT)
-    .first();
-  if (!accountValue) return;
-
-  return trx.schema
-    .table(Table.SIGNEDPREKEYRECORD, table => {
-      table.string('accountId', XSMALL_STRING_SIZE);
-    })
-    .then(() => {
-      return trx.raw(`
-        UPDATE ${Table.SIGNEDPREKEYRECORD}
-        SET accountId = ${accountValue.id};
-      `);
-    });
+const addAccountIdToSignedPreKeyRecordTable = async (trx, accountId) => {
+  const columnAccountIdExists = await trx.schema.hasColumn(
+    Table.SIGNEDPREKEYRECORD,
+    'accountId'
+  );
+  if (columnAccountIdExists) return;
+  // Duplicate table
+  const tempTablename = `old${Table.SIGNEDPREKEYRECORD}`;
+  await trx.schema.renameTable(Table.SIGNEDPREKEYRECORD, tempTablename);
+  await trx.schema.createTable(Table.SIGNEDPREKEYRECORD, table => {
+    table.increments('id').primary();
+    table.integer('signedPreKeyId').notNullable();
+    table.string('signedPreKeyPrivKey', LARGE_STRING_SIZE).notNullable();
+    table.string('signedPreKeyPubKey', LARGE_STRING_SIZE).notNullable();
+    table.integer('accountId');
+    table
+      .foreign('accountId')
+      .references('id')
+      .inTable(Table.ACCOUNT);
+  });
+  // Insert values
+  const prevValues = await trx.select('*').from(tempTablename);
+  if (prevValues.length) {
+    await trx.table(Table.SIGNEDPREKEYRECORD).insert(prevValues);
+  }
+  await trx.schema.dropTable(tempTablename);
+  if (accountId) {
+    await trx.raw(
+      `UPDATE ${Table.SIGNEDPREKEYRECORD} SET accountId = ${accountId};`
+    );
+  }
 };
 
 const rollbackSignedPreKeyRecordTable = async knex => {
@@ -389,14 +518,20 @@ const dropTriggerAfterDeleteEmail = async knex => {
 exports.up = async knex => {
   return await knex.transaction(async trx => {
     await updateAccountTable(trx);
-    await createAccountContactTable(trx);
-    await addAccountIdToEmailTable(trx);
-    await addAccountIdToLabelTable(trx);
-    await addAccountIdToPendingEventTable(trx);
-    await addAccountIdToIdentityKeyRecordTable(trx);
-    await addAccountIdToPreKeyRecordTable(trx);
-    await addAccountIdToSessionRecordTable(trx);
-    await addAccountIdToSignedPreKeyRecordTable(trx);
+    const currentAccount = await trx
+      .select('id')
+      .from(Table.ACCOUNT)
+      .first();
+    const accountId = currentAccount ? currentAccount.id : null;
+    await createAccountContactTable(trx, accountId);
+    await addAccountIdToEmailTable(trx, accountId);
+    await addAccountIdToLabelTable(trx, accountId);
+    await updateEmailLabelTable(trx);
+    await addAccountIdToPendingEventTable(trx, accountId);
+    await addAccountIdToIdentityKeyRecordTable(trx, accountId);
+    await addAccountIdToPreKeyRecordTable(trx, accountId);
+    await addAccountIdToSessionRecordTable(trx, accountId);
+    await addAccountIdToSignedPreKeyRecordTable(trx, accountId);
 
     await createTriggersAfterDeleteAccount(trx);
   });
@@ -409,6 +544,7 @@ exports.down = async (knex, Promise) => {
     rollbackAccountContactTable(knex),
     rollbackEmailTable(knex),
     rollbackLabelTable(knex),
+    rollbackEmailLabelTable(knex),
     rollbackPendingEventTable(knex),
     rollbackIdentityKeyRecordTable(knex),
     rollbackPreKeyRecordTable(knex),

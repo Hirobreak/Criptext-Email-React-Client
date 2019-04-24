@@ -34,6 +34,10 @@ export const openFileExplorer = filename => {
   callMain('open-file-explorer', filename);
 };
 
+export const openLoginWindow = () => {
+  callMain('open-login');
+};
+
 export const processPendingEvents = () => {
   setTimeout(() => {
     callMain('process-pending-events');
@@ -140,6 +144,10 @@ export const checkExpiredSession = async params => {
 
 export const deleteMyAccount = async password => {
   return await callMain('client-delete-my-account', password);
+};
+
+export const getDataReady = async () => {
+  return await callMain('client-get-data-ready');
 };
 
 export const getUserSettings = async () => {
@@ -264,6 +272,10 @@ export const createSignedPreKeyRecord = async params => {
   return await callMain('db-create-signed-prekey-record', params);
 };
 
+export const defineActiveAccountById = async accountId => {
+  return await callMain('db-define-active-account-by-id', accountId);
+};
+
 export const deleteEmailByKeys = async keys => {
   return await callMain('db-delete-email-by-keys', keys);
 };
@@ -302,12 +314,12 @@ export const deleteSessionRecord = async params => {
   return await callMain('db-delete-session-record', params);
 };
 
-export const getAllFeedItems = async () => {
-  return await callMain('db-get-all-feed-items');
+export const getAccountByParams = async params => {
+  return await callMain('db-get-account-by-params', params);
 };
 
-export const getDataReady = async () => {
-  return await callMain('client-get-data-ready');
+export const getAllFeedItems = async () => {
+  return await callMain('db-get-all-feed-items');
 };
 
 export const getAllLabels = async () => {
