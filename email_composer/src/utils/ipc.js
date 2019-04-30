@@ -1,7 +1,9 @@
 import { callMain } from '@criptext/electron-better-ipc/renderer';
+import { myAccount } from './electronInterface';
 const electron = window.require('electron');
 const { remote } = electron;
 const composerId = remote.getCurrentWindow().id;
+let accountId = '';
 
 /*  Windows call
 ----------------------------- */
@@ -37,11 +39,21 @@ export const throwError = error => {
 /* Criptext Client
    ----------------------------- */
 export const findKeyBundles = async params => {
-  return await callMain('client-find-key-bundles', params);
+  checkCurrentAccount();
+  const data = { params };
+  if (myAccount.id !== accountId) {
+    data.accountId = accountId;
+  }
+  return await callMain('client-find-key-bundles', data);
 };
 
 export const postEmail = async params => {
-  return await callMain('client-post-email', params);
+  checkCurrentAccount();
+  const data = { params };
+  if (myAccount.id !== accountId) {
+    data.accountId = accountId;
+  }
+  return await callMain('client-post-email', data);
 };
 
 /* File System
@@ -56,6 +68,12 @@ export const getEmailByKeyWithbody = async params => {
 
 /* DataBase
    ----------------------------- */
+const checkCurrentAccount = () => {
+  if (!accountId || accountId !== myAccount.other.id) {
+    accountId = myAccount.other.id || myAccount.id;
+  }
+};
+
 export const createEmail = async params => {
   return await callMain('db-create-email', params);
 };
@@ -69,7 +87,11 @@ export const createFile = async params => {
 };
 
 export const createIdentityKeyRecord = async params => {
-  return await callMain('db-create-identity-key-record', params);
+  checkCurrentAccount();
+  return await callMain('db-create-identity-key-record', {
+    accountId,
+    ...params
+  });
 };
 
 export const createPreKeyRecord = async params => {
@@ -77,7 +99,8 @@ export const createPreKeyRecord = async params => {
 };
 
 export const createSessionRecord = async params => {
-  return await callMain('db-create-session-record', params);
+  checkCurrentAccount();
+  return await callMain('db-create-session-record', { accountId, ...params });
 };
 
 export const createSignedPreKeyRecord = async params => {
@@ -96,8 +119,17 @@ export const deleteSessionRecord = async params => {
   return await callMain('db-delete-session-record', params);
 };
 
+export const getAccount = async () => {
+  return await callMain('db-get-account');
+};
+
+export const getAccountByParams = async params => {
+  return await callMain('db-get-account-by-params', params);
+};
+
 export const getAllContacts = async () => {
-  return await callMain('db-get-all-contacts');
+  checkCurrentAccount();
+  return await callMain('db-get-all-contacts', accountId);
 };
 
 export const getContactsByEmailId = async emailId => {
@@ -113,7 +145,8 @@ export const getFilesByEmailId = async emailId => {
 };
 
 export const getIdentityKeyRecord = async params => {
-  return await callMain('db-get-identity-key-record', params);
+  checkCurrentAccount();
+  return await callMain('db-get-identity-key-record', { accountId, ...params });
 };
 
 export const getPreKeyPair = async params => {
@@ -121,11 +154,16 @@ export const getPreKeyPair = async params => {
 };
 
 export const getSessionRecord = async params => {
-  return await callMain('db-get-session-record', params);
+  checkCurrentAccount();
+  return await callMain('db-get-session-record', { accountId, ...params });
 };
 
-export const getSessionRecordByRecipientIds = async recipientIds => {
-  return await callMain('db-get-session-record-by-recipientids', recipientIds);
+export const getSessionRecordByRecipientIds = async ({ recipientIds }) => {
+  checkCurrentAccount();
+  return await callMain('db-get-session-record-by-recipientids', {
+    recipientIds,
+    accountId
+  });
 };
 
 export const getSignedPreKey = async params => {
