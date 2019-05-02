@@ -9,7 +9,6 @@ import {
   reloadWindow
 } from './electronInterface';
 import {
-  cleanDatabase,
   createEmail,
   createEmailLabel,
   createFeedItem,
@@ -39,7 +38,8 @@ import {
   updatePushToken,
   updateDeviceType,
   checkForUpdates,
-  defineActiveAccountById
+  defineActiveAccountById,
+  cleanDataLogout
 } from './ipc';
 import {
   checkEmailIsTo,
@@ -65,7 +65,8 @@ import { AttachItemStatus } from '../components/AttachItem';
 import {
   getShowEmailPreviewStatus,
   getUserGuideStepStatus,
-  setPendingMessageToDisplay
+  setPendingMessageToDisplay,
+  clearStorage
 } from './storage';
 import {
   fetchAcknowledgeEvents,
@@ -353,7 +354,9 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     : undefined;
   const InboxLabelId = LabelType.inbox.id;
   const SentLabelId = LabelType.sent.id;
-  const isFromMe = recipientId === myAccount.recipientId;
+  const SpamLabelId = LabelType.spam.id;
+  const isFromMe =
+    myAccount.recipientId === getRecipientIdFromEmailAddressTag(from);
   const recipients = getRecipientsFromData({
     to: to || toArray,
     cc: cc || ccArray,
@@ -362,7 +365,7 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
   });
   const isToMe = checkEmailIsTo(recipients);
   let notificationPreview = '';
-  let labelIds = [];
+  const labelIds = [];
   if (!prevEmail) {
     let body = '',
       headers;
@@ -437,12 +440,16 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
           })
         : null;
 
-    labelIds = isSpam ? [LabelType.spam.id] : [];
     if (isFromMe) {
       labelIds.push(SentLabelId);
-    }
-    if (isToMe || (!isFromMe && !isToMe)) {
+      if (isToMe) {
+        labelIds.push(InboxLabelId);
+      }
+    } else {
       labelIds.push(InboxLabelId);
+    }
+    if (isSpam) {
+      labelIds.push(SpamLabelId);
     }
     const emailData = {
       accountId: myAccount.id,
@@ -458,15 +465,20 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     const prevEmailLabels = await getEmailLabelsByEmailId(prevEmail.id);
     const prevLabels = prevEmailLabels.map(item => item.labelId);
 
-    const hasInboxLabelId = prevLabels.includes(InboxLabelId);
-    if (isToMe && !hasInboxLabelId) {
-      labelIds.push(InboxLabelId);
-    }
-
     const hasSentLabelId = prevLabels.includes(SentLabelId);
     if (isFromMe && !hasSentLabelId) {
       labelIds.push(SentLabelId);
+
+      const hasInboxLabelId = prevLabels.includes(InboxLabelId);
+      if (isToMe && !hasInboxLabelId) {
+        labelIds.push(InboxLabelId);
+      }
     }
+    const hasSpamLabelId = prevLabels.includes(SpamLabelId);
+    if (isSpam && !hasSpamLabelId) {
+      labelIds.push(SpamLabelId);
+    }
+
     if (labelIds.length) {
       const emailLabel = formEmailLabel({
         emailId: prevEmail.id,
@@ -485,10 +497,10 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
       threadId
     });
   }
-  const labelIdsFiltered = isSpam ? [LabelType.spam.id] : labelIds;
+  const mailboxIdsToUpdate = isSpam ? [LabelType.spam.id] : labelIds;
   return {
     rowid,
-    labelIds: labelIdsFiltered,
+    labelIds: mailboxIdsToUpdate,
     threadIds: threadId ? [threadId] : null
   };
 };
@@ -1177,7 +1189,7 @@ export const sendPasswordChangedEvent = () => {
 
 export const handleDeleteDeviceData = async rowid => {
   return await setTimeout(async () => {
-    await deleteAllDeviceData();
+    await deleteAccountData();
     if (rowid) {
       return { rowid };
     }
@@ -1185,8 +1197,17 @@ export const handleDeleteDeviceData = async rowid => {
   }, 4000);
 };
 
-export const deleteAllDeviceData = async () => {
-  await cleanDatabase();
+export const deleteAccountData = async () => {
+  clearStorage({});
+  const nextAccount = await cleanDataLogout({
+    recipientId: myAccount.recipientId,
+    deleteAll: true
+  });
+  if (nextAccount) {
+    const { id, recipientId } = nextAccount;
+    return await selectAccountAsActive({ id, recipientId });
+  }
+  clearStorage({ deleteAll: true });
   await logoutApp();
 };
 
