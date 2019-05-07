@@ -15,7 +15,8 @@ ipc.answerRenderer(
       threadEmails
     ] = await dbManager.getEmailsToDeleteByThreadIdAndLabelId(
       threadIds,
-      labelId
+      labelId,
+      accountId
     );
     if (threadEmails) {
       await Promise.all(
@@ -27,7 +28,7 @@ ipc.answerRenderer(
         )
       );
     }
-    await dbManager.deleteEmailsByThreadIdAndLabelId({
+    return await dbManager.deleteEmailsByThreadIdAndLabelId({
       threadIds,
       labelId,
       accountId
@@ -129,5 +130,8 @@ ipc.answerRenderer('db-create-email', async params => {
 
 ipc.answerRenderer('db-unsend-email', async params => {
   await dbManager.updateEmail(params);
-  await fileUtils.deleteEmailContent({ metadataKey: parseInt(params.key) });
+  return await fileUtils.deleteEmailContent({
+    metadataKey: parseInt(params.key),
+    username: getUsername()
+  });
 });

@@ -442,9 +442,9 @@ export const getLabelById = async id => {
   return await callMain('db-get-labelid', id);
 };
 
-export const getLabelsByText = async textArray => {
+export const getLabelsByParams = async ({ textArray }) => {
   await checkCurrentAccount();
-  return await callMain('db-get-labesls-by-text', { textArray, accountId });
+  return await callMain('db-get-labels-by-params', { textArray, accountId });
 };
 
 export const getPreKeyPair = async params => {
@@ -480,7 +480,8 @@ export const updateContactByEmail = async ({ email, name }) => {
 };
 
 export const unsendEmail = async params => {
-  return await callMain('db-unsend-email', params);
+  await checkCurrentAccount();
+  return await callMain('db-unsend-email', { accountId, ...params });
 };
 
 export const updateEmail = async params => {
@@ -536,8 +537,11 @@ export const decryptBackupFile = async key => {
   return await callMain('data-transfer-decrypt', key);
 };
 
-export const importDatabase = async () => {
-  return await callMain('data-transfer-import');
+export const importDatabase = async ({ accountId, resetAccountData }) => {
+  return await callMain('data-transfer-import-database', {
+    accountId,
+    resetAccountData
+  });
 };
 
 export const clearSyncData = async () => {
