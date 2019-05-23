@@ -383,10 +383,7 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
   const InboxLabelId = LabelType.inbox.id;
   const SentLabelId = LabelType.sent.id;
   const SpamLabelId = LabelType.spam.id;
-  const isFromMe =
-    (myAccount.domain === appDomain
-      ? myAccount.recipientId
-      : `${myAccount.recipientId}:${myAccount.domain}`) === recipientId;
+  const isFromMe = myAccount.recipientId === recipientId;
   const recipients = getRecipientsFromData({
     to: to || toArray,
     cc: cc || ccArray,
