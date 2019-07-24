@@ -10,4 +10,4 @@ extern "C" {
     #include "../crypto.h"
 }
 
-void setup_signed_pre_key_store(signal_protocol_store_context *context, CriptextDB::Account *account);
+void setup_signed_pre_key_store(signal_protocol_store_context *context, SQLite::Database *db);

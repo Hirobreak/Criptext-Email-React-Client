@@ -7,4 +7,4 @@ extern "C" {
   #include "../../helpers/utf8.h"
 }
 
-void setup_session_store(signal_protocol_store_context *context, CriptextDB::Account *account);
+void setup_session_store(signal_protocol_store_context *context, SQLite::Database *db);

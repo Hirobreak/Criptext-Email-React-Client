@@ -23,22 +23,33 @@ CriptextDB::IdentityKey CriptextDB::getIdentityKey(string dbPath, string recipie
 bool CriptextDB::createIdentityKey(string dbPath, string recipientId, int deviceId, char *identityKey) {
   try {
     SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    SQLite::Transaction transaction(db);
+    return createIdentityKey(&db, recipientId, deviceId, identityKey);
+  } catch (exception& e) {
+    std::cout << "gg" <<  e.what() << std::endl;
+    return false;
+  }
+  std::cout << "yeah" << std::endl;
+  return true;
+}
 
-    SQLite::Statement getQuery(db, "Select * from identitykeyrecord where recipientId == ? and deviceId == ?");
+bool CriptextDB::createIdentityKey(SQLite::Database *db, string recipientId, int deviceId, char *identityKey) {
+  try {
+    SQLite::Transaction transaction(*db);
+
+    SQLite::Statement getQuery(*db, "Select * from identitykeyrecord where recipientId == ? and deviceId == ?");
     getQuery.bind(1, recipientId);
     getQuery.bind(2, deviceId);
 
     getQuery.executeStep();
 
     if (getQuery.hasRow()) {
-      SQLite::Statement query(db, "update identitykeyrecord set identityKey = ? where recipientId == ? and deviceId == ?");
+      SQLite::Statement query(*db, "update identitykeyrecord set identityKey = ? where recipientId == ? and deviceId == ?");
       query.bind(1, identityKey);
       query.bind(2, recipientId);
       query.bind(3, deviceId);
       query.exec();
     } else {
-      SQLite::Statement query(db, "insert into identitykeyrecord (recipientId, deviceId, identityKey) values (?,?,?)");
+      SQLite::Statement query(*db, "insert into identitykeyrecord (recipientId, deviceId, identityKey) values (?,?,?)");
       query.bind(1, recipientId);
       query.bind(2, deviceId);
       query.bind(3, identityKey);

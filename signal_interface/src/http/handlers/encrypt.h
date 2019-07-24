@@ -6,5 +6,5 @@
 #include "helpers.h"
 #include "cors.h"
 
-int postEncryptKey(struct mg_connection *conn, void *cbdata);
-int postEncryptEmail(struct mg_connection *conn, void *cbdata);
+int postEncryptKey(struct mg_connection *conn, void *cbdata, SQLite::Database *db);
+int postEncryptEmail(struct mg_connection *conn, void *cbdata, SQLite::Database *db);

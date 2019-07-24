@@ -21,6 +21,10 @@ namespace CriptextDB {
   bool createSessionRecord(string dbPath, string recipientId, long int deviceId, char* record, size_t len);
   bool deleteSessionRecord(string dbPath, string recipientId, long int deviceId);
   bool deleteSessionRecords(string dbPath, string recipientId);
+
+  bool createSessionRecord(SQLite::Database *db, string recipientId, long int deviceId, char* record, size_t len);
+  bool deleteSessionRecord(SQLite::Database *db, string recipientId, long int deviceId);
+  bool deleteSessionRecords(SQLite::Database *db, string recipientId);
 } 
 
 #endif

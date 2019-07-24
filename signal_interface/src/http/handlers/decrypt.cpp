@@ -3,7 +3,7 @@
 #include "../../crypto/signal.h"
 #include "decrypt.h"
 
-int postDecrypt(struct mg_connection *conn, void *cbdata) {
+int postDecrypt(struct mg_connection *conn, void *cbdata, SQLite::Database *db) {
   int corsResult = cors(conn);
   if (corsResult < 0) {
     return 201;
@@ -43,7 +43,7 @@ int postDecrypt(struct mg_connection *conn, void *cbdata) {
     return 400;
   }
 
-  CriptextSignal signal(recipientId->valuestring);
+  CriptextSignal signal(recipientId->valuestring, db);
 
   uint8_t *plaintext_data = 0;
   size_t plaintext_len = 0;
@@ -60,7 +60,7 @@ int postDecrypt(struct mg_connection *conn, void *cbdata) {
   return 1;
 }
 
-int postDecryptKey(struct mg_connection *conn, void *cbdata) {
+int postDecryptKey(struct mg_connection *conn, void *cbdata, SQLite::Database *db) {
   int corsResult = cors(conn);
   if (corsResult < 0) {
     return 201;
@@ -96,7 +96,7 @@ int postDecryptKey(struct mg_connection *conn, void *cbdata) {
     return 400;
   }
 
-  CriptextSignal signal(recipientId->valuestring);
+  CriptextSignal signal(recipientId->valuestring, db);
 
   uint8_t *plaintext_data = 0;
   size_t plaintext_len = 0;

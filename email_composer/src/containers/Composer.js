@@ -574,6 +574,7 @@ class ComposerWrapper extends Component {
         peer,
         externalEmailPassword
       };
+      console.log(params);
       const res = await encryptPostEmail(params);
       const { metadataKey, date, messageId } = res.body;
       const threadId = res.body.threadId || this.state.threadId;

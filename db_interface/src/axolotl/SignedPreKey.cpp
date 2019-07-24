@@ -24,8 +24,32 @@ bool CriptextDB::createSignedPreKey(string dbPath, short int id, char *keyRecord
 
   try {
     SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    return createSignedPreKey(&db, id, keyRecord, len);
+  } catch (exception& e) {
+    std::cout << "ERROR : " << e.what() << std::endl;
+    return false;
+  }
 
-    SQLite::Statement query(db, "insert into signedprekeyrecord (signedPreKeyId, signedPreKeyPrivKey, signedPreKeyPubKey) values (?,?,?)");
+  return true;
+}
+
+bool CriptextDB::deleteSignedPreKey(string dbPath, short int id) {
+  try {
+    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    deleteSignedPreKey(&db, id);
+  } catch (exception& e) {
+    std::cout << "ERROR : " << e.what() << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool CriptextDB::createSignedPreKey(SQLite::Database *db, short int id, char *keyRecord, size_t len) {
+  std::cout << "Create SignedPreKey : " << id << std::endl;
+
+  try {
+    SQLite::Statement query(*db, "insert into signedprekeyrecord (signedPreKeyId, signedPreKeyPrivKey, signedPreKeyPubKey) values (?,?,?)");
     query.bind(1, id);
     query.bind(2, keyRecord);
     query.bind(3, static_cast<int>(len));
@@ -39,11 +63,9 @@ bool CriptextDB::createSignedPreKey(string dbPath, short int id, char *keyRecord
   return true;
 }
 
-bool CriptextDB::deleteSignedPreKey(string dbPath, short int id) {
+bool CriptextDB::deleteSignedPreKey(SQLite::Database *db, short int id) {
   try {
-    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-
-    SQLite::Statement query(db, "delete from signedPrekeyrecord where signedPreKeyId == ?");
+    SQLite::Statement query(*db, "delete from signedPrekeyrecord where signedPreKeyId == ?");
     query.bind(1, id);
 
     query.exec();

@@ -3,4 +3,4 @@
 #include "../../../../db_interface/src/axolotl/Account.h"
 #include "decode_utils.h"
 
-void setup_pre_key_store(signal_protocol_store_context *context, CriptextDB::Account *account);
+void setup_pre_key_store(signal_protocol_store_context *context, SQLite::Database *db);

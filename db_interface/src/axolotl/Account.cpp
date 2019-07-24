@@ -20,8 +20,16 @@ CriptextDB::Account CriptextDB::getAccount(string dbPath, char *recipientId) {
 int CriptextDB::createAccount(string dbPath, char* recipientId, char* name, int deviceId, char* pubKey, char* privKey, int registrationId) {
   try {
     SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    return createAccount(&db, recipientId, name, deviceId, pubKey, privKey, registrationId);
+  } catch (exception& e) {
+    std::cout << e.what() << std::endl;
+    return -1;
+  }
+}
 
-    SQLite::Statement query(db, "insert into account (recipientId, name, deviceId, jwt, refreshToken, privKey, pubKey, registrationId) values (?,?,?,?,?,?,?,?)");
+int CriptextDB::createAccount(SQLite::Database *db, char* recipientId, char* name, int deviceId, char* pubKey, char* privKey, int registrationId) {
+  try {
+    SQLite::Statement query(*db, "insert into account (recipientId, name, deviceId, jwt, refreshToken, privKey, pubKey, registrationId) values (?,?,?,?,?,?,?,?)");
     query.bind(1, recipientId);
     query.bind(2, name);
     query.bind(3, deviceId);

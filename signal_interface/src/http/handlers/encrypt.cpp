@@ -1,6 +1,6 @@
 #include "encrypt.h"
 
-int postEncryptKey(struct mg_connection *conn, void *cbdata) {
+int postEncryptKey(struct mg_connection *conn, void *cbdata, SQLite::Database *db) {
   int corsResult = cors(conn);
   if (corsResult < 0) {
     return 201;
@@ -36,7 +36,7 @@ int postEncryptKey(struct mg_connection *conn, void *cbdata) {
     return 400;
   }
 
-  CriptextSignal signal(recipientId->valuestring);
+  CriptextSignal signal(recipientId->valuestring, db);
 
   size_t keyLength = 16;
   char *encryptedText = 0;
@@ -67,7 +67,7 @@ int postEncryptKey(struct mg_connection *conn, void *cbdata) {
   return 200;
 }
 
-int postEncryptEmail(struct mg_connection *conn, void *cbdata) {
+int postEncryptEmail(struct mg_connection *conn, void *cbdata, SQLite::Database *db) {
   int corsResult = cors(conn);
   if (corsResult < 0) {
     return 201;
@@ -105,7 +105,7 @@ int postEncryptEmail(struct mg_connection *conn, void *cbdata) {
     return 400;
   }
 
-  CriptextSignal signal(accountRecipientId->valuestring);
+  CriptextSignal signal(accountRecipientId->valuestring, db);
 
   char *encryptedBody = 0;
   int encryptedBodyType = 0;

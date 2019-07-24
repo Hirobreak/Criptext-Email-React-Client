@@ -16,6 +16,7 @@ namespace CriptextDB {
 
   IdentityKey getIdentityKey(string dbPath, string recipientId, long int deviceId);
   bool createIdentityKey(string dbPath, string recipientId, int deviceId, char *identityKey);
+  bool createIdentityKey(SQLite::Database *db, string recipientId, int deviceId, char *identityKey);
 } 
 
 #endif

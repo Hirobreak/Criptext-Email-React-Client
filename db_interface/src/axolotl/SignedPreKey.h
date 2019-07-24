@@ -16,10 +16,11 @@ namespace CriptextDB {
   };
 
   SignedPreKey getSignedPreKey(string dbPath, short int id);
-
   bool createSignedPreKey(string dbPath, short int id, char *keyRecord, size_t len);
-
   bool deleteSignedPreKey(string dbPath, short int id);
+
+  bool createSignedPreKey(SQLite::Database *db, short int id, char *keyRecord, size_t len);
+  bool deleteSignedPreKey(SQLite::Database *db, short int id);
 } 
 
 #endif

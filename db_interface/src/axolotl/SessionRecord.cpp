@@ -50,22 +50,58 @@ bool CriptextDB::createSessionRecord(string dbPath, string recipientId, long int
   std::cout << "Create Session Record : " << recipientId << std::endl;
   try {
     SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    SQLite::Transaction transaction(db);
+    return createSessionRecord(&db, recipientId, deviceId, record, len);
+  } catch (exception& e) {
+    std::cout << "ERROR : " << e.what() << std::endl;
+    return false;
+  }
 
-    SQLite::Statement getQuery(db, "Select * from sessionrecord where recipientId == ? and deviceId == ?");
+  return true;
+}
+
+bool CriptextDB::deleteSessionRecord(string dbPath, string recipientId, long int deviceId) {
+  try {
+    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    return deleteSessionRecord(&db, recipientId, deviceId);
+  } catch (exception& e) {
+    std::cout << "ERROR : " << e.what() << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool CriptextDB::deleteSessionRecords(string dbPath, string recipientId) {
+  try {
+    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    return deleteSessionRecords(&db, recipientId);
+  } catch (exception& e) {
+    std::cout << "ERROR : " << e.what() << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool CriptextDB::createSessionRecord(SQLite::Database *db, string recipientId, long int deviceId, char* record, size_t len) {
+  std::cout << "Create Session Record : " << recipientId << std::endl;
+  try {
+    SQLite::Transaction transaction(*db);
+
+    SQLite::Statement getQuery(*db, "Select * from sessionrecord where recipientId == ? and deviceId == ?");
     getQuery.bind(1, recipientId);
     getQuery.bind(2, deviceId);
     getQuery.executeStep();
 
     if (getQuery.hasRow()) {
-      SQLite::Statement query(db, "update sessionrecord set record = ?, recordLength = ? where recipientId == ? and deviceId == ?");
+      SQLite::Statement query(*db, "update sessionrecord set record = ?, recordLength = ? where recipientId == ? and deviceId == ?");
       query.bind(1, record);
       query.bind(2, static_cast<int>(len));
       query.bind(3, recipientId);
       query.bind(4, deviceId);
       query.exec();
     } else {
-      SQLite::Statement query(db, "insert into sessionrecord (recipientId, deviceId, record, recordLength) values (?,?,?,?)");
+      SQLite::Statement query(*db, "insert into sessionrecord (recipientId, deviceId, record, recordLength) values (?,?,?,?)");
       query.bind(1, recipientId);
       query.bind(2, deviceId);
       query.bind(3, record);
@@ -81,11 +117,9 @@ bool CriptextDB::createSessionRecord(string dbPath, string recipientId, long int
   return true;
 }
 
-bool CriptextDB::deleteSessionRecord(string dbPath, string recipientId, long int deviceId) {
+bool CriptextDB::deleteSessionRecord(SQLite::Database *db, string recipientId, long int deviceId) {
   try {
-    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-
-    SQLite::Statement query(db, "delete from sessionrecord where recipientId == ? and deviceId == ?");
+    SQLite::Statement query(*db, "delete from sessionrecord where recipientId == ? and deviceId == ?");
     query.bind(1, recipientId);
     query.bind(2, deviceId);
 
@@ -98,11 +132,9 @@ bool CriptextDB::deleteSessionRecord(string dbPath, string recipientId, long int
   return true;
 }
 
-bool CriptextDB::deleteSessionRecords(string dbPath, string recipientId) {
+bool CriptextDB::deleteSessionRecords(SQLite::Database *db, string recipientId) {
   try {
-    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-
-    SQLite::Statement query(db, "delete from sessionrecord where recipientId == ?");
+    SQLite::Statement query(*db, "delete from sessionrecord where recipientId == ?");
     query.bind(1, recipientId);
 
     query.exec();

@@ -1,6 +1,6 @@
 #include "keyBundle.h"
 
-int createKeyBundle(struct mg_connection *conn, void *cbdata) {
+int createKeyBundle(struct mg_connection *conn, void *cbdata, SQLite::Database *db) {
   int corsResult = cors(conn);
   if (corsResult < 0) {
     return 201;
@@ -30,7 +30,7 @@ int createKeyBundle(struct mg_connection *conn, void *cbdata) {
     return 400;
   }
 
-  CriptextSignal signal(recipientId->valuestring);
+  CriptextSignal signal(recipientId->valuestring, db);
   cJSON *bundle = cJSON_CreateObject();
   signal.generateKeyBundle(bundle, recipientId->valuestring, deviceId->valueint);
 
@@ -85,7 +85,7 @@ int createAccount(struct mg_connection *conn, void *cbdata) {
   return 1;
 }
 
-int processKeyBundle(struct mg_connection *conn, void *cbdata) {
+int processKeyBundle(struct mg_connection *conn, void *cbdata, SQLite::Database *db) {
   int corsResult = cors(conn);
   if (corsResult < 0) {
     return 201;
@@ -116,7 +116,7 @@ int processKeyBundle(struct mg_connection *conn, void *cbdata) {
     return 400;
   }
 
-  CriptextSignal signal(accountRecipientId->valuestring);
+  CriptextSignal signal(accountRecipientId->valuestring, db);
   cJSON *keyBundleObj = NULL;
   cJSON_ArrayForEach(keyBundleObj, keybundleArray) {
 

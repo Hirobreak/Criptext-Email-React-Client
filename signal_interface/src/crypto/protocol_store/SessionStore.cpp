@@ -48,6 +48,8 @@ int session_store_get_sub_device_sessions(signal_int_list **sessions, const char
 
 int session_store_store_session(const signal_protocol_address *address, uint8_t *record, size_t record_len, uint8_t *user_record_data, size_t user_record_len, void *user_data)
 {
+    SQLite::Database *db = reinterpret_cast<SQLite::Database *>(user_data);
+
     std::string recipientId = std::string(address->name);
     int deviceId = address->device_id;
 
@@ -55,7 +57,7 @@ int session_store_store_session(const signal_protocol_address *address, uint8_t 
     const unsigned char *myRecord = reinterpret_cast<const unsigned char *>(record);
     char *recordBase64 = reinterpret_cast<char *>(base64_encode(myRecord, record_len, &len));
 
-    bool success = CriptextDB::createSessionRecord("../../electron_app/Criptext.db", recipientId, deviceId, recordBase64, len);
+    bool success = CriptextDB::createSessionRecord(db, recipientId, deviceId, recordBase64, len);
     return success ? 1 : 0;
 }
 
@@ -98,7 +100,7 @@ void session_store_destroy(void *user_data)
     
 }
 
-void setup_session_store(signal_protocol_store_context *context, CriptextDB::Account *account)
+void setup_session_store(signal_protocol_store_context *context, SQLite::Database *db)
 {
     signal_protocol_session_store store = {
         .load_session_func = session_store_load_session,
@@ -108,7 +110,7 @@ void setup_session_store(signal_protocol_store_context *context, CriptextDB::Acc
         .delete_session_func = session_store_delete_session,
         .delete_all_sessions_func = session_store_delete_all_sessions,
         .destroy_func = session_store_destroy,
-        .user_data = account
+        .user_data = db
     };
 
     signal_protocol_store_context_set_session_store(context, &store);

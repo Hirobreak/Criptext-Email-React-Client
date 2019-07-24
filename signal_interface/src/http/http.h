@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string>
 #include <civetweb.h>
+#include <SQLiteCpp/SQLiteCpp.h>
 #include "../../../db_interface/src/axolotl/Account.h"
 #include "./handlers/decrypt.h"
 #include "./handlers/encrypt.h"

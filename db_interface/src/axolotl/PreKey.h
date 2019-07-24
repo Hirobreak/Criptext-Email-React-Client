@@ -18,6 +18,9 @@ namespace CriptextDB {
   bool createPreKey(string dbPath, short int id, char *keyRecord, size_t len);
   bool deletePreKey(string dbPath, short int id);
 
+  bool createPreKey(SQLite::Database *db, short int id, char *keyRecord, size_t len);
+  bool deletePreKey(SQLite::Database *db, short int id);
+
 } 
 
 #endif

@@ -61,7 +61,7 @@ void pre_key_store_destroy(void *user_data) {
     
 }
 
-void setup_pre_key_store(signal_protocol_store_context *context, CriptextDB::Account *account)
+void setup_pre_key_store(signal_protocol_store_context *context, SQLite::Database *db)
 {
     signal_protocol_pre_key_store store = {
         .load_pre_key = pre_key_store_load_pre_key,
@@ -69,7 +69,7 @@ void setup_pre_key_store(signal_protocol_store_context *context, CriptextDB::Acc
         .contains_pre_key = pre_key_store_contains_pre_key,
         .remove_pre_key = pre_key_store_remove_pre_key,
         .destroy_func = pre_key_store_destroy,
-        .user_data = account
+        .user_data = db
     };
 
     signal_protocol_store_context_set_pre_key_store(context, &store);

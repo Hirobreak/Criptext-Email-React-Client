@@ -12,7 +12,7 @@ void unlock_fn(void *user_data){
     pthread_mutex_unlock(&global_mutex);
 }
 
-CriptextSignal::CriptextSignal(char *recipientId){
+CriptextSignal::CriptextSignal(char *recipientId, SQLite::Database *db){
     signal_context_create(&global_context, 0);
     signal_crypto_provider provider = {
         .random_func = random_generator,
@@ -36,7 +36,7 @@ CriptextSignal::CriptextSignal(char *recipientId){
     } catch (exception &e) {
         return;
     }
-    setup_store_context(&store, global_context, &account);
+    setup_store_context(&store, global_context, db);
 }
 
 int CriptextSignal::decryptText(uint8_t **plaintext_data, size_t *plaintext_len, std::string encryptedText, std::string recipientId, int deviceId, int message_type){
@@ -265,6 +265,7 @@ int CriptextSignal::encryptText(char **encryptedText, uint8_t *plainText, size_t
         
         size_t len = 0;
         int messageType = ciphertext_message_get_type(encryptedMessage);
+        messageType = messageType == 2 ? 1 : messageType;
         signal_buffer *outgoing_serialized = ciphertext_message_get_serialized(encryptedMessage);
         const unsigned char *text = reinterpret_cast<const unsigned char *>(signal_buffer_data(outgoing_serialized));
         char *encodedText = reinterpret_cast<char *>(base64_encode(text, signal_buffer_len(outgoing_serialized), &len));
