@@ -6,6 +6,7 @@ const {
   cleanForAlice,
   createSignalTables,
   createTables,
+  databasePath,
   hasColumnPreKeyRecordLength,
   Table
 } = require('./models.js');
@@ -1381,6 +1382,7 @@ module.exports = {
   createSignedPreKeyRecord,
   createSignalTables,
   createTables,
+  databasePath,
   deleteEmailsByIds,
   deleteEmailByKeys,
   deleteEmailsByThreadIdAndLabelId,
