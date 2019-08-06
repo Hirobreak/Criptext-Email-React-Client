@@ -255,8 +255,8 @@ export const formDataToReply = async (emailKeyToEdit, replyType) => {
   const from = emailData.replyTo
     ? parseContactRow(emailData.replyTo)
     : emailFrom.name
-    ? emailFrom
-    : contacts.from[0];
+      ? emailFrom
+      : contacts.from[0];
 
   const content = formReplyForwardContent(
     replyType,
@@ -293,10 +293,11 @@ export const formDataToReply = async (emailKeyToEdit, replyType) => {
 };
 
 const formToEmails = (from, to, replyType, myEmailAddress) => {
-  const [isFromMe] = from.map(contact =>
-    contact.email
-      ? contact.email === myEmailAddress
-      : contact === myEmailAddress
+  const [isFromMe] = from.map(
+    contact =>
+      contact.email
+        ? contact.email === myEmailAddress
+        : contact === myEmailAddress
   );
   if (
     replyType === composerEvents.REPLY ||
