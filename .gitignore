@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 */node_modules
+*_interface/deps
 
 # testing
 */coverage
@@ -35,5 +36,4 @@ electron_app/dev-app-update.yml
 */yarn-debug.log*
 */yarn-error.log*
 *.db
-binding.gyp
 .vscode
