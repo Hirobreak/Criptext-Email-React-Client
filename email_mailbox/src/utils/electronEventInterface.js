@@ -107,7 +107,9 @@ let newEmailNotificationList = [];
 const stopGettingEvents = () => {
   isGettingEvents = false;
   emitter.emit(Event.STOP_LOAD_SYNC, {});
-  if (!getBackupStatus()) {
+  if (needsUpgrade()) {
+    sendMigrateAliceEvent();
+  } else if (!getBackupStatus()) {
     initAutoBackupMonitor();
   }
 };
@@ -223,7 +225,7 @@ const parseAndDispatchEvent = async event => {
 export const getGroupEvents = async ({
   shouldGetMoreEvents,
   showNotification,
-  useLegacy = false
+  useLegacy
 }) => {
   if (!useLegacy && needsUpgrade()) return;
   if (isGettingEvents && !shouldGetMoreEvents) return;
@@ -267,6 +269,7 @@ export const getGroupEvents = async ({
     }
     isGettingEvents = false;
     totalEmailsPending = null;
+    stopGettingEvents();
     return;
   }
   await getGroupEvents({
@@ -1566,6 +1569,12 @@ export const sendRestoreBackupInitEvent = () => {
   emitter.emit(Event.RESTORE_BACKUP_INIT);
 };
 
+export const sendMigrateAliceEvent = () => {
+  setTimeout(() => {
+    emitter.emit(Event.MIGRATE_ALICE);
+  }, 2000);
+};
+
 export const handleDeleteDeviceData = async rowid => {
   return await setTimeout(async () => {
     await deleteAllDeviceData();
@@ -1771,6 +1780,7 @@ export const Event = {
   LOCAL_BACKUP_EXPORT_FINISHED: 'local-backup-export-finished',
   LOCAL_BACKUP_ENCRYPT_FINISHED: 'local-backup-encrypt-finished',
   LOCAL_BACKUP_SUCCESS: 'local-backup-success',
+  MIGRATE_ALICE: 'migrate-alice',
   OPEN_THREAD: 'open-thread',
   PASSWORD_CHANGED: 'password-changed',
   REACTIVATED_ACCOUNT: 'reactivated-account',
