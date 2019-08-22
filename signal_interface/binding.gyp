@@ -27,17 +27,16 @@
         "../db_interface/src/axolotl/SessionRecord.cpp",
         "../db_interface/src/axolotl/SignedPreKey.cpp"
       ],
-      "cflags": ["-Wall", "-std=c++11"],
+      "cflags": ["-Wall", "-std=c++17", "-rdynamic", "-stdlib=libc++"],
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions' ],
       "include_dirs" : [
-         # Include system & SQLite headers
-        "/usr/local/include"
+        "/usr/local/include",
+        "/usr/include"
       ],
       "libraries": [
         "-pthread",
-        "-dl"
-        # Check this following paths on your system
+        "-dl",
         "/usr/local/Cellar/openssl/1.0.2r/lib/libssl.a",
         "/usr/local/Cellar/openssl/1.0.2r/lib/libcrypto.a",
         "/usr/local/Cellar/sqlite/3.28.0/lib/libsqlite3.a",
@@ -45,11 +44,13 @@
         "/usr/local/lib/libsignal-protocol-c.a",
         "/usr/local/lib/libcivetweb.a",
         "/usr/local/lib/libcjson.a",
-        "/usr/local/lib/pkgconfig/sqlite_modern_cpp.pc"
+        "/usr/local/lib/spdlog/libspdlog.a"
       ],
       'conditions': [
         ['OS=="mac"', {
           'xcode_settings': {
+            'OTHER_CPLUSPLUSFLAGS' : [ '-std=c++17', '-stdlib=libc++' ],
+            'OTHER_LDFLAGS': [ '-stdlib=libc++' ],
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
           }
         }]
