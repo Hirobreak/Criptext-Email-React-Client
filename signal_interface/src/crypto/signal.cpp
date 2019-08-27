@@ -2,6 +2,10 @@
 #include <string>
 #include <iostream>
 
+#ifdef _WIN32
+#include <mutex>
+#endif
+
 std::recursive_mutex global_mutex;
 
 void lock_fn(void *user_data){

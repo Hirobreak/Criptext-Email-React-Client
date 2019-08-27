@@ -5,6 +5,7 @@
 #include <openssl/hmac.h>
 #include <openssl/rand.h>
 #include <openssl/sha.h>
+#include <limits.h>
 
 int random_generator(uint8_t *data, size_t len, void *user_data)
 {
