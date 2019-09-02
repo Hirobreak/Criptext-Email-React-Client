@@ -98,11 +98,11 @@ const createEmails = async (
   }
 
   const criptextEmailsByRecipientId = {};
-  for (const recipient of recipients) {
+  await Promise.all(recipients.map( async recipient => {
     const { recipientId, type, username, domain } = recipient;
 
     if (guestDomains.indexOf(domain) > -1) {
-      continue;
+      return;
     }
 
     if (!criptextEmailsByRecipientId[recipientId]) {
@@ -175,7 +175,7 @@ const createEmails = async (
       }
       criptextEmailsByRecipientId[recipientId]['emails'].push(criptextEmail);
     }
-  }
+  }))
   return Object.values(criptextEmailsByRecipientId);
 };
 
