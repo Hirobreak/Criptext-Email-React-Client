@@ -28,7 +28,7 @@
         "../db_interface/src/axolotl/SessionRecord.cpp",
         "../db_interface/src/axolotl/SignedPreKey.cpp"
       ],
-      "cflags": ["-Wall", "-std=c++11", "-rdynamic"],
+      "cflags": ["-Wall", "-std=c++17", "-rdynamic"],
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions' ],
       "include_dirs" : [
@@ -45,7 +45,8 @@
         "<libsignal-protocol-c>",
         "<libcivetweb>",
         "<libcjson>",
-        "<libspdlog>"
+        "<libspdlog>",
+        "<sqlite_modern_cpp>"
       ],
       'conditions': [
         ['OS=="mac"', {

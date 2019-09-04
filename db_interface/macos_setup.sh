@@ -23,13 +23,17 @@ function removeTempFolder3() {
   cd ../../..; rm -rf "${tempBuildFolder}"; return;
 }
 
+echo "-----------------------------------------"
+ PSM "             DB Interface";
+echo "-----------------------------------------"
+
 # Temp folder
 printf "  - Preparing build... \n";
 mkdir "${tempBuildFolder}" > /dev/null;
 cd "${tempBuildFolder}" > /dev/null;
 
 echo "-----------------------------------------"
- PSM "             DB Interface";
+ PSM "             SQLite CPP Interface";
 echo "-----------------------------------------"
 
 # Download && build SQLite

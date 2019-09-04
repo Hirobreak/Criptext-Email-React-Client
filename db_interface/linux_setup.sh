@@ -10,9 +10,16 @@ function PEM() {
 function removeTempFolder1() {
   cd ..; rm -rf "${tempBuildFolder}"; return;
 }
+function removeTempFolder2() {
+  cd ../..; rm -rf "${tempBuildFolder}"; return;
+}
 function removeTempFolder3() {
   cd ../../..; rm -rf "${tempBuildFolder}"; return;
 }
+
+echo "-----------------------------------------"
+ PSM "             DB Interface";
+echo "-----------------------------------------"
 
 # Update repos list
 sudo apt-get update > /dev/null;
@@ -20,10 +27,6 @@ if [ $? -ne 0 ]; then
   PEM "    Failed to update repos list"
 fi
 printf "\n\n"
-
-echo "-----------------------------------------"
- PSM "             DB Interface";
-echo "-----------------------------------------"
 
 printf "  - Checking latest repos... \n";
 
@@ -42,6 +45,10 @@ fi
 printf "  - Preparing build... \n";
 mkdir "${tempBuildFolder}" > /dev/null;
 cd "${tempBuildFolder}" > /dev/null;
+
+echo "-----------------------------------------"
+ PSM "             SQLite CPP Interface";
+echo "-----------------------------------------"
 
 # Download && build SQLite
 printf "  - Downloading SQLiteCpp... \n";
@@ -72,6 +79,39 @@ sudo make install > /dev/null;
 if [ $? -ne 0 ]; then
   PEM "    Failed to install SQLiteCpp";
   removeTempFolder3;
+fi
+
+cd ../..
+
+echo "-----------------------------------------"
+ PSM "             MODERN SQL Interface";
+echo "-----------------------------------------"
+
+# Download && build SQLite
+printf "  - Downloading sqlite_modern_cpp... \n";
+git clone https://github.com/SqliteModernCpp/sqlite_modern_cpp.git --quiet;
+if [ $? -ne 0 ]; then
+  PEM "    Failed to download sqlite_modern_cpp";
+  removeTempFolder1;
+fi
+
+printf "  - Configuring and building sqlite_modern_cpp... \n";
+cd ./sqlite_modern_cpp > /dev/null;
+
+./configure > /dev/null
+if [ $? -ne 0 ]; then
+  PEM "    Failed to configure sqlite_modern_cpp";
+  removeTempFolder2;
+fi
+make > /dev/null
+if [ $? -ne 0 ]; then
+  PEM "    Failed to make sqlite_modern_cpp";
+  removeTempFolder2;
+fi
+sudo make install 
+if [ $? -ne 0 ]; then
+  PEM "    Failed to install sqlite_modern_cpp";
+  removeTempFolder2;
 fi
 
 # Exit to tempBuildFolder's parent and remove
