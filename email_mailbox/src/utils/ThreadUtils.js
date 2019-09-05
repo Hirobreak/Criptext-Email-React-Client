@@ -1,5 +1,5 @@
 import { getContactByIds } from './ipc';
-import { getThreads } from './ApiUtils';
+import { getThreads } from '../utils/DebbyApi';
 
 export const defineThreads = async params => {
   const res = await getThreads({

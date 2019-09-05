@@ -1,5 +1,5 @@
 import { Suggestions } from './types';
-import { getThreads } from '../utils/ApiUtils'; 
+import { getThreads } from '../utils/DebbyApi'; 
 import { getMatches } from '../utils/storage';
 import { LabelType } from '../utils/electronInterface';
 

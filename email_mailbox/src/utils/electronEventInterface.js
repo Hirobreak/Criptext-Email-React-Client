@@ -12,7 +12,6 @@ import {
 import {
   checkForUpdates,
   cleanDatabase,
-  createEmail,
   createEmailLabel,
   createFeedItem,
   createLabel,
@@ -35,6 +34,7 @@ import {
   showNotificationApp,
   sendStartSyncDeviceEvent,
   sendStartLinkDevicesEvent,
+  storeEmail,
   unsendEmail,
   updateAccount,
   updateContactByEmail,
@@ -77,7 +77,9 @@ import {
   fetchEventAction,
   fetchGetSingleEvent
 } from './FetchUtils';
+import { createEmail } from '../utils/DebbyApi';
 import string from './../lang';
+import { parse } from 'url';
 
 const EventEmitter = window.require('events');
 const electron = window.require('electron');
@@ -537,15 +539,12 @@ const handleNewMessageEventLegacy = async ({ rowid, params }) => {
     if (isSpam) {
       labelIds.push(SpamLabelId);
     }
-    const emailData = {
-      email,
-      labels: labelIds,
-      files: filesData,
-      recipients,
-      body,
+    await storeEmail({
+      metadataKey: parseInt(email.key),
+      body, 
       headers
-    };
-    await createEmail(emailData);
+    });
+    await createEmail(email);
   } else {
     const prevEmailLabels = await getEmailLabelsByEmailId(prevEmail.id);
     const prevLabels = prevEmailLabels.map(item => item.labelId);
@@ -738,15 +737,12 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     if (isSpam) {
       labelIds.push(SpamLabelId);
     }
-    const emailData = {
-      email,
-      labels: labelIds,
-      files: filesData,
-      recipients,
+    await storeEmail({
       body,
-      headers
-    };
-    await createEmail(emailData);
+      headers,
+      metadataKey: parseInt(email.key)
+    });
+    await createEmail(email);
   } else {
     const prevEmailLabels = await getEmailLabelsByEmailId(prevEmail.id);
     const prevLabels = prevEmailLabels.map(item => item.labelId);

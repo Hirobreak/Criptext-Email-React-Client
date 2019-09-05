@@ -123,22 +123,21 @@ ipc.answerRenderer('fs-save-email-body', async params => {
   await fileUtils.saveEmailBody(newParams);
 });
 
-ipc.answerRenderer('fs-delete-email-content', async params => {
-  const newParams = Object.assign(params, {
-    metadataKey: parseInt(params.metadataKey),
-    username: getUsername()
-  });
-  await fileUtils.deleteEmailContent(newParams);
-});
-
-ipc.answerRenderer('db-create-email', async params => {
+ipc.answerRenderer('fs-create-email', async params => {
   await fileUtils.saveEmailBody({
     body: params.body,
     headers: params.headers,
     metadataKey: parseInt(params.email.key),
     username: getUsername()
   });
-  return await dbManager.createEmail(params);
+});
+
+ipc.answerRenderer('fs-delete-email-content', async params => {
+  const newParams = Object.assign(params, {
+    metadataKey: parseInt(params.metadataKey),
+    username: getUsername()
+  });
+  await fileUtils.deleteEmailContent(newParams);
 });
 
 ipc.answerRenderer('db-unsend-email', async params => {

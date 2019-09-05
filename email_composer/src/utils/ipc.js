@@ -64,11 +64,11 @@ export const getEmailByKeyWithbody = async params => {
   return await callMain('db-get-email-with-body', params);
 };
 
+export const storeEmail = async params => {
+  return await callMain('fs-create-email', params);
+};
 /* DataBase
    ----------------------------- */
-export const createEmail = async params => {
-  return await callMain('db-create-email', params);
-};
 
 export const createEmailLabel = async params => {
   return await callMain('db-create-email-label', params);

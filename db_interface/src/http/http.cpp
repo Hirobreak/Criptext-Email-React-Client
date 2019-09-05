@@ -12,6 +12,11 @@ int getEmailThreads(struct mg_connection *conn, void *cbdata){
   return postGetEmailThreads(conn, cbdata, db_path);
 }
 
+int createEmail(struct mg_connection *conn, void *cbdata){
+  std::cout << "CREATE_EMAIL" << std::endl;
+  return postCreateEmail(conn, cbdata, db_path);
+}
+
 int pong(struct mg_connection *conn, void *cbdata){
   std::cout << "PING PING" << std::endl;
   mg_send_http_ok( conn, "text/plain", 5);
@@ -38,6 +43,7 @@ void http_init(char *dbPath, char *port){
 
   ctx = mg_start(&callbacks, 0, civet_options);
   mg_set_request_handler(ctx, "/threadsById", getEmailThreads, 0);
+  mg_set_request_handler(ctx, "/email/create", getEmailThreads, 0);
   mg_set_request_handler(ctx, "/ping", pong, 0);
 }
 

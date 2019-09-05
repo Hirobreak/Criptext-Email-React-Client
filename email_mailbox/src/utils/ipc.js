@@ -248,8 +248,8 @@ export const migrateAlice = async () => {
   return await callMain('db-migrate-alice');
 };
 
-export const createEmail = async params => {
-  return await callMain('db-create-email', params);
+export const storeEmail = async params => {
+  return await callMain('fs-create-email', params);
 };
 
 export const createEmailLabel = async params => {

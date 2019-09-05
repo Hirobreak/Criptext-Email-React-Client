@@ -24,7 +24,7 @@ import {
   updateEmails,
   updateUnreadEmailByThreadIds
 } from '../utils/ipc';
-import { getThreads } from '../utils/ApiUtils';
+import { getThreads } from '../utils/DebbyApi';
 import {
   getGroupEvents,
   sendFetchEmailsErrorMessage,
