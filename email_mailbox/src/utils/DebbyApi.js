@@ -1,9 +1,11 @@
 
+import { getDebbyPort } from './electronInterface';
+
 const debbyUrl = 'http://localhost';
-const port = '8086'
 
 const buildUrl = route => {
-    return `${debbyUrl}:${port}${route}`
+  const port = getDebbyPort();
+  return `${debbyUrl}:${port}${route}`
 }
 
 export const getThreads = async ({
@@ -39,10 +41,10 @@ export const createEmail = async ({
   messageId,
   fromAddress,
   replyTo,
-  bounday,
+  boundary,
   accountId
 }) => {
-  const requestUrl = `${debbyUrl}/threadsById`;
+  const requestUrl = buildUrl('/email/create');
   const options = {
     method: 'POST',
     body: JSON.stringify({
@@ -59,8 +61,20 @@ export const createEmail = async ({
       messageId,
       fromAddress,
       replyTo,
-      bounday,
+      boundary,
       accountId
+    })
+  };
+  return await fetch(requestUrl, options);
+};
+
+const getEmailsByThreadId = async (threadId, labelId) => {
+  const requestUrl = buildUrl('/emails');
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      threadId,
+      labelId
     })
   };
   return await fetch(requestUrl, options);

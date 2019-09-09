@@ -48,8 +48,10 @@ int postCreateEmail(struct mg_connection *conn, void *cbdata, string dbPath) {
   }
 
   cJSON *response = cJSON_CreateObject();
-  int emailId = CriptextDB::createEmail(dbPath, key->valuestring, threadId->string, subject->valuestring, preview->valuestring,
-    0, status->valueint, true, true, nullopt, nullopt, messageId->valuestring, fromAddress->valuestring, nullopt, nullopt, accountId->valueint);
+  std::cout << "SOON" << std::endl;
+
+  int emailId = CriptextDB::createEmail(dbPath, std::to_string(key->valueint), threadId->string, subject->valuestring, preview->valuestring,
+    date->valuestring, status->valueint, true, true, nullopt, nullopt, messageId->valuestring, fromAddress->valuestring, nullopt, nullopt, 1);
   cJSON_AddNumberToObject(response, "emailId", emailId);
   return SendJSON(conn, response);
 }

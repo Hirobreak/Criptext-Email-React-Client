@@ -42,8 +42,8 @@ void http_init(char *dbPath, char *port){
   };
 
   ctx = mg_start(&callbacks, 0, civet_options);
-  mg_set_request_handler(ctx, "/threadsById", getEmailThreads, 0);
-  mg_set_request_handler(ctx, "/email/create", getEmailThreads, 0);
+  mg_set_request_handler(ctx, "/threads", getEmailThreads, 0);
+  mg_set_request_handler(ctx, "/email/create", createEmail, 0);
   mg_set_request_handler(ctx, "/ping", pong, 0);
 }
 

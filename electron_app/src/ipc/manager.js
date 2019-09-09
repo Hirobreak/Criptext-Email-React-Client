@@ -124,10 +124,9 @@ ipc.answerRenderer('fs-save-email-body', async params => {
 });
 
 ipc.answerRenderer('fs-create-email', async params => {
+  console.log(params);
   await fileUtils.saveEmailBody({
-    body: params.body,
-    headers: params.headers,
-    metadataKey: parseInt(params.email.key),
+    ...params,
     username: getUsername()
   });
 });

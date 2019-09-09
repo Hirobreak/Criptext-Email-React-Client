@@ -15,7 +15,7 @@ int pre_key_store_load_pre_key(signal_buffer **record, uint32_t pre_key_id, void
     try {
         preKey = CriptextDB::getPreKey(dbPath, pre_key_id);
     } catch (exception& e){
-        return 0;
+        return -1;
     }
 
     size_t len = 0;
@@ -49,7 +49,7 @@ int pre_key_store_contains_pre_key(uint32_t pre_key_id, void *user_data)
     try {
         preKey = CriptextDB::getPreKey(dbPath, pre_key_id);
     } catch (exception& e){
-        return 0;
+        return -1;
     }
     
     return 1;

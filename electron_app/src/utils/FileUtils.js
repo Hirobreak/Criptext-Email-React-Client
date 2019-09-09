@@ -42,10 +42,8 @@ const saveEmailBody = async ({
   replaceKey
 }) => {
   const myPath = await getUserEmailsPath(process.env.NODE_ENV, username);
-
   const emailPath = `${myPath}/${metadataKey}`;
   await createIfNotExist(emailPath);
-
   const bodyPath = `${emailPath}/body.txt`;
   await store(bodyPath, body);
   if (headers) {

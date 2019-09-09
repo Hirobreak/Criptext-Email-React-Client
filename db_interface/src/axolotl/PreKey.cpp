@@ -11,6 +11,11 @@ CriptextDB::PreKey CriptextDB::getPreKey(string dbPath, short int id) {
   SQLite::Statement query(db, "Select * from prekeyrecord where preKeyId == ?");
   query.bind(1, id);
   query.executeStep();
+  
+  if (!query.hasRow()){
+    throw std::invalid_argument("no pre key");
+  }
+  
   char *record = strdup(query.getColumn(1).getText());
   CriptextDB::PreKey preKey = { query.getColumn(0).getInt(), record, (size_t)query.getColumn(2).getInt() };
   

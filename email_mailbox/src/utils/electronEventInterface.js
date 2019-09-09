@@ -661,6 +661,7 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
       headers,
       myFileKeys;
     try {
+      console.log('do decrypt');
       const {
         decryptedBody,
         decryptedHeaders,
@@ -686,6 +687,7 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     } catch (e) {
       body = 'Content unencrypted';
     }
+    console.log(body);
     if (!fileKeys && fileKey) {
       myFileKeys = files.map(() => myFileKeys[0]);
     }
@@ -737,12 +739,19 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
     if (isSpam) {
       labelIds.push(SpamLabelId);
     }
-    await storeEmail({
-      body,
-      headers,
-      metadataKey: parseInt(email.key)
-    });
-    await createEmail(email);
+    console.log('storing email');
+    try {
+      await storeEmail({
+        body,
+        headers,
+        metadataKey: parseInt(email.key)
+      });
+      console.log('create email')
+      await createEmail(email);
+    } catch(ex) {
+      console.error(ex);
+      throw 'gg wp';
+    }
   } else {
     const prevEmailLabels = await getEmailLabelsByEmailId(prevEmail.id);
     const prevLabels = prevEmailLabels.map(item => item.labelId);

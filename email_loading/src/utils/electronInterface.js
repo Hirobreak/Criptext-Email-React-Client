@@ -7,9 +7,9 @@ export const myAccount = remote.require('./src/Account');
 
 export const mySettings = remote.require('./src/Settings');
 export const getAlicePort = remote.require('./src/aliceManager').getPort;
+export const getDebbyPort = remote.require('./src/debbyManager').getPort;
 
 export const LabelType = labels;
-
 export const { loadingType, remoteData } = remote.getGlobal('loadingData');
 
 export const getMailboxGettingEventsStatus = () => {

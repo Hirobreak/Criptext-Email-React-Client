@@ -140,22 +140,3 @@ export const generateKeyBundle = async ({
   };
   return await fetch(requestUrl, options);
 };
-
-export const getThreads = async ({
-  accountId = 1,
-  limit = 22, 
-  date = Date.now().toString(),
-  labelId = 1
-}) => {
-  const requestUrl = `${debbyUrl}/threadsById`;
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({
-      accountId,
-      limit, 
-      date,
-      labelId
-    })
-  };
-  return await fetch(requestUrl, options);
-};

@@ -3,7 +3,7 @@
 #include "cors.h"
 #include <string>
 #include <iostream>
-#include "../../axolotl/Thread.h"
+#include "../../axolotl/Email.h"
 #include "../../../../signal_interface/src/http/handlers/helpers.h"
 
 int postCreateEmail(struct mg_connection *conn, void *cbdata, std::string dbPath);

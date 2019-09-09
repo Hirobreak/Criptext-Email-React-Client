@@ -58,7 +58,6 @@ const decryptEmail = async ({
       decryptedBody: 'Content Unencrypted'
     };
   }
-
   const {
     decryptedBody = null,
     decryptedHeaders = null,

@@ -6,25 +6,40 @@
 using namespace std;
 
 int CriptextDB::createEmail(string dbPath, string key, string threadId, string subject, string preview, string date, int status, bool unread, bool secure, optional<string> unsendDate, optional<string> trashDate, string messageId, string fromAddress, optional<string> replyTo, optional<string> boundary, int accountId){
-  SQLite::Database db(dbPath);
-
-  SQLite::Statement query(db, "insert into email (key, threadId, subject, preview, date, status, unread, secure, unsendDate, trashDate, messageId, fromAddress, replyTo, boundary, accountId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-  query.bind(1, key);
-  query.bind(2, threadId);
-  query.bind(3, subject);
-  query.bind(4, preview);
-  query.bind(5, date);
-  query.bind(6, status);
-  query.bind(7, unread);
-  query.bind(8, secure);
-  query.bind(9, unsendDate ? *unsendDate : "NULL");
-  query.bind(10, trashDate ? *trashDate : "NULL");
-  query.bind(11, messageId);
-  query.bind(12, fromAddress);
-  query.bind(13, replyTo ? *replyTo : "NULL");
-  query.bind(14, boundary ? *boundary : "NULL");
-  query.bind(15, accountId);
-  return query.exec();
+  try {
+    std::cout << "HOLA 1" << std::endl;
+    SQLite::Database db(dbPath, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    std::cout << "HOLA 2" << std::endl;
+    SQLite::Statement query(db, "insert into email (key, threadId, content, subject, preview, date, status, unread, secure, unsendDate, trashDate, messageId, fromAddress, replyTo, boundary, isMuted) values (?, ?, '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
+    std::cout << "HOLA 2.5" << std::endl;
+    query.bind(1, key);
+    std::cout << "HOLA 3" << std::endl;
+    query.bind(2, threadId);
+    query.bind(3, subject);
+    query.bind(4, preview);
+    query.bind(5, date);
+    query.bind(6, status);
+    std::cout << "HOLA 4" << std::endl;
+    query.bind(7, unread);
+    std::cout << "HOLA 5" << std::endl;
+    query.bind(8, secure);
+    std::cout << "HOLA 6" << std::endl;
+    query.bind(9, unsendDate ? *unsendDate : "NULL");
+    std::cout << "HOLA 7" << std::endl;
+    query.bind(10, trashDate ? *trashDate : "NULL");
+    std::cout << "HOLA 8" << std::endl;
+    query.bind(11, messageId);
+    query.bind(12, fromAddress);
+    std::cout << "HOLA 9" << std::endl;
+    query.bind(13, replyTo ? *replyTo : "NULL");
+    std::cout << "HOLA 10" << std::endl;
+    query.bind(14, boundary ? *boundary : "NULL");
+    std::cout << query.getExpandedSQL() << std::endl;
+    return query.exec();
+  }catch (exception& e) {
+    std::cout << e.what() << std::endl;
+    return -1;
+  }
 }
 
 int CriptextDB::deleteEmailByKey(string dbPath, string key, int accountId){
@@ -242,6 +257,20 @@ vector<CriptextDB::Email> CriptextDB::getEmailsByThreadId(string dbPath, string 
   }
 }
 
+
+
+cJSON* CriptextDB::getResponseEmailsByThreadId(string dbPath, vector<int> rejectedLabel, string threadId, int accountId){
+  std::cout << "CALLED GET_THREADS_BY_ID" << std::endl;
+  
+  vector<Email> threadEmails = CriptextDB::getEmailsByThreadId(dbPath, threadId, rejectedLabel, accountId);
+  cJSON *emails = cJSON_CreateArray();
+  for(const Email &email : threadEmails){
+    cJSON_AddItemToArray(emails, email.toJSON());
+  }
+  std::cout << "JSON RESPONSE: " << std::endl << cJSON_Print(emails) << std::endl << "JSON RESPONSE END" << std::endl;
+  return emails;
+}
+
 vector<CriptextDB::Email> CriptextDB::getEmailsByThreadIds(string dbPath, vector<string> threadIds, int labelId, string date, int limit, int accountId){
   vector<CriptextDB::Email> allEmails;
   vector<int> recjectedLabelIds { CriptextDB::SPAM.id, CriptextDB::TRASH.id };
@@ -303,7 +332,6 @@ vector<CriptextDB::Email> CriptextDB::getEmailsByThreadIds(string dbPath, vector
           boundary = nullopt;
         else 
           boundary = query.getColumn(17).getString();
-        int accountId = query.getColumn(18).getInt();
 
         CriptextDB::Email email = { id, key, threadId, subject, content, preview, date, status, unread, secure, unsendDate, trashDate, messageId, fromAddress, replyTo, boundary, accountId };
         
