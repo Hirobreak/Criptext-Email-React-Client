@@ -12,7 +12,6 @@ set(SOURCES
     src/http/handlers/keyBundle.cpp
     src/http/handlers/encrypt.cpp
     src/http/handlers/decrypt.cpp
-    src/helpers/logger.cpp
     src/crypto/crypto.c
     src/crypto/signal.cpp
     src/crypto/store.cpp
@@ -28,16 +27,13 @@ set(SOURCES
     ../../db_interface/src/axolotl/SessionRecord.cpp
     ../../db_interface/src/axolotl/SignedPreKey.cpp)
 
-find_package(OpenSSL REQUIRED)
-
 add_executable(alice ${SOURCES})
 
-target_link_libraries(alice OpenSSL::SSL)
+target_link_libraries(alice openssl)
 target_link_libraries(alice pthread)
 target_link_libraries(alice dl)
-target_link_libraries(alice SQLiteCpp)
 target_link_libraries(alice sqlite3)
 target_link_libraries(alice signal-protocol-c m)
 target_link_libraries(alice civetweb)
 target_link_libraries(alice cjson)
-target_link_libraries(alice spdlog)
+target_link_libraries(alice /usr/local/lib/spdlog/libspdlog.a)

@@ -1,0 +1,26 @@
+cmd_Release/obj.target/trompita/../src/http/http.o := g++ '-DNODE_GYP_MODULE_NAME=trompita' '-DUSING_UV_SHARED=1' '-DUSING_V8_SHARED=1' '-DV8_DEPRECATION_WARNINGS=1' '-D_LARGEFILE_SOURCE' '-D_FILE_OFFSET_BITS=64' -I/home/criptext/.cache/node-gyp/10.13.0/include/node -I/home/criptext/.cache/node-gyp/10.13.0/src -I/home/criptext/.cache/node-gyp/10.13.0/deps/openssl/config -I/home/criptext/.cache/node-gyp/10.13.0/deps/openssl/openssl/include -I/home/criptext/.cache/node-gyp/10.13.0/deps/uv/include -I/home/criptext/.cache/node-gyp/10.13.0/deps/zlib -I/home/criptext/.cache/node-gyp/10.13.0/deps/v8/include -I/usr/local/include  -fPIC -pthread -Wall -Wextra -Wno-unused-parameter -m64 -Wall -std=c++1z -O3 -fno-omit-frame-pointer -fno-rtti -std=gnu++1y -std=c++1z -libstdc++ -MMD -MF ./Release/.deps/Release/obj.target/trompita/../src/http/http.o.d.raw   -c -o Release/obj.target/trompita/../src/http/http.o ../../src/http/http.cpp
+Release/obj.target/trompita/../src/http/http.o: ../../src/http/http.cpp \
+ ../../src/http/http.h ../../src/http/./handlers/readDB.h \
+ ../../src/http/./handlers/cors.h \
+ ../../src/http/./handlers/../../axolotl/Thread.h \
+ ../../src/http/./handlers/../../axolotl/Email.h \
+ ../../src/http/./handlers/../../axolotl/Label.h \
+ ../../src/http/./handlers/../../axolotl/Contact.h \
+ ../../src/http/./handlers/../../axolotl/CRFile.h \
+ ../../src/http/./handlers/../../axolotl/DBUtils.h \
+ ../../src/http/./handlers/../../../../signal_interface/src/http/handlers/helpers.h \
+ ../../src/http/./handlers/writeDB.h \
+ ../../src/http/./handlers/../../axolotl/Email.h
+../../src/http/http.cpp:
+../../src/http/http.h:
+../../src/http/./handlers/readDB.h:
+../../src/http/./handlers/cors.h:
+../../src/http/./handlers/../../axolotl/Thread.h:
+../../src/http/./handlers/../../axolotl/Email.h:
+../../src/http/./handlers/../../axolotl/Label.h:
+../../src/http/./handlers/../../axolotl/Contact.h:
+../../src/http/./handlers/../../axolotl/CRFile.h:
+../../src/http/./handlers/../../axolotl/DBUtils.h:
+../../src/http/./handlers/../../../../signal_interface/src/http/handlers/helpers.h:
+../../src/http/./handlers/writeDB.h:
+../../src/http/./handlers/../../axolotl/Email.h:
