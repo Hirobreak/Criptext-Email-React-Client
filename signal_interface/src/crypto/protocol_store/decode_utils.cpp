@@ -14,4 +14,6 @@ int getKeyPairData(const uint8_t **publicKey, const uint8_t **privateKey, size_t
     const uint8_t *privKeyData = reinterpret_cast<const uint8_t*>(privKeyFromB64);
     *privateKey = privKeyData;
     *privateLen = privDecodeLen;
+
+    return 1;
 }

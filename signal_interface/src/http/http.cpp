@@ -1,5 +1,6 @@
 #include "http.h"
-#include <unistd.h>
+//#include <unistd.h>
+#include <basetsd.h>
 #include <iostream>
 
 struct mg_callbacks callbacks;

@@ -4,10 +4,15 @@ add_definitions(-D__STDC_FORMAT_MACROS)
 add_definitions(-D__STDC_LIMIT_MACROS)
 add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
 
+include_directories("C:/Program Files/OpenSSL/include/openssl")
+include_directories("C:/Program Files (x86)/signal-protocol-c/include")
+include_directories("C:/Program Files (x86)/cJSON/include")
+include_directories("C:/Program Files (x86)/civetweb/include")
+include_directories("C:/Program Files (x86)/spdlog/include")
 include_directories("C:/Program Files (x86)/SQLiteCpp/include")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(SOURCES
     main.cpp
     src/http/http.cpp
@@ -16,7 +21,6 @@ set(SOURCES
     src/http/handlers/keyBundle.cpp
     src/http/handlers/encrypt.cpp
     src/http/handlers/decrypt.cpp
-    src/helpers/logger.cpp
     src/crypto/crypto.c
     src/crypto/signal.cpp
     src/crypto/store.cpp
@@ -37,11 +41,8 @@ find_package(OpenSSL REQUIRED)
 add_executable(alice ${SOURCES})
 
 target_link_libraries(alice OpenSSL::SSL)
-target_link_libraries(alice pthread)
-target_link_libraries(alice dl)
-target_link_libraries(alice SQLiteCpp)
-target_link_libraries(alice sqlite3)
-target_link_libraries(alice signal-protocol-c m)
-target_link_libraries(alice civetweb)
-target_link_libraries(alice cjson)
-target_link_libraries(alice spdlog)
+target_link_libraries(alice "C:/Program Files (x86)/SQLiteCpp/lib/SQLiteCpp.lib")
+target_link_libraries(alice "C:/Program Files (x86)/signal-protocol-c/lib/libsignal-protocol-c.a")
+target_link_libraries(alice "C:/Program Files (x86)/civetweb/lib/civetweb.lib")
+target_link_libraries(alice "C:/Program Files (x86)/cJSON/lib/cjson.lib")
+target_link_libraries(alice "C:/Program Files (x86)/spdlog/lib/spdlog/spdlog.lib")
