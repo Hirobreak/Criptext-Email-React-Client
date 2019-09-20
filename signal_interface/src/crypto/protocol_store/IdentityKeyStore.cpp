@@ -56,12 +56,12 @@ void identity_key_store_destroy(void *user_data)
 void setup_identity_key_store(signal_protocol_store_context *context, signal_context *global_context, CriptextDB::Account *account)
 {
     signal_protocol_identity_key_store store = {
-            .get_identity_key_pair = identity_key_store_get_identity_key_pair,
-            .get_local_registration_id = identity_key_store_get_local_registration_id,
-            .save_identity = identity_key_store_save_identity,
-            .is_trusted_identity = identity_key_store_is_trusted_identity,
-            .destroy_func = identity_key_store_destroy,
-            .user_data = account
+            identity_key_store_get_identity_key_pair,
+            identity_key_store_get_local_registration_id,
+            identity_key_store_save_identity,
+            identity_key_store_is_trusted_identity,
+            identity_key_store_destroy,
+            account
     };
     signal_protocol_store_context_set_identity_key_store(context, &store);
 }

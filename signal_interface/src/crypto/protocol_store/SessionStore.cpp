@@ -115,14 +115,14 @@ void session_store_destroy(void *user_data)
 void setup_session_store(signal_protocol_store_context *context, CriptextDB::Account *account)
 {
     signal_protocol_session_store store = {
-        .load_session_func = session_store_load_session,
-        .get_sub_device_sessions_func = session_store_get_sub_device_sessions,
-        .store_session_func = session_store_store_session,
-        .contains_session_func = session_store_contains_session,
-        .delete_session_func = session_store_delete_session,
-        .delete_all_sessions_func = session_store_delete_all_sessions,
-        .destroy_func = session_store_destroy,
-        .user_data = account
+        session_store_load_session,
+        session_store_get_sub_device_sessions,
+        session_store_store_session,
+        session_store_contains_session,
+        session_store_delete_session,
+        session_store_delete_all_sessions,
+        session_store_destroy,
+        account
     };
 
     signal_protocol_store_context_set_session_store(context, &store);

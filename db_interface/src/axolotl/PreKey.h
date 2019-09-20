@@ -1,7 +1,6 @@
 #ifndef PREKEY_H_
 #define PREKEY_H_
 
-#include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
 #include <sqlite_modern_cpp.h>
 #include <iostream>

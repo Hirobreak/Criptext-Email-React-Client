@@ -41,7 +41,7 @@ int postEncryptKey(struct mg_connection *conn, void *cbdata, char *dbPath) {
 
   size_t keyLength = 16;
   char *encryptedText = 0;
-  uint8_t keyBytes[keyLength];
+  uint8_t keyBytes[16];
 
   cJSON *keyByte = NULL;
   int i = 0;

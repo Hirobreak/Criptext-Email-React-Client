@@ -1,6 +1,6 @@
 #include "src/http/http.h"
 #include <string>
-#include <execinfo.h>
+//#include <execinfo.h>
 
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/rotating_file_sink.h"
@@ -8,7 +8,7 @@
 
 void PrintStackTrace()
 {
-   void *array[256];
+   /*void *array[256];
    size_t size = backtrace(array, 256);
    char ** strings = backtrace_symbols(array, 256);
    if (strings)
@@ -21,11 +21,11 @@ void PrintStackTrace()
       spdlog::critical("--End Stack trace\n");
       free(strings);
    }
-   else spdlog::critical("PrintStackTrace:  Error, could not generate stack trace!\n");
+   else spdlog::critical("PrintStackTrace:  Error, could not generate stack trace!\n");*/
 }
 
 static void CrashSignalHandler(int sig) {
-   signal(SIGSEGV, SIG_DFL);
+   /*signal(SIGSEGV, SIG_DFL);
    signal(SIGBUS,  SIG_DFL);
    signal(SIGILL,  SIG_DFL);
    signal(SIGABRT, SIG_DFL);
@@ -33,7 +33,7 @@ static void CrashSignalHandler(int sig) {
 
    spdlog::critical("CrashSignalHandler called with signal %i... I'm going to print a stack trace, then kill the process.\n", sig);
    PrintStackTrace();
-   spdlog::critical("Crashed process aborting now....!\n");
+   spdlog::critical("Crashed process aborting now....!\n");*/
    spdlog::shutdown();
    http_shutdown();
    abort();
@@ -73,11 +73,11 @@ int main(int argc, char const *argv[]){
    spdlog::info("DB PATH: {0}", dbPath);
    spdlog::info("PORT : {0}", port);
 
-   signal(SIGSEGV, CrashSignalHandler);
+   /*signal(SIGSEGV, CrashSignalHandler);
    signal(SIGBUS,  CrashSignalHandler);
    signal(SIGILL,  CrashSignalHandler);
    signal(SIGABRT, CrashSignalHandler);
-   signal(SIGFPE,  CrashSignalHandler);
+   signal(SIGFPE,  CrashSignalHandler);*/
 
    http_init(dbPath, port);
 

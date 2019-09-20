@@ -229,7 +229,6 @@ export const getGroupEvents = async ({
 }) => {
   if (!useLegacy && needsUpgrade()) return;
   if (isGettingEvents && !shouldGetMoreEvents) return;
-
   isGettingEvents = true;
   if (totalEmailsPending === null) {
     totalEmailsHandled = 0;
@@ -1684,6 +1683,7 @@ ipcRenderer.on(NOTIFICATION_RECEIVED, async (_, { data }) => {
           sendLoadEventsEvent({ showNotification: true });
         }
         isGettingEvents = false;
+        emitter.emit(Event.STOP_LOAD_SYNC, {});
         break;
       }
       case NOTIFICATION_ACTIONS.OPEN_EMAIL: {

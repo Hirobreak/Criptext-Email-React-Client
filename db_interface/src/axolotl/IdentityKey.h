@@ -1,7 +1,6 @@
 #ifndef IDENTITYKEY_H_
 #define IDENTITYKEY_H_
 
-#include <SQLiteCpp/SQLiteCpp.h>
 #include <sqlite_modern_cpp.h>
 #include <string>
 

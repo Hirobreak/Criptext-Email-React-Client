@@ -26,10 +26,10 @@ CriptextDB::SessionRecord CriptextDB::getSessionRecord(string dbPath, string rec
   }
   std::cout << 15.1 << " : " << myRecord << std::endl;
   SessionRecord sessionRecord = { 
-    .recipientId = recipientId, 
-    .deviceId = deviceId, 
-    .record = myRecord, 
-    .len = (size_t)myLen 
+    recipientId, 
+    deviceId, 
+    myRecord, 
+    (size_t)myLen 
   };
 
   std::cout << 16 << " : " << sessionRecord.record << std::endl;
@@ -48,10 +48,10 @@ vector<CriptextDB::SessionRecord> CriptextDB::getSessionRecords(string dbPath, s
      << recipientId
      >> [&] (string recipientId, int deviceId, string record, int recordLength) {
         SessionRecord mySessionRecord = { 
-          .recipientId = recipientId, 
-          .deviceId = deviceId, 
-          .record = const_cast<char *>(record.c_str()), 
-          .len = (size_t)recordLength 
+          recipientId, 
+          deviceId, 
+          const_cast<char *>(record.c_str()), 
+          (size_t)recordLength 
         };
         sessionRecords.push_back(mySessionRecord);
     };
@@ -67,7 +67,7 @@ vector<CriptextDB::SessionRecord> CriptextDB::getSessionRecords(string dbPath, s
 bool CriptextDB::createSessionRecord(string dbPath, string recipientId, long int deviceId, char* record, size_t len) {
   try {
     std::cout << 19 << std::endl;
-    bool hasRow;
+    bool hasRow = false;
               
     sqlite_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;

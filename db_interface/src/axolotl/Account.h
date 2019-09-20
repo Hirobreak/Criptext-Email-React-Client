@@ -1,7 +1,6 @@
 #ifndef ACCOUNT_H_
 #define ACCOUNT_H_
 
-#include <SQLiteCpp/SQLiteCpp.h>
 #include <sqlite_modern_cpp.h>
 #include <string>
 #include <memory>

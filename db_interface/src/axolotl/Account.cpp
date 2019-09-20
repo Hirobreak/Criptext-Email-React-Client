@@ -22,16 +22,17 @@ CriptextDB::Account CriptextDB::getAccount(string dbPath, char *recipientId) {
       regId = registrationId;
   };
   Account account = { 
-    .privKey = myPrivKey, 
-    .pubKey = myPubKey, 
-    .registrationId = regId 
+    myPrivKey, 
+    myPubKey, 
+    regId,
+    const_cast<char *>(dbPath.c_str()) 
   };
   return account;
 }
 
 int CriptextDB::createAccount(string dbPath, char* recipientId, char* name, int deviceId, char* pubKey, char* privKey, int registrationId) {
   try {
-    bool hasRow;
+    bool hasRow = false;
     sqlite_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
     database db(dbPath, config);

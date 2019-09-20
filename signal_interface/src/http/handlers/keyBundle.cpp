@@ -128,7 +128,9 @@ int processKeyBundle(struct mg_connection *conn, void *cbdata, char *dbPath) {
   cJSON *keyBundleObj = NULL;
   cJSON_ArrayForEach(keyBundleObj, keybundleArray) {
 
-    cJSON *recipientId, *domain, *deviceId, *registrationId, *signedPreKeyId, *signedPreKey, *signature, *identityKey, *preKeyObj, *preKeyId, *preKey;
+    cJSON *recipientId, *domain, *deviceId, *registrationId, *signedPreKeyId, *signedPreKey, *signature, *identityKey, *preKeyObj; 
+    cJSON *preKeyId = 0; 
+    cJSON *preKey = 0;
 
     recipientId = cJSON_GetObjectItemCaseSensitive(keyBundleObj, "recipientId");
     deviceId = cJSON_GetObjectItemCaseSensitive(keyBundleObj, "deviceId");
@@ -150,15 +152,15 @@ int processKeyBundle(struct mg_connection *conn, void *cbdata, char *dbPath) {
     }
 
     Keybundle kb = {
-      .recipient_id = recipientId->valuestring,
-      .device_id = deviceId->valueint,
-      .registration_id = registrationId->valueint,
-      .signed_prekey_id = signedPreKeyId->valueint,
-      .signed_prekey_public = signedPreKey->valuestring,
-      .signed_prekey_signature = signature->valuestring,
-      .identity_public_key = identityKey->valuestring,
-      .prekey_id = preKeyId != 0 ? preKeyId->valueint : 0,
-      .prekey_public = preKey != 0 ? preKey->valuestring : 0,
+      recipientId->valuestring,
+      deviceId->valueint,
+      registrationId->valueint,
+      signedPreKeyId->valueint,
+      signedPreKey->valuestring,
+      signature->valuestring,
+      identityKey->valuestring,
+      preKeyId != 0 ? preKeyId->valueint : 0,
+      preKey != 0 ? preKey->valuestring : 0,
     };
     signal.processKeyBundle(&kb);
   }
