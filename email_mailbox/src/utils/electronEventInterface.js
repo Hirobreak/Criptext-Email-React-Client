@@ -698,7 +698,7 @@ const handleNewMessageEvent = async ({ rowid, params }) => {
           })
         : null;
     } catch (e) {
-      if (e.message === 'unavailable') {
+      if (e.message === signal.ALICE_ERROR) {
         return {
           rowId: null
         };
