@@ -135,6 +135,4 @@ ipc.answerRenderer('generate-label-uuid', genUUID);
 
 ipc.answerRenderer('restart-socket', jwt => restartSocket({ jwt }));
 
-ipc.answerRenderer('restart-alice', () => {
-  restartAlice();
-});
+ipc.answerRenderer('restart-alice', restartAlice);
