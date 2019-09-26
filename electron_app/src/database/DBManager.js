@@ -9,16 +9,16 @@ const {
   databasePath,
   hasColumnPreKeyRecordLength,
   Table
-} = require('./models.js');
-const { formContactsRow } = require('./utils/dataTableUtils.js');
-const { noNulls } = require('./utils/ObjectUtils');
-const { HTMLTagsRegex } = require('./utils/RegexUtils');
-const myAccount = require('./Account');
-const systemLabels = require('./systemLabels');
-const mySettings = require('./Settings');
-const { setLanguage } = require('./lang');
-const { genUUID } = require('./utils/stringUtils');
-const { chunkArray } = require('./utils/ArrayUtils');
+} = require('./models');
+const { formContactsRow } = require('../utils/dataTableUtils.js');
+const { noNulls } = require('../utils/ObjectUtils');
+const { HTMLTagsRegex } = require('../utils/RegexUtils');
+const myAccount = require('../Account');
+const systemLabels = require('../systemLabels');
+const mySettings = require('../Settings');
+const { setLanguage } = require('../lang');
+const { genUUID } = require('../utils/stringUtils');
+const { chunkArray } = require('../utils/ArrayUtils');
 
 const EMAIL_CONTACT_TYPE_FROM = 'from';
 
@@ -470,8 +470,8 @@ const clearAndFormatDateEmails = emailObjOrArray => {
       trashDate: email.trashDate
         ? moment(email.trashDate).format(emailDateFormat)
         : null,
-      unsendDate: email.unsendDate
-        ? moment(email.unsendDate).format(emailDateFormat)
+      unsendDate: email.unsentDate
+        ? moment(email.unsentDate).format(emailDateFormat)
         : null
     });
   });
@@ -978,7 +978,7 @@ const updateEmail = ({
   status,
   content,
   preview,
-  unsendDate,
+  unsentDate,
   messageId
 }) => {
   const params = noNulls({
@@ -990,7 +990,7 @@ const updateEmail = ({
     status,
     content,
     preview,
-    unsendDate,
+    unsendDate: unsentDate,
     messageId
   });
   const whereParam = id ? { id } : { key };
