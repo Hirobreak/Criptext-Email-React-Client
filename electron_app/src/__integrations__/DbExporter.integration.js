@@ -18,7 +18,7 @@ const {
   exportDatabaseToFile,
   generateKeyAndIv,
   importDatabaseFromFile
-} = require('./../dbExporter');
+} = require('./../database/dbExporter');
 const fs = require('fs');
 const myAccount = require('../Account');
 const { APP_DOMAIN } = require('../utils/const');
