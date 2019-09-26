@@ -9,15 +9,15 @@ const {
   databasePath,
   hasColumnPreKeyRecordLength,
   Table
-} = require('./models.js');
-const { formContactsRow } = require('./utils/dataTableUtils.js');
-const { noNulls } = require('./utils/ObjectUtils');
-const { HTMLTagsRegex } = require('./utils/RegexUtils');
-const myAccount = require('./Account');
-const systemLabels = require('./systemLabels');
-const mySettings = require('./Settings');
-const { setLanguage } = require('./lang');
-const { genUUID } = require('./utils/stringUtils');
+} = require('./models');
+const { formContactsRow } = require('../utils/dataTableUtils.js');
+const { noNulls } = require('../utils/ObjectUtils');
+const { HTMLTagsRegex } = require('../utils/RegexUtils');
+const myAccount = require('../Account');
+const systemLabels = require('../systemLabels');
+const mySettings = require('../Settings');
+const { setLanguage } = require('../lang');
+const { genUUID } = require('../utils/stringUtils');
 
 const EMAIL_CONTACT_TYPE_FROM = 'from';
 
