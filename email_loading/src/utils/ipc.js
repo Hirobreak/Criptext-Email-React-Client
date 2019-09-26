@@ -74,10 +74,6 @@ export const cleanDatabase = async username => {
   return await callMain('db-clean-database', username);
 };
 
-export const createAccount = async params => {
-  return await callMain('db-create-account', params);
-};
-
 export const createContact = async params => {
   return await callMain('db-create-contact', params);
 };
