@@ -18,6 +18,14 @@ export const openCreateKeysLoadingWindow = params => {
   callMain('open-create-keys-loading', params);
 };
 
+export const openPinWindow = params => {
+  callMain('open-pin', params);
+};
+
+export const sendPin = params => {
+  callMain('send-pin', params);
+};
+
 export const throwError = error => {
   callMain('throwError', error);
 };

@@ -9,6 +9,7 @@ const {
   Label,
   getDB,
   initDatabaseEncrypted,
+  resetKeyDatabase,
   Table
 } = require('./DBEmodel.js');
 
@@ -33,7 +34,8 @@ module.exports = {
   Label,
   Table,
   getDB,
-  initDatabaseEncrypted,
   getAccount,
-  getAccountByParams
+  getAccountByParams,
+  initDatabaseEncrypted,
+  resetKeyDatabase
 };
