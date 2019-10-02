@@ -93,13 +93,25 @@ const setUpPin = async ({ pin, shouldSave, shouldExport, shouldResetPin }) => {
   } else {
     await initDatabaseEncrypted(pin);
   }
+
   if (shouldExport) await encryptDataBase();
 };
 
+const checkPin = async () => {
+  return await keytar.getPassword('CriptextMailDesktopApp', 'unique');
+};
+
+const validatePin = async pinToValidate => {
+  const pin = await keytar.getPassword('CriptextMailDesktopApp', 'unique');
+  return pinToValidate === pin;
+};
+
 module.exports = {
+  checkPin,
   close,
   minimize,
+  setUpPin,
   show,
   toggleMaximize,
-  setUpPin
+  validatePin
 };

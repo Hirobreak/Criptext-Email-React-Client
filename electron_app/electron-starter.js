@@ -92,8 +92,8 @@ async function initApp() {
       } catch (ex) {
         console.log(ex);
       }
+      break;
     }
-    break;
     case 3:{
       try {
         const language = await getUserLanguage();
@@ -105,14 +105,50 @@ async function initApp() {
       } catch (ex) {
         console.log(ex);
       }
+      break;
     }
     case 4:{
-      try {
-      } catch (ex) {
-        console.log(ex);
+      const pin = await pinWindow.checkPin();
+      if(!pin){
+        globalManager.pinData.set({pinType: 'new'});
+        pinWindow.show();
+        return;
       }
+
+      try {
+        await dbManager.initDatabaseEncrypted(pin);
+      } catch (error) {
+        globalManager.pinData.set({pinType: 'new'});
+        pinWindow.show();
+        return;
+      }
+
+      const [existingAccount] = await dbManager.getAccount();
+      if(!existingAccount){
+        const language = await getUserLanguage();
+        initNucleus({language});
+        createAppMenu();
+        loginWindow.show({});
+        return;
+      }
+
+      if (existingAccount.deviceId) {
+        const appSettings = await dbManager.getSettings();
+        const settings = Object.assign(appSettings, { isFromStore });
+        myAccount.initialize(existingAccount);
+        mySettings.initialize(settings);
+        initNucleus({language: mySettings.language});
+        wsClient.start(myAccount);
+        createAppMenu();
+        mailboxWindow.show({ firstOpenApp: true });
+      }else{
+        const language = await getUserLanguage();
+        initNucleus({language});
+        createAppMenu();
+        loginWindow.show({});
+      }
+      break; 
     }
-    break;
     default:
       break;
   }

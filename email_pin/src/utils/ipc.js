@@ -21,3 +21,7 @@ export const openCreateKeysLoadingWindow = params => {
 export const sendPin = params => {
   callMain('send-pin', params);
 };
+
+export const validatePin = async pin => {
+  return await callMain('validate-pin', pin);
+};

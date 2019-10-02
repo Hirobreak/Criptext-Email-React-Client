@@ -23,3 +23,5 @@ ipc.answerRenderer('open-pin', params => {
 ipc.answerRenderer('send-pin', params => {
   pinWindow.setUpPin(params);
 });
+
+ipc.answerRenderer('validate-pin', pin => pinWindow.validatePin(pin));
