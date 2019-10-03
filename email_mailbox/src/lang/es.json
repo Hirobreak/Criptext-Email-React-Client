@@ -616,6 +616,10 @@
     },
     "fullname": "Nombre Completo",
     "general": "general",
+    "import_emails": {
+      "title": "Importar Correos",
+      "section": "IMPORTAR CORREOS"
+    },
     "language": {
       "label": "Lenguaje",
       "description": "Selecciona tu lenguaje preferido"

@@ -616,6 +616,10 @@
     },
     "fullname": "Full Name",
     "general": "general",
+    "import_emails": {
+      "title": "Import Emails",
+      "section": "IMPORT EMAILS"
+    },
     "language": {
       "label": "Language",
       "description": "Select a prefered language"

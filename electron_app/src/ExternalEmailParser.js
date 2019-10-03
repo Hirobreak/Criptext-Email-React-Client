@@ -301,10 +301,17 @@ const handleParseMailboxFile = async filepath => {
     '\x1b[36m%s\x1b[0m',
     `[ Total de emails : ${count} ][ LabelsEnconrados: ${labels} ]`
   );
+  return {
+    count, labels
+  }
+};
+
+const cleanDir = () => {
+  removeTempDirectoryRecursive(TempDirectory);
 };
 
 module.exports = {
   handleParseMailboxFile,
-
-  parseIndividualEmailFiles
+  parseIndividualEmailFiles,
+  cleanDir
 };

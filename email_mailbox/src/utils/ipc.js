@@ -527,3 +527,17 @@ export const restoreBackupUnencrypted = async params => {
 export const reportContentUnencrypted = async error => {
   return await callMain('nucleups-report-content-unencrypted', error);
 };
+
+/* Import
+----------------------------- */
+export const startImport = async importPath => {
+  return await callMain('import-emails', importPath);
+};
+
+export const cancelImport = async () => {
+  return await callMain('cancel-import')
+}
+
+export const storeImportedEmails = async data => {
+  return await callMain('store-import-emails', data)
+}

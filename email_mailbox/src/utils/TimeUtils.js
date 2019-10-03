@@ -47,6 +47,12 @@ export const defineLargeTime = time => {
   );
 };
 
+export const defineImportTime = time => {
+  return moment(getTimeLocal(time)).format(
+    `[Imported] MMM DD, YYYY`
+  );
+};
+
 export const defineLastDeviceActivity = time => {
   return moment(getTimeLocal(time)).fromNow();
 };

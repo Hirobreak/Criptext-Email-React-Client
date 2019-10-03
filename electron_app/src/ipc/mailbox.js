@@ -18,6 +18,7 @@ const {
 const { getUsername, genUUID } = require('./../utils/stringUtils');
 const { showWindows } = require('./../windows/windowUtils');
 const { restartSocket } = require('./../socketClient');
+const { handleParseMailboxFile, parseIndividualEmailFiles, cleanDir } = require('../ExternalEmailParser');
 
 ipc.answerRenderer('close-mailbox', () => {
   mailboxWindow.close();
@@ -125,3 +126,9 @@ ipc.answerRenderer('check-for-updates', showDialog => {
 ipc.answerRenderer('generate-label-uuid', genUUID);
 
 ipc.answerRenderer('restart-socket', jwt => restartSocket({ jwt }));
+
+ipc.answerRenderer('import-emails', handleParseMailboxFile)
+
+ipc.answerRenderer('cancel-import', cleanDir)
+
+ipc.answerRenderer('store-import-emails', parseIndividualEmailFiles)

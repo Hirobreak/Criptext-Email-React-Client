@@ -4,6 +4,7 @@ import PopupHOC from './PopupHOC';
 import SettingAccountWrapper from './SettingAccountWrapper';
 import SettingLabelsWrapper from './SettingLabelsWrapper';
 import SettingDevicesWrapper from './SettingDevicesWrapper';
+import SettingImportEmails from '../containers/SettingImportEmails';
 import SettingGeneral from './SettingGeneral';
 import LogoutPopup from './LogoutPopup';
 import Message from '../containers/Message';
@@ -17,7 +18,8 @@ const Sections = [
   string.settings.account,
   string.settings.general,
   string.sidebar.labels,
-  string.settings.trusted_devices
+  string.settings.trusted_devices,
+  string.settings.import_emails.title
 ];
 
 const Settings = props => (
@@ -72,6 +74,8 @@ const renderSection = props => {
       return <SettingLabelsWrapper {...props} />;
     case Sections[3]:
       return <SettingDevicesWrapper {...props} />;
+    case Sections[4]:
+      return <SettingImportEmails {...props} />;
     default:
       break;
   }
