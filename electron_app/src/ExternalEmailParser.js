@@ -3,7 +3,11 @@ const path = require('path');
 const Mbox = require('node-mbox');
 const MailParser = require('mailparser').MailParser;
 const { getBasepathAndFilenameFromPath } = require('./utils/stringUtils');
+const { saveEmailBody } = require('./utils/FileUtils');
+const { createEmail } = require('./DBManager');
 const { databasePath } = require('./models');
+const { sendEventToAllWindows } = require('./windows/windowUtils');
+
 const ALLOWED_EXTENSIONS = ['.mbox'];
 
 /*  Temp Directory
@@ -98,6 +102,9 @@ const parseFileAndSplitEmailsInFiles = mboxFilepath => {
           fs.mkdirSync(emailfolder);
           fs.writeFileSync(rawEmailPath, msg);
           count++;
+          if (count % 50 === 0) {
+            sendEventToAllWindows('import-file', count);
+          }
         } catch (saveEmailErr) {
           console.log('Failed to save email to file');
         }
@@ -116,7 +123,21 @@ const parseFileAndSplitEmailsInFiles = mboxFilepath => {
 };
 
 // Parse One Email
-const parseIndividualEmailFiles = async () => {
+const parseIndividualEmailFiles = async params => {
+  let myLabelsMap = params.labels.reduce((result, label) => {
+    return {
+      ...result,
+      [label.text]: {
+        mailbox: parseInt(label.mappedMailboxId),
+        label: parseInt(label.mappedLabelId)
+      }
+    }
+  }, {});
+  const mySetup = {
+    ...params,
+    labels: myLabelsMap
+  };
+  let count = 0;
   try {
     if (fs.existsSync(TempDirectory)) {
       for (const folder of fs.readdirSync(TempDirectory)) {
@@ -125,19 +146,26 @@ const parseIndividualEmailFiles = async () => {
           // Just 1 file
           const emailPath = path.join(subFolderPath, email);
           const headersResponse = await getHeadersFromEmailFile(emailPath);
-          if (!headersResponse.error) {
-            const headersFilepath = path.join(subFolderPath, 'headers.txt');
-            fs.writeFileSync(headersFilepath, headersResponse.message); // 2 files now
+          const bodyResponse = await parseEmailFromFile(emailPath, mySetup);
+          if (!bodyResponse.error && validateEmail(bodyResponse.emailData.email)) {
+            await saveEmailBody({
+              body: bodyResponse.message, 
+              headers: headersResponse.message, 
+              username: params.username, 
+              metadataKey: bodyResponse.emailData.email.key
+            })
+            await createEmail(bodyResponse.emailData);
           }
-          const bodyResponse = await parseEmailFromFile(emailPath);
-          if (!bodyResponse.error) {
-            const bodyFilepath = path.join(subFolderPath, 'body.txt');
-            fs.writeFileSync(bodyFilepath, bodyResponse.message); // 3 files now
+          count++;
+          if (count % 50 === 0) {
+            sendEventToAllWindows('import-emails', count);
           }
         }
       }
     }
+    sendEventToAllWindows('import-emails', count);
   } catch (parseErr) {
+    console.log(parseErr);
     return { error: true, message: 'Failed to parse emails files' };
   }
 };
@@ -163,7 +191,7 @@ const getHeadersFromEmailFile = pathtoemail => {
   });
 };
 
-const parseEmailFromFile = pathtoemail => {
+const parseEmailFromFile = (pathtoemail, params) => {
   return new Promise(resolve => {
     const handleError = err => {
       resolve({
@@ -172,24 +200,30 @@ const parseEmailFromFile = pathtoemail => {
       });
     };
     const handleSuccess = (body, emailData) => {
+      //console.log("\x1b[33m", emailData);
       resolve({ error: false, message: body, emailData });
     };
     try {
       const files = [];
-      const labels = [];
-      const recipients = [];
-      let email;
+      let labels = [];
+      const recipients = {
+        from: [],
+        to: [],
+        cc: [],
+        bcc: []
+      };
+      let email = {};
 
       const inputStream = fs.createReadStream(pathtoemail);
       const mailparser = new MailParser({ streamAttachments: true });
       mailparser.on('headers', headers => {
-        console.log(headers);
-        parseEmailHeaders(headers, labels, recipients)
+        const res = parseEmailHeaders(headers, recipients)
+        labels = res.labels;
+        email = { ...email, ...res.email }
       });
       mailparser.on('data', data => {
-        console.log(data);
         const res = parseEmailData(data, files);
-        email = { ...res };
+        email = { ...email, ...res };
       });
       mailparser.on('error', err => handleError(err.toString()));
       mailparser.on('end', () => {
@@ -204,10 +238,26 @@ const parseEmailFromFile = pathtoemail => {
             if (html) {
               const emailData = {};
               emailData['email'] = email;
+              emailData['recipients'] = recipients;
               if (files.length) emailData['files'] = files;
-              if (labels.length) emailData['labels'] = labels;
-              if (recipients.length) emailData['recipients'] = recipients;
+              if (labels.length) {
+                const myLabels = labels.reduce((result, label) => {
+                  const labelMap = params.labels[label];
+                  if (labelMap.mailbox > 0 && labelMap.label > 0) {
+                    return [...result, labelMap.mailbox, labelMap.label];
+                  } else if (labelMap.mailbox > 0) {
+                    return [...result, labelMap.mailbox];
+                  } else if (labelMap.label > 0) {
+                    return [...result, labelMap.label];
+                  } 
+
+                  return result;
+                }, [])
+                emailData['labels'] = [...(new Set(myLabels))];
+              } 
               handleSuccess(html, emailData);
+            } else {
+              return handleError('empty mail ', err, html);
             }
           }
         );
@@ -219,8 +269,12 @@ const parseEmailFromFile = pathtoemail => {
   });
 };
 
-const parseEmailHeaders = (headers, labels, recipients) => {
-  const key = parseInt(Math.random() * 10000000)
+const validateEmail = email => {
+  return (email.threadId && email.key)
+}
+
+const parseEmailHeaders = (headers, recipients) => {
+  const key = parseInt(Math.random() * 1000000000)
   let email = {
     key: key,
     s3Key: key, 
@@ -231,7 +285,9 @@ const parseEmailHeaders = (headers, labels, recipients) => {
     isMuted: false,
     unsentDate: null,
     trashDate: null,
+    subject: '(No Subject)'
   };
+  let labels;
   for (const [clave, valor] of headers.entries()) {
     switch(clave) {
       case 'x-gm-thrid':
@@ -249,77 +305,60 @@ const parseEmailHeaders = (headers, labels, recipients) => {
       case 'from': 
         const from = valor.value[0];
         email['fromAddress'] = (from.name ? `${from.name} <${from.address}>` : from.address);
-        recipients = [...recipients, {name: from.name, email: from.address, type: 'from'}];
+        recipients.from = [...recipients.from, email['fromAddress']];
         break;
       case 'to':
         const tos = valor.value;
         tos.forEach( to => {
-          recipients = [...recipients, {name: to.name, email: to.address, type: 'to'}];
+          const contact = (to.name ? `${to.name} <${to.address}>` : to.address);
+          recipients.to = [...recipients.to, contact];
         })
         break;
       case 'cc':
         const ccs = valor.value;
         ccs.forEach( cc => {
-          recipients = [...recipients, {name: cc.name, email: cc.address, type: 'cc'}];
+          const contact = (cc.name ? `${cc.name} <${cc.address}>` : cc.address);
+          recipients.cc = [...recipients.cc, contact];
         })
         break;
       case 'bcc':
         const bccs = valor.value;
         bccs.forEach( bcc => {
-          recipients = [...recipients, {name: bcc.name, email: bcc.address, type: 'bcc'}];
+          const contact = (bcc.name ? `${bcc.name} <${bcc.address}>` : bcc.address);
+          recipients.bcc = [...recipients.bcc, contact];
         })
         break;
       case 'x-gmail-labels':
-        labels = valor.split(',');
+        labels = [...valor.split(',')];
         break
       case 'reply-to':
         const replyTo = valor.value[0];
         email['replyTo'] = replyTo.address;
         break;
       default:
-        console.log("HERE 3 ", clave, JSON.stringify(valor), '\n');
+        //console.log("HERE 3 ", clave, JSON.stringify(valor), '\n');
     }
   }
-  console.log('\x1b[36m%s\x1b[0m', JSON.stringify(email), JSON.stringify(labels), JSON.stringify(recipients));
+  //console.log('\x1b[36m%s\x1b[0m', JSON.stringify(email), JSON.stringify(labels), JSON.stringify(recipients));
+  return {labels, email};
 };
 
-/*
-
-const parseEmailHeaders = (headers, labels, recipients) => {
-  const key = parseInt(Math.random() * 10000000)
-  const from = headers.get('from');
-  const replyTo = headers.get('replyTo');
-  console.log(from);
-  let email = {
-    key: key,
-    s3Key: key, 
-    subject: headers.get('subject'),
-    content: '',
-    date: headers.get('date'),
-    status: 3,
-    unread: false,
-    secure: false,
-    isMuted: false,
-    unsentDate: null,
-    trashDate: null,
-    messageId: headers.get('message-id'),
-    replyTo: replyTo ? replyTo.email : null,
-    fromAddress: (from.name ? `${from.name} <${from.email}>` : from.email),
-    boundary: headers.get('boundary')
-  };
-  console.log('\x1b[36m%s\x1b[0m', JSON.stringify(email);
-};
-*/
 
 const parseEmailData = (data, attachmentsArray) => {
-  let email;
+  let email = {};
   if (data.type === 'text') {
     Object.keys(data).forEach(key => {
-      if (key === 'html') {
-        email = data[key];
+      if (key !== 'text') {
+        return;
       }
+      email = {
+        preview: data[key].substring(0, 100).replace(/\n/g, " ").replace(/\s\s+/g, ' ')
+      };
       // console.log('\x1b[33m%s\x1b[0m', `${key} = ${data[key]}`);
     });
+    if (!email.preview) {
+      email.preview = "Preview Not Available"
+    }
   } else if (data.type === 'attachment') {
     data.chunks = [];
     data.chunklen = 0;
@@ -327,7 +366,10 @@ const parseEmailData = (data, attachmentsArray) => {
       token: '',
       status: 1,
       mimeType: 'application/octet-stream',
-      name: 'unknown'
+      name: 'unknown',
+      size: 0,
+      date: Date.now(),
+      cid: null
     };
     for (const key of Object.keys(data)) {
       const isObject = typeof data[key] === 'object';
@@ -364,13 +406,13 @@ const parseEmailData = (data, attachmentsArray) => {
       data.buf = Buffer.concat(data.chunks, data.chunklen);
       data.release();
       attachmentsArray.push(fileDataObject);
-      console.log(
+      /*console.log(
         '\x1b[32m%s\x1b[0m',
         `-----------------------------------
         ${JSON.stringify(fileDataObject)}
         -----------------------------------
       `
-      );
+      );*/
     });
   }
   return email;

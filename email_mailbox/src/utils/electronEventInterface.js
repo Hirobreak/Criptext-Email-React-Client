@@ -1527,6 +1527,16 @@ ipcRenderer.on('restore-backup-success', () => {
   emitter.emit(Event.RESTORE_BACKUP_SUCCESS);
 });
 
+/*  Import EMails
+----------------------------- */
+ipcRenderer.on('import-file', (ev, progress) => {
+  emitter.emit(Event.IMPORT_FILE, progress);
+});
+
+ipcRenderer.on('import-emails', (ev, progress) => {
+  emitter.emit(Event.IMPORT_EMAILS, progress);
+});
+
 /*  Events
 ----------------------------- */
 export const addEvent = (eventName, callback) => {
@@ -1547,6 +1557,8 @@ export const Event = {
   DISABLE_WINDOW: 'add-window-overlay',
   DISPLAY_MESSAGE: 'display-message',
   ENABLE_WINDOW: 'remove-window-overlay',
+  IMPORT_FILE: 'import-file',
+  IMPORT_EMAILS: 'import-emails',
   LINK_DEVICE_END: 'link-devices-finished',
   LINK_DEVICE_GETTING_KEYS: 'getting-keys',
   LINK_DEVICE_MAILBOX_UPLOADED: 'mailbox-uploaded-successfully',

@@ -6,6 +6,8 @@ import SettingImportFile from './SettingImportFile';
 import SettingImportingFile from './SettingImportingFile';
 import {startImport, storeImportedEmails, cancelImport} from '../utils/ipc'
 import { defineImportTime } from '../utils/TimeUtils'
+import { myAccount } from '../utils/electronInterface';
+import { addEvent, removeEvent, Event } from '../utils/electronEventInterface';
 
 const STAGE = {
   IMPORT_FILE: 'import-file',
@@ -21,16 +23,27 @@ class SettingImportEmailsWrapper extends Component {
       importAll: true,
       labelToAll: false,
       labels: [],
+      totalEmails: 0,
       labelName: defineImportTime(Date.now()),
       startDate: null,
       endDate: null,
       stage: STAGE.IMPORT_FILE,
-      filePath: null
+      filePath: null,
+      parseProgress: 0,
+      storeProgress: 0
     };
   }
 
   render() {
     return this.renderSection();
+  }
+
+  componentDidMount() {
+    this.initImportListeners();
+  }
+
+  componentWillUnmount() {
+    this.removeEventHandlers()
   }
 
   renderSection = () => {
@@ -40,7 +53,10 @@ class SettingImportEmailsWrapper extends Component {
           onDrop={this.handleDrop}
         />
       case STAGE.PARSING_FILE:
-        return <SettingImportingFile />
+        return <SettingImportingFile
+          message={'Retrieving emails from file, please wait until it\'s finished...'}
+          progress={(this.state.parseProgress/50) %  100}
+        />
       case STAGE.IMPORT_SETUP: 
         return (
           <SettingImportEmails
@@ -64,6 +80,11 @@ class SettingImportEmailsWrapper extends Component {
             onCancel={this.handleCancelImport}
           />
         );
+      case STAGE.IMPORTING:
+        return <SettingImportingFile
+          message={'Storing your emails, please wait until it\'s finished...'}
+          progress={100 * this.state.storeProgress / this.state.totalEmails}
+        />
       default: 
         return null;
     }
@@ -88,7 +109,8 @@ class SettingImportEmailsWrapper extends Component {
       })
       this.setState({
         stage: STAGE.IMPORT_SETUP,
-        labels: myLabels
+        labels: myLabels,
+        totalEmails: response.count
       })
     })
   }
@@ -128,13 +150,17 @@ class SettingImportEmailsWrapper extends Component {
 
   handleStartImport = () => {
     const data = {
-      labels: { ...this.state.labels },
+      username: myAccount.recipientId.includes('@') ? myAccount.recipientId : `${myAccount.recipientId}@jigl.com`,
+      labels: [ ...this.state.labels ],
       startDate: this.state.importAll ? null : this.state.startDate,
       endDate: this.state.importAll ? null : this.state.endDate,
       labelName: this.state.labelToAll ? this.state.labelName : null
     }
 
     storeImportedEmails(data)
+    this.setState({
+      stage: STAGE.IMPORTING
+    })
   }
   
   handleCancelImport = () => {
@@ -173,6 +199,42 @@ class SettingImportEmailsWrapper extends Component {
     const labelName = ev.target.value;
     this.setState({
       labelName
+    })
+  }
+
+  initImportListeners = () => {
+    addEvent(
+      Event.IMPORT_FILE,
+      this.importFileProgress
+    );
+    addEvent(
+      Event.IMPORT_EMAILS,
+      this.importEmailsProgress
+    );
+  };
+
+  removeEventHandlers = () => {
+    removeEvent(
+      Event.IMPORT_FILE,
+      this.importFileProgress
+    );
+    removeEvent(
+      Event.IMPORT_EMAILS,
+      this.importEmailsProgress
+    );
+  };
+
+  importFileProgress = progress => {
+    this.setState({
+      parseProgress: progress
+    })
+  }
+
+  importEmailsProgress = progress => {
+    const myStage = progress === this.totalEmails && this.state.stage === STAGE.IMPORTING ? STAGE.IMPORT_FILE : this.state.stage
+    this.setState({
+      storeProgress: progress,
+      stage: myStage
     })
   }
 }
