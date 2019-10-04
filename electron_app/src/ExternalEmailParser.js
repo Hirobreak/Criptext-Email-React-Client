@@ -133,7 +133,6 @@ const parseIndividualEmailFiles = async () => {
           if (!bodyResponse.error) {
             const bodyFilepath = path.join(subFolderPath, 'body.txt');
             fs.writeFileSync(bodyFilepath, bodyResponse.message); // 3 files now
-            console.log(bodyResponse.emailData);
           }
         }
       }
@@ -183,10 +182,12 @@ const parseEmailFromFile = pathtoemail => {
 
       const inputStream = fs.createReadStream(pathtoemail);
       const mailparser = new MailParser({ streamAttachments: true });
-      mailparser.on('headers', headers =>
+      mailparser.on('headers', headers => {
+        console.log(headers);
         parseEmailHeaders(headers, labels, recipients)
-      );
+      });
       mailparser.on('data', data => {
+        console.log(data);
         const res = parseEmailData(data, files);
         email = { ...res };
       });
@@ -218,11 +219,97 @@ const parseEmailFromFile = pathtoemail => {
   });
 };
 
-const parseEmailHeaders = headers => {
+const parseEmailHeaders = (headers, labels, recipients) => {
+  const key = parseInt(Math.random() * 10000000)
+  let email = {
+    key: key,
+    s3Key: key, 
+    content: '',
+    status: 3,
+    unread: false,
+    secure: false,
+    isMuted: false,
+    unsentDate: null,
+    trashDate: null,
+  };
   for (const [clave, valor] of headers.entries()) {
-    console.log('\x1b[36m%s\x1b[0m', `${clave} = ${valor}`);
+    switch(clave) {
+      case 'x-gm-thrid':
+        email['threadId'] = valor;
+        break;
+      case 'subject':
+        email['subject'] = valor;
+        break;
+      case 'message-id':
+        email['messageId'] = valor;
+        break;
+      case 'date': 
+        email['date'] = valor;
+        break;
+      case 'from': 
+        const from = valor.value[0];
+        email['fromAddress'] = (from.name ? `${from.name} <${from.address}>` : from.address);
+        recipients = [...recipients, {name: from.name, email: from.address, type: 'from'}];
+        break;
+      case 'to':
+        const tos = valor.value;
+        tos.forEach( to => {
+          recipients = [...recipients, {name: to.name, email: to.address, type: 'to'}];
+        })
+        break;
+      case 'cc':
+        const ccs = valor.value;
+        ccs.forEach( cc => {
+          recipients = [...recipients, {name: cc.name, email: cc.address, type: 'cc'}];
+        })
+        break;
+      case 'bcc':
+        const bccs = valor.value;
+        bccs.forEach( bcc => {
+          recipients = [...recipients, {name: bcc.name, email: bcc.address, type: 'bcc'}];
+        })
+        break;
+      case 'x-gmail-labels':
+        labels = valor.split(',');
+        break
+      case 'reply-to':
+        const replyTo = valor.value[0];
+        email['replyTo'] = replyTo.address;
+        break;
+      default:
+        console.log("HERE 3 ", clave, JSON.stringify(valor), '\n');
+    }
   }
+  console.log('\x1b[36m%s\x1b[0m', JSON.stringify(email), JSON.stringify(labels), JSON.stringify(recipients));
 };
+
+/*
+
+const parseEmailHeaders = (headers, labels, recipients) => {
+  const key = parseInt(Math.random() * 10000000)
+  const from = headers.get('from');
+  const replyTo = headers.get('replyTo');
+  console.log(from);
+  let email = {
+    key: key,
+    s3Key: key, 
+    subject: headers.get('subject'),
+    content: '',
+    date: headers.get('date'),
+    status: 3,
+    unread: false,
+    secure: false,
+    isMuted: false,
+    unsentDate: null,
+    trashDate: null,
+    messageId: headers.get('message-id'),
+    replyTo: replyTo ? replyTo.email : null,
+    fromAddress: (from.name ? `${from.name} <${from.email}>` : from.email),
+    boundary: headers.get('boundary')
+  };
+  console.log('\x1b[36m%s\x1b[0m', JSON.stringify(email);
+};
+*/
 
 const parseEmailData = (data, attachmentsArray) => {
   let email;
