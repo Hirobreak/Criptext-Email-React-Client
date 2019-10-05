@@ -1286,6 +1286,7 @@ export const sendLoadEventsEvent = params => {
 };
 
 ipcRenderer.on('socket-message', async (ev, message) => {
+  if (needsUpgrade()) return;
   const eventId = message.cmd;
   if (eventId === 400) {
     sendLoadEventsEvent({ showNotification: true });
@@ -1714,6 +1715,7 @@ export const sendManualSyncSuccessMessage = () => {
 /*  Firebase
 ----------------------------- */
 ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, async (_, token) => {
+  if (needsUpgrade()) return;
   await updatePushToken(token);
 });
 
