@@ -21,10 +21,7 @@ class EnterRecoveryKey extends Component {
             <h2>{page_enter_recovery_key.enter_key}</h2>
             <div className="enter-recovery-key-block">
               <div className="icon"></div>
-              <input
-                defaultValue={this.props.pin}
-                type="text"
-              />
+              <input defaultValue={this.props.pin} type="text" />
             </div>
             <span>
               {page_enter_recovery_key.or}&nbsp;
