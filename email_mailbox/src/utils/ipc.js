@@ -60,6 +60,12 @@ export const restartAlice = async () => {
   return await callMain('restart-alice');
 };
 
+export const restartApp = () => callMain('restart-app');
+
+export const restartSocket = async jwt => {
+  await callMain('restart-socket', jwt);
+};
+
 export const sendEndSyncDevicesEvent = async () => {
   await callMain('close-create-keys-loading');
   return await callMain('end-sync-mailbox-event');
