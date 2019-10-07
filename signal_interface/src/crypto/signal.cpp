@@ -15,18 +15,18 @@ void unlock_fn(void *user_data){
 CriptextSignal::CriptextSignal(char *recipientId, char* dbPath){
     signal_context_create(&global_context, 0);
     signal_crypto_provider provider = {
-        .random_func = random_generator,
-        .hmac_sha256_init_func = hmac_sha256_init,
-        .hmac_sha256_update_func = hmac_sha256_update,
-        .hmac_sha256_final_func = hmac_sha256_final,
-        .hmac_sha256_cleanup_func = hmac_sha256_cleanup,
-        .sha512_digest_init_func = sha512_digest_init,
-        .sha512_digest_update_func = sha512_digest_update,
-        .sha512_digest_final_func = sha512_digest_final,
-        .sha512_digest_cleanup_func = sha512_digest_cleanup,
-        .encrypt_func = encrypth,
-        .decrypt_func = decrypt,
-        .user_data = 0
+        random_generator,
+        hmac_sha256_init,
+        hmac_sha256_update,
+        hmac_sha256_final,
+        hmac_sha256_cleanup,
+        sha512_digest_init,
+        sha512_digest_update,
+        sha512_digest_final,
+        sha512_digest_cleanup,
+        encrypth,
+        decrypt,
+        0
     };
 
     signal_context_set_crypto_provider(global_context, &provider);
@@ -46,9 +46,9 @@ int CriptextSignal::decryptText(uint8_t **plaintext_data, size_t *plaintext_len,
     int result;
 
     signal_protocol_address address = {
-        .name = recipientId.c_str(),
-        .name_len = recipientId.length(),
-        .device_id = deviceId
+        recipientId.c_str(),
+        recipientId.length(),
+        deviceId
     };
 
     session_cipher *session_cipher = 0;
@@ -242,9 +242,9 @@ void CriptextSignal::processKeyBundle(struct Keybundle* kb){
     
     //create name
     signal_protocol_address address = {
-        .name = kb->recipient_id,
-        .name_len = strlen(kb->recipient_id),
-        .device_id = kb->device_id
+        kb->recipient_id,
+        strlen(kb->recipient_id),
+        kb->device_id
     };
 
     session_builder* session_builder = 0;
@@ -257,9 +257,9 @@ int CriptextSignal::encryptText(char **encryptedText, uint8_t *plainText, size_t
     int result;
 
     signal_protocol_address address = {
-        .name = recipientId,
-        .name_len = strlen(recipientId),
-        .device_id = deviceId
+        recipientId,
+        strlen(recipientId),
+        deviceId
     };
 
     try {

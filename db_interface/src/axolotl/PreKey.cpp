@@ -21,9 +21,9 @@ CriptextDB::PreKey CriptextDB::getPreKey(string dbPath, short int id) {
     throw std::invalid_argument("row not available");
   }
   PreKey preKey = { 
-    .id = id, 
-    .record = myPreKey, 
-    .len = myLen
+    id, 
+    myPreKey, 
+    myLen
   };
   return preKey;
 }

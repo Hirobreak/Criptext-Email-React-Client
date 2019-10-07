@@ -1,5 +1,4 @@
 #include "IdentityKey.h"
-#include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
 #include <iostream>
 
@@ -17,9 +16,9 @@ CriptextDB::IdentityKey CriptextDB::getIdentityKey(string dbPath, string recipie
      << deviceId
      >> [&] (string recipientId, int deviceId, string identity) {
         identityKey = { 
-          .recipientId = recipientId, 
-          .deviceId = deviceId, 
-          .identityKey = identity
+          recipientId, 
+          deviceId, 
+          identity
         };
     };
 

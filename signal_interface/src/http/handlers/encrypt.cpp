@@ -40,17 +40,18 @@ int postEncryptKey(struct mg_connection *conn, void *cbdata, char *dbPath) {
   CriptextSignal signal(recipientId->valuestring, dbPath);
 
   size_t keyLength = 16;
-  char *encryptedText = 0;
-  uint8_t keyBytes[keyLength];
+  char* encryptedText = 0;
+  uint8_t* keyBytes = new uint8_t[keyLength];
 
-  cJSON *keyByte = NULL;
+  cJSON* keyByte = NULL;
   int i = 0;
+
   cJSON_ArrayForEach(keyByte, key) {
-    keyBytes[i] = keyByte->valueint; 
-    i++;
+	  *(keyBytes + i) = keyByte->valueint;
+	  i++;
   }
 
-  uint8_t *myKey = reinterpret_cast<uint8_t *>(malloc(keyLength));
+  uint8_t* myKey = reinterpret_cast<uint8_t*>(malloc(keyLength));
   memmove(myKey, keyBytes, keyLength);
 
   int result = signal.encryptText(&encryptedText, myKey, keyLength, recipientId->valuestring, deviceId->valueint);

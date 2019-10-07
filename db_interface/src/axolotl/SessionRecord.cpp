@@ -21,10 +21,10 @@ CriptextDB::SessionRecord CriptextDB::getSessionRecord(string dbPath, string rec
     throw std::invalid_argument("row not available");
   }
   SessionRecord sessionRecord = { 
-    .recipientId = recipientId, 
-    .deviceId = deviceId, 
-    .record = myRecord, 
-    .len = (size_t)myLen 
+    recipientId, 
+    deviceId, 
+    myRecord, 
+    (size_t)myLen 
   };
 
   return sessionRecord;
@@ -42,10 +42,10 @@ vector<CriptextDB::SessionRecord> CriptextDB::getSessionRecords(string dbPath, s
      << recipientId
      >> [&] (string recipientId, int deviceId, string record, int recordLength) {
         SessionRecord mySessionRecord = { 
-          .recipientId = recipientId, 
-          .deviceId = deviceId, 
-          .record = const_cast<char *>(record.c_str()), 
-          .len = (size_t)recordLength 
+          recipientId, 
+          deviceId, 
+          const_cast<char *>(record.c_str()), 
+          (size_t)recordLength 
         };
         sessionRecords.push_back(mySessionRecord);
     };

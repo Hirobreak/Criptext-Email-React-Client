@@ -20,9 +20,10 @@ CriptextDB::Account CriptextDB::getAccount(string dbPath, char *recipientId) {
       regId = registrationId;
   };
   Account account = { 
-    .privKey = myPrivKey, 
-    .pubKey = myPubKey, 
-    .registrationId = regId 
+    myPrivKey,
+    myPubKey,
+    regId,
+    const_cast<char *>(dbPath.c_str())
   };
   return account;
 }

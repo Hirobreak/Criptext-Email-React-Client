@@ -1,5 +1,4 @@
 #include "SignedPreKey.h"
-#include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -26,9 +25,9 @@ CriptextDB::SignedPreKey CriptextDB::getSignedPreKey(string dbPath, short int id
     throw std::invalid_argument("row not available");
   }
   SignedPreKey signedPreKey = { 
-    .id = id, 
-    .record = mySignedPreKey, 
-    .len = myLen 
+    id, 
+    mySignedPreKey, 
+    myLen
   };
   return signedPreKey;
 }

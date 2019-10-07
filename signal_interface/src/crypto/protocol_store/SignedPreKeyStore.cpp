@@ -69,12 +69,12 @@ void signed_pre_key_store_destroy(void *user_data)
 void setup_signed_pre_key_store(signal_protocol_store_context *context, CriptextDB::Account *account)
 {
     signal_protocol_signed_pre_key_store store = {
-            .load_signed_pre_key = signed_pre_key_store_load_signed_pre_key,
-            .store_signed_pre_key = signed_pre_key_store_store_signed_pre_key,
-            .contains_signed_pre_key = signed_pre_key_store_contains_signed_pre_key,
-            .remove_signed_pre_key = signed_pre_key_store_remove_signed_pre_key,
-            .destroy_func = signed_pre_key_store_destroy,
-            .user_data = account
+        signed_pre_key_store_load_signed_pre_key,
+        signed_pre_key_store_store_signed_pre_key,
+        signed_pre_key_store_contains_signed_pre_key,
+        signed_pre_key_store_remove_signed_pre_key,
+        signed_pre_key_store_destroy,
+        account
     };
 
     signal_protocol_store_context_set_signed_pre_key_store(context, &store);

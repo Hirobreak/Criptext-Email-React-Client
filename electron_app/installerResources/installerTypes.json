@@ -1,7 +1,6 @@
 {
   "windows": {
-    "installer": "WINDOWS-INSTALLER",
-    "store": "WINDOWS-STORE"
+    "installer": "WINDOWS-INSTALLER"
   },
   "linux": {
     "installer": "LINUX-INSTALLER"

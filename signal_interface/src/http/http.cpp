@@ -1,6 +1,12 @@
 #include "http.h"
-#include <unistd.h>
 #include <iostream>
+
+#ifdef WIN32
+#include <basetsd.h>
+#else
+#include <unistd.h>
+
+#endif
 
 struct mg_callbacks callbacks;
 struct mg_context *ctx;

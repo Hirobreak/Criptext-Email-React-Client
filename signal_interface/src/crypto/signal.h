@@ -50,18 +50,18 @@ class CriptextSignal {
     static int createAccountCredentials(char **publicKey, char **privKey, int *regId) {
         signal_context* global_context = 0;
         signal_crypto_provider provider = {
-            .random_func = random_generator,
-            .hmac_sha256_init_func = hmac_sha256_init,
-            .hmac_sha256_update_func = hmac_sha256_update,
-            .hmac_sha256_final_func = hmac_sha256_final,
-            .hmac_sha256_cleanup_func = hmac_sha256_cleanup,
-            .sha512_digest_init_func = sha512_digest_init,
-            .sha512_digest_update_func = sha512_digest_update,
-            .sha512_digest_final_func = sha512_digest_final,
-            .sha512_digest_cleanup_func = sha512_digest_cleanup,
-            .encrypt_func = 0,
-            .decrypt_func = 0,
-            .user_data = 0
+            random_generator,
+            hmac_sha256_init,
+            hmac_sha256_update,
+            hmac_sha256_final,
+            hmac_sha256_cleanup,
+            sha512_digest_init,
+            sha512_digest_update,
+            sha512_digest_final,
+            sha512_digest_cleanup,
+            0,
+            0,
+            0
         };
         signal_context_create(&global_context, 0);
         signal_context_set_crypto_provider(global_context, &provider);
