@@ -938,7 +938,7 @@ const handlePeerEmailRead = async ({ rowid, params }) => {
   const emails = await getEmailsByArrayParam({ keys: metadataKeys });
   if (emails.length) {
     const emailKeys = emails.map(email => email.key);
-    const res = await updateEmails({
+    const [res] = await updateEmails({
       keys: emailKeys,
       unread: !!unread
     });
