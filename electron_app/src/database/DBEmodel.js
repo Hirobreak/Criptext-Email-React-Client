@@ -7,6 +7,7 @@ const path = require('path');
 const rimraf = require('rimraf');
 const Model = Sequelize.Model;
 const Op = Sequelize.Op;
+const { parseDate } = require('./../utils/TimeUtils');
 
 let sequelize;
 
@@ -83,7 +84,8 @@ const setConfiguration = key => {
   sequelize = new Sequelize(null, null, key, {
     dialect: 'sqlite',
     dialectModulePath: '@journeyapps/sqlcipher',
-    storage: myDBEncryptPath()
+    storage: myDBEncryptPath(),
+    logging: false
   });
 };
 
@@ -136,18 +138,40 @@ const initDatabaseEncrypted = async key => {
   Email.init(
     {
       id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      key: Sequelize.STRING,
+      key: { type: Sequelize.STRING, unique: true },
       threadId: Sequelize.STRING,
       s3Key: Sequelize.STRING,
       subject: Sequelize.STRING,
       content: Sequelize.STRING,
       preview: Sequelize.STRING,
-      date: Sequelize.DATE,
+      date: {
+        type: Sequelize.DATE,
+        get() {
+          const date = this.getDataValue('date');
+          return parseDate(date);
+        }
+      },
       status: Sequelize.INTEGER,
       unread: Sequelize.BOOLEAN,
       secure: Sequelize.BOOLEAN,
-      unsendDate: Sequelize.DATE,
-      trashDate: Sequelize.DATE,
+      unsendDate: {
+        type: Sequelize.DATE,
+        get() {
+          const date = this.getDataValue('unsendDate');
+          return parseDate(date);
+        }
+      },
+      trashDate: {
+        type: Sequelize.DATE,
+        get() {
+          const date = this.getDataValue('trashDate');
+          if (date) return parseDate(date);
+          return null;
+        },
+        set(val) {
+          if (val) this.setDataValue('trashDate', parseDate(val));
+        }
+      },
       messageId: Sequelize.STRING,
       replyTo: Sequelize.STRING,
       fromAddress: { type: Sequelize.STRING, defaultValue: '' },
