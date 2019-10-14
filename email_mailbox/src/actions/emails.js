@@ -43,13 +43,6 @@ export const addEmails = emails => {
   };
 };
 
-export const muteNotifications = emailId => {
-  return {
-    type: Email.MUTE,
-    emailId
-  };
-};
-
 export const markEmailUnreadSuccess = (emailId, unread) => {
   return {
     type: Email.MARK_UNREAD,
@@ -99,17 +92,6 @@ export const loadEmails = ({ threadId, emailIds }) => {
       dispatch(addDataApp({ contact, email, file }));
     } catch (e) {
       // TO DO
-    }
-  };
-};
-
-export const muteEmail = (emailId, valueToSet) => {
-  return async dispatch => {
-    try {
-      await updateEmail({ id: emailId, isMuted: valueToSet });
-      dispatch(muteNotifications(emailId));
-    } catch (e) {
-      // To do
     }
   };
 };

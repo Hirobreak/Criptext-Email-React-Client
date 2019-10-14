@@ -494,7 +494,7 @@ export const updateUnreadThreads = (threadsParams, unread, labelId) => {
       };
       const { status } = await postPeerEvent(eventParams);
       if (status === 200) {
-        const response = await updateUnreadEmailByThreadIds({
+        const [response] = await updateUnreadEmailByThreadIds({
           threadIds,
           unread
         });

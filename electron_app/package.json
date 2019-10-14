@@ -48,10 +48,12 @@
       "provisioningProfile": "build/Criptext_Mail_Distribution.provisionprofile",
       "darkModeSupport": true,
       "type": "distribution",
-      "publish": [{
-        "provider": "generic",
-        "url": "https://cdn.criptext.com/Criptext-Email-Desktop/mac"
-      }],
+      "publish": [
+        {
+          "provider": "generic",
+          "url": "https://cdn.criptext.com/Criptext-Email-Desktop/mac"
+        }
+      ],
       "extraResources": [
         {
           "from": "../signal_interface/build/Release/",
@@ -77,7 +79,8 @@
       "background": "build/background.png",
       "icon": "build/volume.icns",
       "title": "${productName}",
-      "contents": [{
+      "contents": [
+        {
           "x": 145,
           "y": 195
         },
@@ -101,10 +104,12 @@
         "Comment": "Encrypted email built on privacy",
         "Categories": "Network"
       },
-      "publish": [{
-        "provider": "generic",
-        "url": "https://cdn.criptext.com/Criptext-Email-Desktop/linux"
-      }],
+      "publish": [
+        {
+          "provider": "generic",
+          "url": "https://cdn.criptext.com/Criptext-Email-Desktop/linux"
+        }
+      ],
       "extraResources": [
         {
           "from": "../signal_interface/build/Image/",
@@ -121,10 +126,12 @@
         "appx"
       ],
       "icon": "build/icon.ico",
-      "publish": [{
-        "provider": "generic",
-        "url": "https://cdn.criptext.com/Criptext-Email-Desktop/windows"
-      }],
+      "publish": [
+        {
+          "provider": "generic",
+          "url": "https://cdn.criptext.com/Criptext-Email-Desktop/windows"
+        }
+      ],
       "certificateSubjectName": "Criptext Inc",
       "extraResources": [
         {
@@ -177,7 +184,7 @@
     "keytar": "^5.0.0",
     "knex": "0.17.6",
     "line-by-line": "^0.1.6",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "os-locale": "^3.0.1",
     "portscanner": "^2.2.0",
     "ps-node": "^0.1.6",
