@@ -147,7 +147,7 @@ export const updateBadgeLabels = labelIds => {
             const badgeDraft = await getEmailsCounterByLabelId(labelId);
             return {
               id: String(labelId),
-              badge: badgeDraft[0].count
+              badge: badgeDraft
             };
           }
         })

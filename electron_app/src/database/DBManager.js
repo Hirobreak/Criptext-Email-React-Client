@@ -408,7 +408,7 @@ const deleteEmailByKeys = keys => {
     .del();
 };
 
-const deleteEmailLabelAndContactByEmailId = (id, optionalEmailToSave) => {
+const deleteEmailAndRelations = (id, optionalEmailToSave) => {
   return db.transaction(async trx => {
     await deleteEmailsByIds([id], trx);
     await deleteEmailContactByEmailId(id, trx);
@@ -1393,7 +1393,7 @@ module.exports = {
   deleteEmailsByIds,
   deleteEmailByKeys,
   deleteEmailsByThreadIdAndLabelId,
-  deleteEmailLabelAndContactByEmailId,
+  deleteEmailAndRelations,
   deleteEmailContactByEmailId,
   deleteEmailLabel,
   deleteEmailLabelsByEmailId,
