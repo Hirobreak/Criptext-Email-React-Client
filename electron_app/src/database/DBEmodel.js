@@ -240,7 +240,17 @@ const initDatabaseEncrypted = async key => {
       name: Sequelize.STRING,
       size: Sequelize.INTEGER,
       status: Sequelize.INTEGER,
-      date: Sequelize.DATE,
+      date: {
+        type: Sequelize.DATE,
+        get() {
+          const date = this.getDataValue('date');
+          if (date) return parseDate(date);
+          return null;
+        },
+        set(val) {
+          if (val) this.setDataValue('date', parseDate(val));
+        }
+      },
       mimeType: Sequelize.STRING,
       key: Sequelize.STRING,
       iv: Sequelize.STRING,

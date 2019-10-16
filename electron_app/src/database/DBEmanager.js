@@ -757,7 +757,7 @@ const getAllLabels = async () => {
 };
 
 const getLabelById = async id => {
-  return await Label().findAll({where:{id}});
+  return await Label().findAll({ where: { id } });
   // return db
   //   .select('*')
   //   .from(Table.LABEL)
@@ -767,7 +767,9 @@ const getLabelById = async id => {
 const getLabelsByText = async textArray => {
   let labels = [];
   for (const text of textArray) {
-    const labelsMatched = await Label().findAll({where: { text: { [Op.like]: text } }})
+    const labelsMatched = await Label().findAll({
+      where: { text: { [Op.like]: text } }
+    });
     // const labelsMatched = await db
     //   .select('*')
     //   .from(Table.LABEL)
@@ -782,7 +784,7 @@ const updateLabel = async ({ id, color, text, visible }) => {
   if (color) params.color = color;
   if (text) params.text = text;
   if (typeof visible === 'boolean') params.visible = visible;
-  return await Label().update(params, { where: {id} });
+  return await Label().update(params, { where: { id } });
   // return db
   //   .table(Table.LABEL)
   //   .where({
@@ -869,6 +871,14 @@ const createFile = async (files, trx) => {
   return await File().bulkCreate(files, { transaction: trx });
   // const knex = trx || db;
   // return knex.insert(files).into(Table.FILE);
+};
+
+const getFilesByTokens = async tokens => {
+  return await File().findAll({ where: { token: tokens } });
+  // return db
+  //   .select('*')
+  //   .from(Table.FILE)
+  //   .whereIn('token', tokens);
 };
 
 /* Functions
@@ -983,6 +993,7 @@ module.exports = {
   createContactsIfOrNotStore,
   createEmail,
   createEmailLabel,
+  createFile,
   createLabel,
   deleteDatabase,
   deleteEmailsByIds,
@@ -1007,6 +1018,7 @@ module.exports = {
   getEmailsByThreadIdAndLabelId,
   getEmailsGroupByThreadByParams,
   getEmailsGroupByThreadByParamsToSearch,
+  getFilesByTokens,
   getLabelById,
   getLabelsByText,
   getTrashExpiredEmails,
