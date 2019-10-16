@@ -15,7 +15,8 @@ import { SocketCommand } from '../utils/const';
 export const addLabel = label => {
   return async dispatch => {
     try {
-      const [labelId] = await createLabel(label);
+      const labelCreated = await createLabel(label);
+      const labelId = labelCreated.id;
       if (labelId) {
         const { text, color, visible, uuid } = label;
         const labels = {
