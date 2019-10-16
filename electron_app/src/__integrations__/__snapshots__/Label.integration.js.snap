@@ -8,7 +8,7 @@ Array [
     "text": "Inbox",
     "type": "custom",
     "uuid": "00000000-0000-0000-0000-000000000001",
-    "visible": 1,
+    "visible": true,
   },
   Object {
     "color": "222222",
@@ -16,7 +16,7 @@ Array [
     "text": "Sent",
     "type": "custom",
     "uuid": "00000000-0000-0000-0000-000000000002",
-    "visible": 1,
+    "visible": true,
   },
 ]
 `;
