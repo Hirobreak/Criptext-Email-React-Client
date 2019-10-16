@@ -475,6 +475,108 @@ const closeDatabaseConnection = async dbConnection => {
 
 /* Encrypted Database
 ----------------------------- */
+const exportContactTable = async () => {
+  let contactRows = [];
+  let shouldEnd = false;
+  let offset = 0;
+  while (!shouldEnd) {
+    const result = await Contact().findAll({attributes: { exclude: ['score'] }, offset, limit: SELECT_ALL_BATCH});
+    contactRows = [...contactRows, ...result];
+    if (result.length < SELECT_ALL_BATCH) {
+      shouldEnd = true;
+    } else {
+      offset += SELECT_ALL_BATCH;
+    }
+  }
+  return formatTableRowsToString(Table.CONTACT, contactRows);
+}
+
+const exportLabelTable = async () => {
+  let labelRows = [];
+  let shouldEnd = false;
+  let offset = 0;
+  while (!shouldEnd) {
+    const result = await Label().findAll({ where: {type: 'custom'}, offset, limit: SELECT_ALL_BATCH});
+    labelRows = [...labelRows, ...result];
+    if (result.length < SELECT_ALL_BATCH) {
+      shouldEnd = true;
+    } else {
+      offset += SELECT_ALL_BATCH;
+    }
+  }
+  return formatTableRowsToString(Table.LABEL, labelRows);
+};
+
+const exportEmailTable = async db => {
+  const username = myAccount.recipientId.includes('@')
+    ? myAccount.recipientId
+    : `${myAccount.recipientId}@${APP_DOMAIN}`;
+  let emailRows = [];
+  let shouldEnd = false;
+  let offset = 0;
+  while (!shouldEnd) {
+    const result = await Email().findAll({ where: {type: 'custom'}, offset, limit: SELECT_ALL_BATCH});
+    // const rows = await db.raw(
+    //   `SELECT * FROM ${
+    //     Table.EMAIL
+    //   } WHERE ${whereRawEmailQuery} LIMIT ${SELECT_ALL_BATCH} OFFSET ${offset}`
+    // );
+    // const result = await Promise.all(
+    //   rows.map(async row => {
+    //     if (!row.unsendDate) {
+    //       delete row.unsendDate;
+    //     } else {
+    //       row['unsentDate'] = parseDate(row.unsendDate);
+    //       delete row.unsendDate;
+    //     }
+
+    //     if (!row.trashDate) {
+    //       delete row.trashDate;
+    //     } else {
+    //       row['trashDate'] = parseDate(row.unsendDate);
+    //     }
+
+    //     if (row.replyTo === null) {
+    //       row.replyTo = '';
+    //     }
+
+    //     if (!row.boundary) {
+    //       delete row.boundary;
+    //     }
+
+    //     const body =
+    //       (await getEmailBody({ username, metadataKey: row.key })) ||
+    //       row.content;
+    //     const headers = await getEmailHeaders({
+    //       username,
+    //       metadataKey: row.key
+    //     });
+
+    //     const key = parseInt(row.key);
+    //     return Object.assign(
+    //       row,
+    //       {
+    //         unread: !!row.unread,
+    //         secure: !!row.secure,
+    //         isMuted: !!row.isMuted,
+    //         content: body,
+    //         key,
+    //         date: parseDate(row.date)
+    //       },
+    //       headers ? { headers } : null
+    //     );
+    //   })
+    // );
+    emailRows = [...emailRows, ...result];
+    if (rows.length < SELECT_ALL_BATCH) {
+      shouldEnd = true;
+    } else {
+      offset += SELECT_ALL_BATCH;
+    }
+  }
+  return formatTableRowsToString(Table.EMAIL, emailRows);
+};
+
 const importDatabaseFromFile = async ({ filepath }) => {
   let accounts = [];
   let contacts = [];
@@ -698,5 +800,8 @@ const saveToFile = ({ data, filepath, mode }, isFirstRecord) => {
 
 module.exports = {
   exportNotEncryptDatabaseToFile,
+  exportContactTable,
+  exportEmailTable,
+  exportLabelTable,
   importDatabaseFromFile
 };
