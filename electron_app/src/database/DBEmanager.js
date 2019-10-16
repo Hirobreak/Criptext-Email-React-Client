@@ -1248,6 +1248,7 @@ module.exports = {
   Settings,
   Signedprekeyrecord,
   Table,
+  Op,
   createAccount,
   createContact,
   createContactsIfOrNotStore,
