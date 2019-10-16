@@ -982,7 +982,7 @@ const getFilesByTokens = async tokens => {
 const getAllFeedItems = async () => {
   return await Feeditem().findAll({ raw: true });
   // return db.select('*').from(Table.FEEDITEM);
-}
+};
 
 /* Settings
 ----------------------------- */
