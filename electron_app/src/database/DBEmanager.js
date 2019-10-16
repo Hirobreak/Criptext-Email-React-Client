@@ -1019,6 +1019,14 @@ const createFile = async (files, trx) => {
   // return knex.insert(files).into(Table.FILE);
 };
 
+const getFilesByTokens = async tokens => {
+  return await File().findAll({ where: { token: tokens } });
+  // return db
+  //   .select('*')
+  //   .from(Table.FILE)
+  //   .whereIn('token', tokens);
+};
+
 /* Functions
 ----------------------------- */
 const clearAndFormatDateEmails = emailObjOrArray => {
@@ -1150,6 +1158,7 @@ module.exports = {
   createContactsIfOrNotStore,
   createEmail,
   createEmailLabel,
+  createFile,
   createLabel,
   deleteDatabase,
   deleteEmailsByIds,
@@ -1179,6 +1188,7 @@ module.exports = {
   getEmailsGroupByThreadByParamsToSearch,
   getEmailsToDeleteByThreadIdAndLabelId,
   getEmailsUnredByLabelId,
+  getFilesByTokens,
   getLabelById,
   getLabelsByText,
   getTrashExpiredEmails,
