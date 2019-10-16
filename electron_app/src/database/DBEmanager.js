@@ -831,18 +831,62 @@ const createLabel = async params => {
       }
       return labelParams;
     });
-  } else {
-    if (!params.uuid) {
-      labelsToInsert = Object.assign(params, { uuid: genUUID() });
-    }
-    labelsToInsert = params;
+    return await Label().bulkCreate(labelsToInsert);
   }
-  return db.table(Table.LABEL).insert(labelsToInsert);
+
+  if (!params.uuid) {
+    labelsToInsert = Object.assign(params, { uuid: genUUID() });
+  }
+  labelsToInsert = params;
+  return Label().create(labelsToInsert);
+  // return db.table(Table.LABEL).insert(labelsToInsert);
 };
 
 const createSystemLabels = async () => {
   const labels = Object.values(systemLabels);
   return await Label().bulkCreate(labels);
+};
+
+const getAllLabels = async () => {
+  return await Label().findAll({ raw: true });
+  // return db.select('*').from(Table.LABEL);
+};
+
+const getLabelById = async id => {
+  return await Label().findAll({ where: { id } });
+  // return db
+  //   .select('*')
+  //   .from(Table.LABEL)
+  //   .where({ id });
+};
+
+const getLabelsByText = async textArray => {
+  let labels = [];
+  for (const text of textArray) {
+    const labelsMatched = await Label().findAll({
+      where: { text: { [Op.like]: text } }
+    });
+    // const labelsMatched = await db
+    //   .select('*')
+    //   .from(Table.LABEL)
+    //   .where('text', 'like', `${text}`);
+    labels = labels.concat(labelsMatched);
+  }
+  return labels;
+};
+
+const updateLabel = async ({ id, color, text, visible }) => {
+  const params = {};
+  if (color) params.color = color;
+  if (text) params.text = text;
+  if (typeof visible === 'boolean') params.visible = visible;
+  return await Label().update(params, { where: { id } });
+  // return db
+  //   .table(Table.LABEL)
+  //   .where({
+  //     id
+  //   })
+  //   .update(params);
 };
 
 /* EmailLabel
@@ -1056,6 +1100,7 @@ module.exports = {
   createContactsIfOrNotStore,
   createEmail,
   createEmailLabel,
+  createLabel,
   deleteDatabase,
   deleteEmailsByIds,
   deleteEmailByKeys,
@@ -1067,6 +1112,7 @@ module.exports = {
   getAccount,
   getAccountByParams,
   getAllContacts,
+  getAllLabels,
   getContactByEmails,
   getContactByIds,
   getContactsByEmailId,
@@ -1081,6 +1127,8 @@ module.exports = {
   getEmailsGroupByThreadByParams,
   getEmailsGroupByThreadByParamsToSearch,
   getEmailsUnredByLabelId,
+  getLabelById,
+  getLabelsByText,
   getTrashExpiredEmails,
   initDatabaseEncrypted: InitDatabaseEncrypted,
   resetKeyDatabase,
@@ -1088,5 +1136,6 @@ module.exports = {
   updateContactByEmail,
   updateContactSpamScore,
   updateEmail,
-  updateEmails
+  updateEmails,
+  updateLabel
 };

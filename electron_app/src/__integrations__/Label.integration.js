@@ -1,10 +1,12 @@
 /* eslint-env node, jest */
-
-const DBManager = require('../DBManager');
+// const DBManager = require('../database/DBManager');
+const DBManager = require('../database');
 
 beforeAll(async () => {
-  await DBManager.cleanDataBase();
-  await DBManager.createTables();
+  await DBManager.deleteDatabase();
+  await DBManager.initDatabaseEncrypted('1111');
+  // await DBManager.cleanDataBase();
+  // await DBManager.createTables();
 });
 
 describe('TABLE[Label]:', () => {
@@ -32,14 +34,16 @@ describe('TABLE[Label]:', () => {
       text: 'Draft',
       uuid: '00000000-0000-0000-0000-000000000003'
     };
-    const [labelId] = await DBManager.createLabel(labelParams);
+    const labelCreated = await DBManager.createLabel(labelParams);
+    const labelId = labelCreated.id;
     const newColor = '333334';
     const newText = 'DraftModified';
-    await DBManager.updateLabel({
+    const labelUpdated = await DBManager.updateLabel({
       id: labelId,
       color: newColor,
       text: newText
     });
+    expect(labelUpdated).toEqual(expect.arrayContaining([1]));
     const [label] = await DBManager.getLabelById(labelId);
     expect(label).toMatchObject({
       text: newText,
@@ -48,23 +52,26 @@ describe('TABLE[Label]:', () => {
   });
 
   it('should update label: color', async () => {
-    const [id] = await DBManager.createLabel({
+    const labelCreated = await DBManager.createLabel({
       color: '444444',
       text: 'Starred',
       uuid: '00000000-0000-0000-0000-000000000004'
     });
+    const id = labelCreated.id;
     const newColor = '444555';
-    await DBManager.updateLabel({ id, color: newColor });
+    const labelUpdated = await DBManager.updateLabel({ id, color: newColor });
+    expect(labelUpdated).toEqual(expect.arrayContaining([1]));
     const [label] = await DBManager.getLabelById(id);
     expect(label.color).toBe(newColor);
   });
 
   it('should update label: text', async () => {
-    const [id] = await DBManager.createLabel({
+    const labelCreated = await DBManager.createLabel({
       color: '555555',
       text: 'Trash',
       uuid: '00000000-0000-0000-0000-000000000005'
     });
+    const id = labelCreated.id;
     const newText = 'LabelModified2';
     await DBManager.updateLabel({ id, text: newText });
     const [label] = await DBManager.getLabelById(id);
@@ -72,11 +79,12 @@ describe('TABLE[Label]:', () => {
   });
 
   it('should update label: visible', async () => {
-    const [id] = await DBManager.createLabel({
+    const labelCreated = await DBManager.createLabel({
       color: '666666',
       text: 'Important',
       uuid: '00000000-0000-0000-0000-000000000006'
     });
+    const id = labelCreated.id;
     const newVisibleValue = false;
     await DBManager.updateLabel({ id, visible: newVisibleValue });
     const [label] = await DBManager.getLabelById(id);
