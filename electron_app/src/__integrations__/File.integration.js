@@ -1,56 +1,58 @@
 /* eslint-env node, jest */
+// const DBManager = require('../database/DBManager');
+const DBManager = require('../database');
 
-const DBManager = require('../DBManager');
-
-const file = {
-  id: 1,
-  token: 'token1',
-  name: 'Criptext_Image_2018_06_14.png',
-  readOnly: false,
-  size: 183241,
-  status: 1,
-  date: '2018-06-14T23:45:57.466Z',
-  emailId: 2,
-  mimeType: 'image/png',
-  key: 'fileKeyA',
-  iv: 'fileIvA'
-};
-
-const insertFile = async () => {
-  await DBManager.createFile(file);
-};
-
-beforeAll(async () => {
-  await DBManager.cleanDataBase();
-  await DBManager.createTables();
-  await insertFile();
-});
-
-describe('Store data file to File Table:', () => {
-  it('should insert file to database', async () => {
-    await DBManager.createFile({
-      token: 'token2',
+const email = {
+  email: {
+    threadId: 'threadC',
+    key: '3',
+    s3Key: 's3KeyC',
+    subject: 'Greetings',
+    content: '<p>Hello there</p>',
+    preview: 'Hello there',
+    date: '2018-06-14 08:23:19.120',
+    status: 0,
+    unread: true,
+    secure: true,
+    unsendDate: '2018-06-14 08:23:20.000',
+    messageId: 'messageIdC',
+    fromAddress: 'User A <usera@criptext.com>'
+  },
+  recipients: {
+    from: ['User A <usera@criptext.com>'],
+    to: ['user@criptext.com', 'userb@criptext.com']
+  },
+  labels: [1],
+  files: [
+    {
+      token: 'tokenC',
       name: 'Criptext_Image_2018_06_14.png',
-      readOnly: false,
       size: 183241,
       status: 1,
       date: '2018-06-14T23:45:57.466Z',
-      emailId: 1,
       mimeType: 'image/png',
       key: 'fileKeyA',
-      iv: 'fileIvA',
-      cid: 'cidA'
-    });
-    const tokens = ['token2'];
-    const files = await DBManager.getFilesByTokens(tokens);
-    expect(files).toMatchSnapshot();
-  });
+      iv: 'fileIvA'
+    }
+  ]
+};
+
+const insertEmail = async () => {
+  await DBManager.createEmail(email);
+};
+
+beforeAll(async () => {
+  // await DBManager.cleanDataBase();
+  // await DBManager.createTables();
+  await DBManager.deleteDatabase();
+  await DBManager.initDatabaseEncrypted('1111', true);
+  await insertEmail();
 });
 
 describe('Load data file from File Table:', () => {
   it('should load file by tokens', async () => {
-    const token = 'token1';
-    const [file] = await DBManager.getFilesByTokens([token]);
-    expect(file.token).toBe(token);
+    const token = 'tokenC';
+    const file = await DBManager.getFilesByTokens([token]);
+    expect(file).toMatchSnapshot();
   });
 });
