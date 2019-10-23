@@ -851,6 +851,24 @@ const deleteEmailContactByEmailId = async (emailId, trx) => {
   return await EmailContact().destroy({ where: { emailId }, transaction: trx });
 };
 
+const getContactsByEmailId = async emailId => {
+  const emailContacts = await EmailContact().findAll({
+    attributes: ['contactId', 'type'],
+    where: { emailId }
+  });
+
+  const toContactsId = getContactsIdByType(emailContacts, 'to');
+  const ccContactsId = getContactsIdByType(emailContacts, 'cc');
+  const bccContactsId = getContactsIdByType(emailContacts, 'bcc');
+  const fromContactsId = getContactsIdByType(emailContacts, 'from');
+
+  const to = await getContactByIds(toContactsId);
+  const cc = await getContactByIds(ccContactsId);
+  const bcc = await getContactByIds(bccContactsId);
+  const from = await getContactByIds(fromContactsId);
+  return { to, cc, bcc, from };
+};
+
 /* Label
 ----------------------------- */
 const createLabel = async params => {
@@ -1052,6 +1070,12 @@ const formStringSeparatedByOperator = (array, operator = ',') => {
   }, '');
 };
 
+const getContactsIdByType = (emailContacts, type) => {
+  return emailContacts
+    .filter(item => item.type === type)
+    .map(item => item.contactId);
+};
+
 const InitDatabaseEncrypted = async ({
   key,
   shouldAddSystemLabels,
@@ -1095,6 +1119,7 @@ module.exports = {
   getAllContacts,
   getContactByEmails,
   getContactByIds,
+  getContactsByEmailId,
   getEmailByKey,
   getEmailLabelsByEmailId,
   getEmailsByArrayParam,
