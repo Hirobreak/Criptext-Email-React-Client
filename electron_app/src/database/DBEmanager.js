@@ -17,6 +17,11 @@ const {
   getDB,
   initDatabaseEncrypted,
   resetKeyDatabase,
+  Identitykeyrecord,
+  Prekeyrecord,
+  Sessionrecord,
+  Signedprekeyrecord,
+  Settings,
   Op,
   Table,
   databasePath
@@ -1220,5 +1225,10 @@ module.exports = {
   updateContactSpamScore,
   updateEmail,
   updateEmails,
-  updateLabel
+  updateLabel,
+  Identitykeyrecord,
+  Prekeyrecord,
+  Sessionrecord,
+  Signedprekeyrecord,
+  Settings
 };
