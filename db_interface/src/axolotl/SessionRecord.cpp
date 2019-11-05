@@ -3,10 +3,11 @@
 using namespace sqlite;
 using namespace std;
 
-CriptextDB::SessionRecord CriptextDB::getSessionRecord(string dbPath, string recipientId, long int deviceId) {
-  sqlite_config config;
+CriptextDB::SessionRecord CriptextDB::getSessionRecord(string dbPath, string password, string recipientId, long int deviceId) {
+  sqlcipher_config config;
   config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READONLY;
-  database db(dbPath, config);
+  config.key = password;
+  sqlcipher_database db(dbPath, config);
   
   string myRecord;
   int myLen = 0;
@@ -30,13 +31,14 @@ CriptextDB::SessionRecord CriptextDB::getSessionRecord(string dbPath, string rec
   return sessionRecord;
 }
 
-vector<CriptextDB::SessionRecord> CriptextDB::getSessionRecords(string dbPath, string recipientId) {
+vector<CriptextDB::SessionRecord> CriptextDB::getSessionRecords(string dbPath, string password, string recipientId) {
   vector<CriptextDB::SessionRecord> sessionRecords;
 
   try {
-    sqlite_config config;
+    sqlcipher_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READONLY;
-    database db(dbPath, config);
+    config.key = password;
+    sqlcipher_database db(dbPath, config);
 
     db << "Select * from sessionrecord where recipientId == ?;"
      << recipientId
@@ -57,13 +59,14 @@ vector<CriptextDB::SessionRecord> CriptextDB::getSessionRecords(string dbPath, s
   return sessionRecords;
 }
 
-bool CriptextDB::createSessionRecord(string dbPath, string recipientId, long int deviceId, char* record, size_t len) {
+bool CriptextDB::createSessionRecord(string dbPath, string password, string recipientId, long int deviceId, char* record, size_t len) {
   try {
     bool hasRow = false;
               
-    sqlite_config config;
+    sqlcipher_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    database db(dbPath, config);
+    config.key = password;
+    sqlcipher_database db(dbPath, config);
     db << "begin;";
     db << "Select * from sessionrecord where recipientId == ? and deviceId == ?;"
      << recipientId
@@ -92,11 +95,12 @@ bool CriptextDB::createSessionRecord(string dbPath, string recipientId, long int
   return true;
 }
 
-bool CriptextDB::deleteSessionRecord(string dbPath, string recipientId, long int deviceId) {
+bool CriptextDB::deleteSessionRecord(string dbPath, string password, string recipientId, long int deviceId) {
   try {
-    sqlite_config config;
+    sqlcipher_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    database db(dbPath, config);
+    config.key = password;
+    sqlcipher_database db(dbPath, config);
     db << "delete from sessionrecord where recipientId == ? and deviceId == ?;"
      << recipientId
      << deviceId;
@@ -107,11 +111,12 @@ bool CriptextDB::deleteSessionRecord(string dbPath, string recipientId, long int
   return true;
 }
 
-bool CriptextDB::deleteSessionRecords(string dbPath, string recipientId) {
+bool CriptextDB::deleteSessionRecords(string dbPath, string password, string recipientId) {
   try {
-    sqlite_config config;
+    sqlcipher_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    database db(dbPath, config);
+    config.key = password;
+    sqlcipher_database db(dbPath, config);
 
     db << "delete from sessionrecord where recipientId == ?;"
      << recipientId;

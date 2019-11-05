@@ -3,7 +3,7 @@
 
 #include <string>
 #include <cstring>
-#include <sqlite_modern_cpp.h>
+#include <sqlite_modern_cpp/sqlcipher.h>
 #include <iostream>
 
 using namespace std;
@@ -16,9 +16,9 @@ namespace CriptextDB {
     size_t len;
   };
 
-  PreKey getPreKey(string dbPath, short int id);
-  bool createPreKey(string dbPath, short int id, char *keyRecord, size_t len);
-  bool deletePreKey(string dbPath, short int id);
+  PreKey getPreKey(string dbPath, string password, short int id);
+  bool createPreKey(string dbPath, string password, short int id, char *keyRecord, size_t len);
+  bool deletePreKey(string dbPath, string password, short int id);
 
 } 
 

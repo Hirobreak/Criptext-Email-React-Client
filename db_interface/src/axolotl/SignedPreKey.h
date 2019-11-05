@@ -4,7 +4,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include <sqlite_modern_cpp.h>
+#include <sqlite_modern_cpp/sqlcipher.h>
 
 using namespace std;
 
@@ -16,11 +16,11 @@ namespace CriptextDB {
     int len;
   };
 
-  SignedPreKey getSignedPreKey(string dbPath, short int id);
+  SignedPreKey getSignedPreKey(string dbPath, string password, short int id);
 
-  bool createSignedPreKey(string dbPath, short int id, char *keyRecord, size_t len);
+  bool createSignedPreKey(string dbPath, string password, short int id, char *keyRecord, size_t len);
 
-  bool deleteSignedPreKey(string dbPath, short int id);
+  bool deleteSignedPreKey(string dbPath, string password, short int id);
 } 
 
 #endif
