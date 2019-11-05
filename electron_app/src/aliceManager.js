@@ -5,6 +5,7 @@ const dbManager = require('./database');
 const portscanner = require('portscanner');
 const http = require('http');
 const ps = require('ps-node');
+const globalManager = require('./globalManager');
 
 const ALICE_PROJECT_NAME = 'criptext-encryption-service';
 
@@ -71,7 +72,7 @@ const getPort = () => {
 };
 
 const getPassword = () => {
-  return password;
+  return globalManager.databaseKey.get() || password;
 };
 
 const startAlice = async () => {
@@ -84,7 +85,7 @@ const startAlice = async () => {
     const dbpath = path.resolve(dbManager.databasePath);
     const logspath = path.resolve(getLogsPath(process.env.NODE_ENV));
     await cleanAliceRemenants();
-    alice = spawn(alicePath, [dbpath, myPort, logspath, password]);
+    alice = spawn(alicePath, [dbpath, myPort, logspath, getPassword()]);
     alice.stdout.on('data', data => {
       console.log(`-----alice-----\n${data}\n -----end-----`);
     });
@@ -116,10 +117,10 @@ const closeAlice = () => {
   }
 };
 
-const restartAlice = async () => {
+const restartAlice = async force => {
   console.log('Restarting ALice');
   const isReachable = await checkReachability();
-  if (isReachable) {
+  if (isReachable && !force) {
     return;
   }
   closeAlice();
