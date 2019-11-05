@@ -85,7 +85,7 @@ const setConfiguration = key => {
     dialect: 'sqlite',
     dialectModulePath: '@journeyapps/sqlcipher',
     storage: myDBEncryptPath(),
-    logging: false
+    logging: console.log
   });
 };
 
