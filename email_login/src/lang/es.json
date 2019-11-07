@@ -1,229 +1,231 @@
 {
-  "changePassword": {
-    "title": "Cambiar la contraseña para:",
-    "inputs": {
-      "newPassword": {
-        "placeholder": "Nueva contraseña"
-      },
-      "repeatNewPassword": {
-        "placeholder": "Repetir la nueva contraseña"
-      }
-    },
-    "button": "Cambiar contraseña"
-  },
-  "deviceNotApproved": {
-    "title": "Ingreso rechazado",
-    "message": "Tu solicitud para acceder a esta cuenta fue rechazada por un dispositivo verificado.",
-    "warning": {
-      "strong": "Advertencia:",
-      "text": "Multiples rechazos podría provocar que el dispositivo sea baneado de Criptext."
-    },
-    "passwordLoginLabel": "Acceder con contraseña",
-    "sendCodeLabel": "Enviar correo de recuperación"
-  },
-  "dialogContent": {
-    "confirmWaitingApprovalLogin": {
-      "cancelResponse": "Cancelar",
-      "keepResponse": "Seguir esperando",
-      "title": "Bueno, esto es extraño...",
-      "message": "Algo ha sucedido que está retrasando este proceso.",
-      "detail": "¿Quieres seguir esperando?"
-    }
-  },
-  "errors":{
-    "loginFailed": {
-      "name": "Error de inicio de sesión",
-      "description": "Ha ocurrido un error durante el inicio de sesión. Por favor, intenta de nuevo.\nCódigo: "
-    },
-    "tooManyDevices": {
-      "name": "Demasiados dispositivos autorizados",
-      "description": "Tienes demasiados dispositivos autorizados. \nDesde uno de tus dispositivos, remueve algún dispositivo que ya no uses e intenta de nuevo. Si no puedes acceder a ninguno de tus dispositivos, por favor contacta a soporte"
-    },
-    "tooManyRequests": {
-      "name": "Limite de peticiones excedido",
-      "description": "Has realizado muchas peticiones consecutivas.\nPor favor, intenta nuevamente dentro de ",
-      "button": "Okay"
-    },
-    "wrongCredentials": {
-      "name": "Credenciales incorrectas",
-      "description": "Usuario o contraseña incorrectos. Verifica tus credenciales e intenta de nuevo"
-    }
-  },
-  "help": {
-    "need_help": "¿Necesitas ayuda?",
-    "contact_support": "Contáctanos"
-  },
-  "last_activity": "Última actividad",
-  "over_time": "Hace más de 2 meses",
-  "popUp": {
-    "deleteDevices": [
-      {
-        "title": "Superaste el límite de dispositivos conectados (10)",
-        "paragraph": "Ingrese su contraseña para eliminar uno o más dispositivos.",
+    "changePassword": {
+        "title": "Cambiar la contraseña para:",
         "inputs": {
-          "password": {
-            "placeholder": "Contraseña",
-            "error": "Contraseña incorrecta"
-          }
+            "newPassword": {
+                "placeholder": "Nueva contraseña"
+            },
+            "repeatNewPassword": {
+                "placeholder": "Repetir la nueva contraseña"
+            }
+        },
+        "button": "Cambiar contraseña"
+    },
+    "deviceNotApproved": {
+        "title": "Ingreso rechazado",
+        "message": "Tu solicitud para acceder a esta cuenta fue rechazada por un dispositivo verificado.",
+        "warning": {
+            "strong": "Advertencia:",
+            "text": "Multiples rechazos podría provocar que el dispositivo sea baneado de Criptext."
+        },
+        "passwordLoginLabel": "Acceder con contraseña",
+        "sendCodeLabel": "Enviar correo de recuperación"
+    },
+    "dialogContent": {
+        "confirmWaitingApprovalLogin": {
+            "cancelResponse": "Cancelar",
+            "keepResponse": "Seguir esperando",
+            "title": "Bueno, esto es extraño...",
+            "message": "Algo ha sucedido que está retrasando este proceso.",
+            "detail": "¿Quieres seguir esperando?"
+        }
+    },
+    "errors": {
+        "loginFailed": {
+            "name": "Error de inicio de sesión",
+            "description": "Ha ocurrido un error durante el inicio de sesión. Por favor, intenta de nuevo.\nCódigo: "
+        },
+        "tooManyDevices": {
+            "name": "Demasiados dispositivos autorizados",
+            "description": "Tienes demasiados dispositivos autorizados. \nDesde uno de tus dispositivos, remueve algún dispositivo que ya no uses e intenta de nuevo. Si no puedes acceder a ninguno de tus dispositivos, por favor contacta a soporte"
+        },
+        "tooManyRequests": {
+            "name": "Limite de peticiones excedido",
+            "description": "Has realizado muchas peticiones consecutivas.\nPor favor, intenta nuevamente dentro de ",
+            "button": "Okay"
+        },
+        "wrongCredentials": {
+            "name": "Credenciales incorrectas",
+            "description": "Usuario o contraseña incorrectos. Verifica tus credenciales e intenta de nuevo"
+        }
+    },
+    "help": {
+        "need_help": "¿Necesitas ayuda? ",
+        "contact_support": "Contáctanos"
+    },
+    "last_activity": "Última actividad",
+    "over_time": "Hace más de 2 meses",
+    "popUp": {
+        "deleteDevices": [
+            {
+                "title": "Superaste el límite de dispositivos conectados (10)",
+                "paragraph": "Ingrese su contraseña para eliminar uno o más dispositivos.",
+                "inputs": {
+                    "password": {
+                        "placeholder": "Contraseña",
+                        "error": "Contraseña incorrecta"
+                    }
+                },
+                "buttons": {
+                    "cancel": "Cancelar",
+                    "confirm": "Continuar"
+                }
+            },
+            {
+                "title": "Eliminar dispositivo(s)",
+                "buttons": {
+                    "cancel": "Atras",
+                    "confirm": "Eliminar"
+                }
+            },
+            {
+                "title": "Eliminar Dispositivo",
+                "paragraph": "Aún tienes 2 dispositivos pendientes que eliminar antes de poder iniciar sesión",
+                "buttons": {
+                    "cancel": "Cancelar",
+                    "confirm": "Eliminar"
+                }
+            },
+            {
+                "title": "Sesión Expirada",
+                "paragraph": "Lo sentimos tu sesión ha expirado, excediste el tiempo de inactividad permitido, vuelva a intentarlo.",
+                "buttons": {
+                    "confirm": "Aceptar"
+                }
+            }
+        ],
+        "forgotPassword": {
+            "200": {
+                "title": "Restablecer Contraseña",
+                "paragraph": "Un enlace para restablecer la contraseña fue enviado a",
+                "note": "El enlace será válido durante 30 minutos",
+                "buttons": {
+                    "confirm": "Ok"
+                }
+            },
+            "400": {
+                "title": "Sin correo de recuperación",
+                "paragraph": "La recuperación de la contraseña es imposible ya que no se configuró un correo de recuperación en su cuenta. Para asistencia adicional contáctenos:",
+                "buttons": {
+                    "confirm": "Ok"
+                }
+            },
+            "error": {
+                "title": "Restablecer Contraseña",
+                "paragraph": "Falló al enviar el enlace para restablecer la contraseña. Intente de nuevo",
+                "buttons": {
+                    "confirm": "Ok"
+                }
+            }
+        },
+        "recoveryCode": {
+            "title": "Código de recuperación",
+            "message": "Por favor revisa tu correo de recuperación {0} e introduce el código que te hemos enviado",
+            "alreadySent": "Te hemos enviado un código a tu correo de recuperación {0} en la ultima hora. Revisa tu buzón e ingresa el código",
+            "buttons": {
+                "confirm": "Okay",
+                "cancel": "Cancel"
+            },
+            "errors": {
+                "unknown": "No fue posible validar el código",
+                "wrong": "Código incorrecto"
+            }
+        }
+    },
+    "signIn": {
+        "header": "Bienvenido a Criptext!",
+        "inputPlaceholder": "Correo electrónico o usuario",
+        "signInButtonLabel": "Ingresar",
+        "signUpMessage": {
+            "text": "¿No estás registrado?",
+            "strong": "Crear cuenta"
+        },
+        "errorMessages": {
+            "emailAddressNotExits": "Correo electrónico no existe",
+            "emailAddressNotValidCriptext": "El usuario o dirección de correo no pertenece a Criptext",
+            "usernameOrEmailAddressInvalid": "Usuario o correo electrónico no válido",
+            "usernameInvalid": "Usuario no valido",
+            "usernameNotExits": "Usuario no existe",
+            "statusUnknown": "Error desconocido. Código: ",
+            "usernameNotAvailable": "Usuario no disponible"
+        },
+        "usePassword": {
+            "title": "Advertencia",
+            "prefix": "Si inicias sesión con tu contraseña",
+            "strong": " los correos de otros dispositivos no estarán disponibles ",
+            "suffix": "en este dispositivo. ¿Te gustaria continuar?",
+            "leftButtonLabel": "Cancelar",
+            "rightButtonLabel": "Continuar"
+        },
+        "loginNewAccount": {
+            "title": "Advertencia de inicio de sesión",
+            "prefix": "Iniciar sesión con otra cuenta de usuario borrará todos los correos guardados en este dispoitivo de la(s) cuenta(s)",
+            "suffix": "¿Deseas continuar?",
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Continuar"
+        }
+    },
+    "signUp": {
+        "header": "Crear cuenta",
+        "subheader": "Registrate en Criptext",
+        "buttons": {
+            "createAccount": "Crear cuenta"
+        },
+        "errorMessages": {
+            "USERNAME_INVALID": "Al menos 3 caracteres. Debe comenzar con letras a-z.",
+            "USERNAME_EXISTS": "Usuario no disponible",
+            "USERNAME_UNCERTAIN": "Falló al comprobar el usuario",
+            "STATUS_UNKNOWN": "Error desconocido. Código: ",
+            "FULLNAME_INVALID": "Nombre no válido",
+            "PASSWORD_INVALID": "Contraseña no válida",
+            "PASSWORD_NOMATCH": "Las contraseñas no coinciden",
+            "EMAIL_INVALID": "Dirección de correo no válida"
+        },
+        "form": {
+            "placeholders": {
+                "username": "Usuario",
+                "fullName": "Nombre completo",
+                "password": "Contraseña",
+                "confirmPassword": "Confirma la contraseña",
+                "recoveryEmail": "Correo de recuperación (opcional)",
+                "checkbox": {
+                    "prefix": "He leído y estoy de acuerdo con los",
+                    "suffix": "Términos y Condiciones"
+                }
+            }
+        },
+        "popUp": {
+            "warningRecoveryEmail": {
+                "title": "Advertencia!",
+                "prefix": "NO estableciste un Correo de Recuperación por lo que la",
+                "strong": " recuperación de la cuenta es imposible ",
+                "suffix": "si olvidas tu contraseña.",
+                "leftButtonLabel": "Cancelar",
+                "rightButtonLabel": "Continuar"
+            }
+        }
+    },
+    "signInToApprove": {
+        "title": "Iniciar sesión",
+        "message": "Revisa y aprueba desde un dispositivo\nexistente de Criptext para continuar",
+        "getPromptLabel": "¿No recibiste el aviso?",
+        "passwordLoginLabel": "Acceder con contraseña",
+        "sendCodeLabel": "Enviar código de recuperación",
+        "buttons": {
+            "sending": "Enviando...",
+            "resend": "Reenviarlo"
+        }
+    },
+    "signInPassword": {
+        "sectionTitleSignIn": "Iniciar sesión",
+        "sectionTitleTwoFactorAuth": "Autenticación en dos pasos",
+        "form": {
+            "passwordInputPlaceholder": "Contraseña",
+            "forgotLabel": "¿Olvidó su contraseña?"
         },
         "buttons": {
-          "cancel": "Cancelar",
-          "confirm": "Continuar"
+            "nextLabel": "Siguiente",
+            "confirmLabel": "Confirmar"
         }
-      },{
-        "title": "Eliminar dispositivo(s)",
-        "buttons": {
-          "cancel": "Atras",
-          "confirm": "Eliminar"
-        }
-      },{
-        "title": "Eliminar Dispositivo",
-        "paragraph": "Aún tienes 2 dispositivos pendientes que eliminar antes de poder iniciar sesión",
-        "buttons": {
-          "cancel": "Cancelar",
-          "confirm": "Eliminar"
-        }
-      },{
-        "title": "Sesión Expirada",
-        "paragraph": "Lo sentimos tu sesión ha expirado, excediste el tiempo de inactividad permitido, vuelva a intentarlo.",
-        "buttons": {
-          "confirm": "Aceptar"
-        }
-      }
-    ],
-    "forgotPassword": {
-      "200": {
-        "title": "Restablecer Contraseña",
-        "paragraph": "Un enlace para restablecer la contraseña fue enviado a",
-        "note": "El enlace será válido durante 30 minutos",
-        "buttons": {
-          "confirm": "Ok"
-        }
-      },
-      "400": {
-        "title": "Sin correo de recuperación",
-        "paragraph": "La recuperación de la contraseña es imposible ya que no se configuró un correo de recuperación en su cuenta. Para asistencia adicional contáctenos:",
-        "buttons": {
-          "confirm": "Ok"
-        }
-      },
-      "error": {
-        "title": "Restablecer Contraseña",
-        "paragraph": "Falló al enviar el enlace para restablecer la contraseña. Intente de nuevo",
-        "buttons": {
-          "confirm": "Ok"
-        }
-      }
-    },
-    "recoveryCode": {
-      "title": "Código de recuperación",
-      "message": "Por favor revisa tu correo de recuperación {0} e introduce el código que te hemos enviado",
-      "alreadySent": "Te hemos enviado un código a tu correo de recuperación {0} en la ultima hora. Revisa tu buzón e ingresa el código",
-      "buttons": {
-        "confirm": "Okay",
-        "cancel": "Cancel"
-      },
-      "errors": {
-        "unknown": "No fue posible validar el código",
-        "wrong": "Código incorrecto"
-      }
     }
-  },
-  "signIn": {
-    "header": "Bienvenido a Criptext!",
-    "inputPlaceholder": "Correo electrónico o usuario",
-    "signInButtonLabel": "Ingresar",
-    "signUpMessage": {
-      "text": "¿No estás registrado?",
-      "strong": "Crear cuenta"
-    },
-    "errorMessages": {
-      "emailAddressNotExits": "Correo electrónico no existe",
-      "emailAddressNotValidCriptext": "El usuario o dirección de correo no pertenece a Criptext",
-      "usernameOrEmailAddressInvalid": "Usuario o correo electrónico no válido",
-      "usernameInvalid": "Usuario no valido",
-      "usernameNotExits": "Usuario no existe",
-      "statusUnknown": "Error desconocido. Código: ",
-      "usernameNotAvailable": "Usuario no disponible"
-    },
-    "usePassword": {
-      "title": "Advertencia",
-      "prefix": "Si inicias sesión con tu contraseña",
-      "strong": " los correos de otros dispositivos no estarán disponibles ",
-      "suffix": "en este dispositivo. ¿Te gustaria continuar?",
-      "leftButtonLabel": "Cancelar",
-      "rightButtonLabel": "Continuar"
-    },
-    "loginNewAccount": {
-      "title": "Advertencia de inicio de sesión",
-      "prefix": "Iniciar sesión con otra cuenta de usuario borrará todos los correos guardados en este dispoitivo de la(s) cuenta(s)",
-      "strong": "",
-      "suffix": "¿Deseas continuar?",
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Continuar"
-    }
-  },
-  "signUp": {
-    "header": "Crear cuenta",
-    "subheader": "Registrate en Criptext",
-    "buttons": {
-      "createAccount": "Crear cuenta"
-    },
-    "errorMessages": {
-      "USERNAME_INVALID": "Al menos 3 caracteres. Debe comenzar con letras a-z.",
-      "USERNAME_EXISTS": "Usuario no disponible",
-      "USERNAME_UNCERTAIN": "Falló al comprobar el usuario",
-      "STATUS_UNKNOWN": "Error desconocido. Código: ",
-      "FULLNAME_INVALID": "Nombre no válido",
-      "PASSWORD_INVALID": "Contraseña no válida",
-      "PASSWORD_NOMATCH": "Las contraseñas no coinciden",
-      "EMAIL_INVALID": "Dirección de correo no válida"
-    },
-    "form": {
-      "placeholders": {
-        "username": "Usuario",
-        "fullName": "Nombre completo",
-        "password": "Contraseña",
-        "confirmPassword": "Confirma la contraseña",
-        "recoveryEmail": "Correo de recuperación (opcional)",
-        "checkbox": {
-          "prefix": "He leído y estoy de acuerdo con los ",
-          "suffix": "Términos y Condiciones"
-        }
-      }
-    },
-    "popUp": {
-      "warningRecoveryEmail": {
-        "title": "Advertencia!",
-        "prefix": "NO estableciste un Correo de Recuperación por lo que la",
-        "strong": " recuperación de la cuenta es imposible ",
-        "suffix": "si olvidas tu contraseña.",
-        "leftButtonLabel": "Cancelar",
-        "rightButtonLabel": "Continuar"
-      }
-    }
-  },
-  "signInToApprove": {
-    "title": "Iniciar sesión",
-    "message": "Revisa y aprueba desde un dispositivo\nexistente de Criptext para continuar",
-    "getPromptLabel": "¿No recibiste el aviso?",
-    "passwordLoginLabel": "Acceder con contraseña",
-    "sendCodeLabel": "Enviar código de recuperación",
-    "buttons": {
-      "sending": "Enviando...",
-      "resend": "Reenviarlo"
-    }
-  },
-  "signInPassword": {
-    "sectionTitleSignIn": "Iniciar sesión",
-    "sectionTitleTwoFactorAuth": "Autenticación en dos pasos",
-    "form": {
-      "passwordInputPlaceholder": "Contraseña",
-      "forgotLabel": "¿Olvidó su contraseña?"
-    },
-    "buttons": {
-      "nextLabel": "Siguiente",
-      "confirmLabel": "Confirmar"
-    }
-  }
 }
