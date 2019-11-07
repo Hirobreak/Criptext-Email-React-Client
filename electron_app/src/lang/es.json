@@ -1,107 +1,107 @@
 {
-  "errorMessages": {
-    "UNABLE_TO_CONNECT": {
-      "name": "No se puede conectar",
-      "description": "No se ha podido establecer una conexión con el servidor."
-    },
-    "UNKNOWN": {
-      "name": "Error",
-      "description": "Ha ocurrido un error al procesar tu solicitud.\nCódigo: "
-    },
-    "PRINTING_ERROR": {
-      "name": "Error de impresión",
-      "description": "Falló al imprimir el documento. Intente de nuevo."
-    },
-    "SOURCE_ERROR": {
-      "name": "Error al mostrar.",
-      "description": "Error al mostrar el correo original. Intente de nuevo."
-    }
-  },
-  "updaterMessages": {
-    "error": {
-      "name": "Error al Actualizar",
-      "description": "Ha ocurrido un error al intentar descargar la actualización.\nPor favor, intenta más tarde"
-    },
-    "unknownError": "Desconocido",
-    "notAvailable": {
-      "name": "Actualización no disponible",
-      "description": "Ya estás en la última versión de Criptext"
-    },
-    "availableManual": {
-      "name": "Actualización Disponible",
-      "description": "Una nueva versión de Criptext está disponible.\n¿Te gustaría descargarla ahora?",
-      "confirmButton": "Sí",
-      "cancelButton": "No"
-    },
-    "availableAuto": {
-      "title": "¡Una nueva versión de Criptext está disponible!",
-      "subtitle": "Da clic aquí para instalar"
-    },
-    "downloading": {
-      "title": "Descargando actualización",
-      "subtitle": "Te notificaremos cuando este lista"
-    },
-    "alreadyDownloading": {
-      "title": "Descargando actualización",
-      "subtitle": "Ya se está descargando una actualización"
-    },
-    "downloaded": {
-      "title": "Instalar Actualización",
-      "subtitle": "Descarga terminada. A continuación, Criptext se reiniciará para actualizarse"
-    }
-  },
-  "windows": {
-    "composer": {
-      "windowTitle": "Nuevo Correo Seguro",
-      "closeWarning": {
-        "title": "Advertencia",
-        "message": "Estás cerrando un mensaje que no ha sido enviado.",
-        "detail": "Para guardar el mensaje, haz clic en 'Guardar como Borrador'. El mensaje se guardará en su carpeta de Borradores.",
-        "responses": {
-          "discard": "Descartar cambios",
-          "continue": "Continuar escribiendo",
-          "save": "Guardar como Borrador"
+    "errorMessages": {
+        "UNABLE_TO_CONNECT": {
+            "name": "No se puede conectar",
+            "description": "No se ha podido establecer una conexión con el servidor."
+        },
+        "UNKNOWN": {
+            "name": "Error",
+            "description": "Ha ocurrido un error al procesar tu solicitud.\nCódigo: "
+        },
+        "PRINTING_ERROR": {
+            "name": "Error de impresión",
+            "description": "Falló al imprimir el documento. Intente de nuevo."
+        },
+        "SOURCE_ERROR": {
+            "name": "Error al mostrar.",
+            "description": "Error al mostrar el correo original. Intente de nuevo."
         }
-      }
     },
-    "menu": {
-      "template": {
-        "file": "Archivo",
-        "newEmail": "Nuevo correo",
-        "edit": "Editar",
-        "undo": "Deshacer",
-        "redo": "Rehacer",
-        "cut": "Cortar",
-        "copy": "Copiar",
-        "paste": "Pegar",
-        "selectAll": "Seleccionar todos",
-        "window": "Ventana",
-        "minimize": "Minimizar",
-        "close": "Cerrar",
-        "developer": "Desarrollador",
-        "toggleDeveloperTools": "Mostrar\/Ocultar herramientas de desarrollo",
-        "aboutCriptext": "Acerca de Criptext",
-        "services": "Servicios",
-        "hideCriptext": "Ocultar Criptext",
-        "hideOthers": "Ocultar Otros",
-        "showAll": "Mostrar Todo",
-        "quit": "Salir",
-        "checkForUpdates": "Buscar actualizaciones",
-        "bringAllToFront": "Traer todo al frente",
-        "criptext": "Criptext"
-      },
-      "trayIcon": {
-        "openCriptext": "Abrir Criptext",
-        "criptext": "Criptext",
-        "newEmail": "Nuevo Correo",
-        "quit": "Salir",
-        "checkForUpdates": "Buscar actualizaciones"
-      }
+    "updaterMessages": {
+        "error": {
+            "name": "Error al Actualizar",
+            "description": "Ha ocurrido un error al intentar descargar la actualización.\nPor favor, intenta más tarde"
+        },
+        "unknownError": "Desconocido",
+        "notAvailable": {
+            "name": "Actualización no disponible",
+            "description": "Ya estás en la última versión de Criptext"
+        },
+        "availableManual": {
+            "name": "Actualización Disponible",
+            "description": "Una nueva versión de Criptext está disponible.\n¿Te gustaría descargarla ahora?",
+            "confirmButton": "Sí",
+            "cancelButton": "No"
+        },
+        "availableAuto": {
+            "title": "¡Una nueva versión de Criptext está disponible!",
+            "subtitle": "Da clic aquí para instalar"
+        },
+        "downloading": {
+            "title": "Descargando actualización",
+            "subtitle": "Te notificaremos cuando este lista"
+        },
+        "alreadyDownloading": {
+            "title": "Descargando actualización",
+            "subtitle": "Ya se está descargando una actualización"
+        },
+        "downloaded": {
+            "title": "Instalar Actualización",
+            "subtitle": "Descarga terminada. A continuación, Criptext se reiniciará para actualizarse"
+        }
+    },
+    "windows": {
+        "composer": {
+            "windowTitle": "Nuevo Correo Seguro",
+            "closeWarning": {
+                "title": "Advertencia",
+                "message": "Estás cerrando un mensaje que no ha sido enviado.",
+                "detail": "Para guardar el mensaje, haz clic en 'Guardar como Borrador'. El mensaje se guardará en su carpeta de Borradores.",
+                "responses": {
+                    "discard": "Descartar cambios",
+                    "continue": "Continuar escribiendo",
+                    "save": "Guardar como Borrador"
+                }
+            }
+        },
+        "menu": {
+            "template": {
+                "file": "Archivo",
+                "newEmail": "Nuevo correo",
+                "edit": "Editar",
+                "undo": "Deshacer",
+                "redo": "Rehacer",
+                "cut": "Cortar",
+                "copy": "Copiar",
+                "paste": "Pegar",
+                "selectAll": "Seleccionar todos",
+                "window": "Ventana",
+                "minimize": "Minimizar",
+                "close": "Cerrar",
+                "developer": "Desarrollador",
+                "toggleDeveloperTools": "Mostrar\/Ocultar herramientas de desarrollo",
+                "aboutCriptext": "Acerca de Criptext",
+                "services": "Servicios",
+                "hideCriptext": "Ocultar Criptext",
+                "hideOthers": "Ocultar Otros",
+                "showAll": "Mostrar Todo",
+                "quit": "Salir",
+                "checkForUpdates": "Buscar actualizaciones",
+                "bringAllToFront": "Traer todo al frente",
+                "criptext": "Criptext"
+            },
+            "trayIcon": {
+                "openCriptext": "Abrir Criptext",
+                "criptext": "Criptext",
+                "newEmail": "Nuevo Correo",
+                "quit": "Salir",
+                "checkForUpdates": "Buscar actualizaciones"
+            }
+        }
+    },
+    "printStrings": {
+        "toTag": "Para",
+        "message": "Mensaje",
+        "at": "a las"
     }
-  },
-  "printStrings": {
-    "toTag": "Para",
-    "message": "Mensaje",
-    "at": "a las"
-  }
 }
