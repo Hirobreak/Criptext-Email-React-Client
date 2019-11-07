@@ -1,230 +1,231 @@
 {
-  "changePassword": {
-    "title": "Change the password for:",
-    "inputs": {
-      "newPassword": {
-        "placeholder": "New password"
-      },
-      "repeatNewPassword": {
-        "placeholder": "Repeat new password"
-      }
-    },
-    "button": "Change Password"
-  },
-  "deviceNotApproved": {
-    "title": "Sign In Rejected",
-    "message": "Your request to access this account was rejected by a verified device.",
-    "warning": {
-      "strong": "Warning:",
-      "text": "Multiple rejections could lead your device to be blacklisted from Criptext."
-    },
-    "passwordLoginLabel": "Sign In with password",
-    "sendCodeLabel": "Send Recovery Code"
-  },
-  "dialogContent": {
-    "confirmWaitingApprovalLogin": {
-      "cancelResponse": "Cancel",
-      "keepResponse": "Keep waiting",
-      "title": "Well, that's odd...",
-      "message": "Something has happened that is delaying this process.",
-      "detail": "Do you want to continue waiting?"
-    }
-  },
-  "errors":{
-    "loginFailed": {
-      "name": "Login error",
-      "description": "An error occurred while login. Please try again.\nCode: "
-    },
-    "tooManyDevices": {
-      "name": "Too many devices",
-      "description": "You already have too many active devices. \nFrom one of your trusted devices remove some inactive device and try again. If you can't access any of your trusted devices, contact support"
-    },
-    "tooManyRequests": {
-      "name": "Too many requests",
-      "description": "Too many consecutive attempts.\nPlease try again in ",
-      "button": "Okay"
-    },
-    "wrongCredentials": {
-      "name": "Wrong credentials",
-      "description":
-        "Incorrect username or password. Check credentials and try again."
-    }
-  },
-  "help": {
-    "need_help": "Need help?",
-    "contact_support": "Contact Support"
-  },
-  "last_activity": "Last activity",
-  "over_time": "Over 2 month ago",
-  "popUp": {
-    "deleteDevices": [
-      {
-        "title": "You have reached the device limit (10) on your account",
-        "paragraph": "Introduce your password to remove one or more devices.",
+    "changePassword": {
+        "title": "Change the password for:",
         "inputs": {
-          "password": {
-            "placeholder": "Password",
-            "error": "Wrong password"
-          }
+            "newPassword": {
+                "placeholder": "New password"
+            },
+            "repeatNewPassword": {
+                "placeholder": "Repeat new password"
+            }
+        },
+        "button": "Change Password"
+    },
+    "deviceNotApproved": {
+        "title": "Sign In Rejected",
+        "message": "Your request to access this account was rejected by a verified device.",
+        "warning": {
+            "strong": "Warning:",
+            "text": "Multiple rejections could lead your device to be blacklisted from Criptext."
+        },
+        "passwordLoginLabel": "Sign In with password",
+        "sendCodeLabel": "Send Recovery Code"
+    },
+    "dialogContent": {
+        "confirmWaitingApprovalLogin": {
+            "cancelResponse": "Cancel",
+            "keepResponse": "Keep waiting",
+            "title": "Well, that's odd...",
+            "message": "Something has happened that is delaying this process.",
+            "detail": "Do you want to continue waiting?"
+        }
+    },
+    "errors": {
+        "loginFailed": {
+            "name": "Login error",
+            "description": "An error occurred while login. Please try again.\nCode: "
+        },
+        "tooManyDevices": {
+            "name": "Too many devices",
+            "description": "You already have too many active devices. \nFrom one of your trusted devices remove some inactive device and try again. If you can't access any of your trusted devices, contact support"
+        },
+        "tooManyRequests": {
+            "name": "Too many requests",
+            "description": "Too many consecutive attempts.\nPlease try again in ",
+            "button": "Okay"
+        },
+        "wrongCredentials": {
+            "name": "Wrong credentials",
+            "description": "Incorrect username or password. Check credentials and try again."
+        }
+    },
+    "help": {
+        "need_help": "Need help?",
+        "contact_support": "Contact Support"
+    },
+    "last_activity": "Last activity",
+    "over_time": "Over 2 month ago",
+    "popUp": {
+        "deleteDevices": [
+            {
+                "title": "You have reached the device limit (10) on your account",
+                "paragraph": "Introduce your password to remove one or more devices.",
+                "inputs": {
+                    "password": {
+                        "placeholder": "Password",
+                        "error": "Wrong password"
+                    }
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "confirm": "Continue"
+                }
+            },
+            {
+                "title": "Remove Devices",
+                "buttons": {
+                    "cancel": "Back",
+                    "confirm": "Remove"
+                }
+            },
+            {
+                "title": "Remove Devices",
+                "paragraph": "You must remove (2) more devices before signing in.",
+                "buttons": {
+                    "cancel": "Cancel",
+                    "confirm": "Remove"
+                }
+            },
+            {
+                "title": "Session Expired",
+                "paragraph": "You've reached the maximum inactivity time permitted. Please sign in again.",
+                "buttons": {
+                    "confirm": "Okay"
+                }
+            }
+        ],
+        "forgotPassword": {
+            "200": {
+                "title": "Reset Password",
+                "paragraph": "A reset link was sent to",
+                "note": "The link will be valid for 30 minutes",
+                "buttons": {
+                    "confirm": "Okay"
+                }
+            },
+            "400": {
+                "title": "No Recovery Email",
+                "paragraph": "Password recovery is impossible as no recovery email was set on your account. For further assistance contact us:",
+                "buttons": {
+                    "confirm": "Okay"
+                }
+            },
+            "error": {
+                "title": "Reset Password",
+                "paragraph": "Failed to send the Reset password link. Try again",
+                "buttons": {
+                    "confirm": "Okay"
+                }
+            }
+        },
+        "recoveryCode": {
+            "title": "Recovery Code",
+            "message": "Please check your recovery email {0} and enter the code that was sent to you",
+            "alreadySent": "A code has already been sent to your recovery email {0} in the last hour. Please check your mailbox and enter the code",
+            "buttons": {
+                "confirm": "Okay",
+                "cancel": "Cancel"
+            },
+            "errors": {
+                "unknown": "Unable to validate code",
+                "wrong": "You entered a wrong code"
+            }
+        }
+    },
+    "signIn": {
+        "header": "Welcome to Criptext!",
+        "inputPlaceholder": "Email address or username",
+        "signInButtonLabel": "Sign In",
+        "signUpMessage": {
+            "text": "Not registered?",
+            "strong": "Sign up"
+        },
+        "errorMessages": {
+            "emailAddressNotExits": "Email address doesn't exist",
+            "emailAddressNotValidCriptext": "Not a valid Criptext address or username",
+            "usernameOrEmailAddressInvalid": "Invalid username or email address",
+            "usernameInvalid": "Invalid username",
+            "usernameNotExits": "Username doesn't exist",
+            "statusUnknown": "Unknown status code: ",
+            "usernameNotAvailable": "Username not available"
+        },
+        "usePassword": {
+            "title": "Warning",
+            "prefix": "If you sign in using your password your ",
+            "strong": " mailbox history from other devices won't be available ",
+            "suffix": "on this device. Would you like to continue?",
+            "leftButtonLabel": "Cancel",
+            "rightButtonLabel": "Continue"
+        },
+        "loginNewAccount": {
+            "title": "Sign In Warning",
+            "prefix": "Sign in with another account will delete all mail saved on this device of the accounts",
+            "suffix": "Would you like to continue?",
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Continue"
+        }
+    },
+    "signUp": {
+        "header": "Sign Up",
+        "subheader": "Create your Criptext account",
+        "buttons": {
+            "createAccount": "Create account"
+        },
+        "errorMessages": {
+            "USERNAME_INVALID": "At least 3 characters. Must begin with letters a-z.",
+            "USERNAME_EXISTS": "Username not available",
+            "USERNAME_UNCERTAIN": "Failed to check username",
+            "STATUS_UNKNOWN": "Unknown status code: ",
+            "FULLNAME_INVALID": "Invalid name",
+            "PASSWORD_INVALID": "Invalid password",
+            "PASSWORD_NOMATCH": "Passwords do not match",
+            "EMAIL_INVALID": "Invalid email address"
+        },
+        "form": {
+            "placeholders": {
+                "username": "Username",
+                "fullName": "Full name",
+                "password": "Password",
+                "confirmPassword": "Confirm password",
+                "recoveryEmail": "Recovery email address (optional)",
+                "checkbox": {
+                    "prefix": "I have read and agree with the ",
+                    "suffix": "Terms and Conditions"
+                }
+            }
+        },
+        "popUp": {
+            "warningRecoveryEmail": {
+                "title": "Warning!",
+                "prefix": "You did not set a Recovery Email, so",
+                "strong": " account recovery is impossible ",
+                "suffix": "if you forget your password",
+                "leftButtonLabel": "Cancel",
+                "rightButtonLabel": "Continue"
+            }
+        }
+    },
+    "signInToApprove": {
+        "title": "Sign In",
+        "message": "Check and approve on your existing Criptext device to continue",
+        "getPromptLabel": "Didn't get the prompt?",
+        "passwordLoginLabel": "Sign In with password",
+        "sendCodeLabel": "Send Recovery Code",
+        "buttons": {
+            "sending": "Sending...",
+            "resend": "Resend it"
+        }
+    },
+    "signInPassword": {
+        "sectionTitleSignIn": "Sign In",
+        "sectionTitleTwoFactorAuth": "Two-Factor Authentication",
+        "form": {
+            "passwordInputPlaceholder": "Password",
+            "forgotLabel": "Forgot?"
         },
         "buttons": {
-          "cancel": "Cancel",
-          "confirm": "Continue"
+            "nextLabel": "Next",
+            "confirmLabel": "Confirm"
         }
-      },{
-        "title": "Remove Devices",
-        "buttons": {
-          "cancel": "Back",
-          "confirm": "Remove"
-        }
-      },{
-        "title": "Remove Devices ",
-        "paragraph": "You must remove (2) more devices before signing in.",
-        "buttons": {
-          "cancel": "Cancel",
-          "confirm": "Remove"
-        }
-      },{
-        "title": "Session Expired",
-        "paragraph": "You've reached the maximum inactivity time permitted. Please sign in again.",
-        "buttons": {
-          "confirm": "Okay"
-        }
-      }
-    ],
-    "forgotPassword": {
-      "200": {
-        "title": "Reset Password",
-        "paragraph": "A reset link was sent to",
-        "note": "The link will be valid for 30 minutes",
-        "buttons": {
-          "confirm": "Okay"
-        }
-      },
-      "400": {
-        "title": "No Recovery Email",
-        "paragraph": "Password recovery is impossible as no recovery email was set on your account. For further assistance contact us:",
-        "buttons": {
-          "confirm": "Okay"
-        }
-      },
-      "error": {
-        "title": "Reset Password",
-        "paragraph": "Failed to send the Reset password link. Try again",
-        "buttons": {
-          "confirm": "Okay"
-        }
-      }
-    },
-    "recoveryCode": {
-      "title": "Recovery Code",
-      "message": "Please check your recovery email {0} and enter the code that was sent to you",
-      "alreadySent": "A code has already been sent to your recovery email {0} in the last hour. Please check your mailbox and enter the code",
-      "buttons": {
-        "confirm": "Okay",
-        "cancel": "Cancel"
-      },
-      "errors": {
-        "unknown": "Unable to validate code",
-        "wrong": "You entered a wrong code"
-      }
     }
-  },
-  "signIn": {
-    "header": "Welcome to Criptext!",
-    "inputPlaceholder": "Email address or username",
-    "signInButtonLabel": "Sign In",
-    "signUpMessage": {
-      "text": "Not registered?",
-      "strong": "Sign up"
-    },
-    "errorMessages": {
-      "emailAddressNotExits": "Email address doesn't exist",
-      "emailAddressNotValidCriptext": "Not a valid Criptext address or username",
-      "usernameOrEmailAddressInvalid": "Invalid username or email address",
-      "usernameInvalid": "Invalid username",
-      "usernameNotExits": "Username doesn't exist",
-      "statusUnknown": "Unknown status code: ",
-      "usernameNotAvailable": "Username not available"
-    },
-    "usePassword": {
-      "title": "Warning",
-      "prefix": "If you sign in using your password your",
-      "strong": " mailbox history from other devices won't be available ",
-      "suffix": "on this device. Would you like to continue?",
-      "leftButtonLabel": "Cancel",
-      "rightButtonLabel": "Continue"
-    },
-    "loginNewAccount": {
-      "title": "Sign In Warning",
-      "prefix": "Sign in with another account will delete all mail saved on this device of the accounts",
-      "strong": "",
-      "suffix": "Would you like to continue?",
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Continue"
-    }
-  },
-  "signUp": {
-    "header": "Sign Up",
-    "subheader": "Create your Criptext account",
-    "buttons": {
-      "createAccount": "Create account"
-    },
-    "errorMessages": {
-      "USERNAME_INVALID": "At least 3 characters. Must begin with letters a-z.",
-      "USERNAME_EXISTS": "Username not available",
-      "USERNAME_UNCERTAIN": "Failed to check username",
-      "STATUS_UNKNOWN": "Unknown status code: ",
-      "FULLNAME_INVALID": "Invalid name",
-      "PASSWORD_INVALID": "Invalid password",
-      "PASSWORD_NOMATCH": "Passwords do not match",
-      "EMAIL_INVALID": "Invalid email address"
-    },
-    "form": {
-      "placeholders": {
-        "username": "Username",
-        "fullName": "Full name",
-        "password": "Password",
-        "confirmPassword": "Confirm password",
-        "recoveryEmail": "Recovery email address (optional)",
-        "checkbox": {
-          "prefix": "I have read and agree with the ",
-          "suffix": "Terms and Conditions"
-        }
-      }
-    },
-    "popUp": {
-      "warningRecoveryEmail": {
-        "title": "Warning!",
-        "prefix": "You did not set a Recovery Email, so",
-        "strong": " account recovery is impossible ",
-        "suffix": "if you forget your password",
-        "leftButtonLabel": "Cancel",
-        "rightButtonLabel": "Continue"
-      }
-    }
-  },
-  "signInToApprove": {
-    "title": "Sign In",
-    "message": "Check and approve on your existing Criptext device to continue",
-    "getPromptLabel": "Didn't get the prompt?",
-    "passwordLoginLabel": "Sign In with password",
-    "sendCodeLabel": "Send Recovery Code",
-    "buttons": {
-      "sending": "Sending...",
-      "resend": "Resend it"
-    }
-  },
-  "signInPassword": {
-    "sectionTitleSignIn": "Sign In",
-    "sectionTitleTwoFactorAuth": "Two-Factor Authentication",
-    "form": {
-      "passwordInputPlaceholder": "Password",
-      "forgotLabel": "Forgot?"
-    },
-    "buttons": {
-      "nextLabel": "Next",
-      "confirmLabel": "Confirm"
-    }
-  }
 }
