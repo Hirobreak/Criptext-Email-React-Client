@@ -1,739 +1,739 @@
 {
-  "activity": {
-    "activity_feed": "Activity Feed",
-    "deleted": "Deleted",
-    "downloaded": "downloaded",
-    "new": "new",
-    "older": "older",
-    "opened": "opened",
-    "someone": "Someone"
-  },
-  "crash": {
-    "title": "Oops! It looks like something went wrong",
-    "counter": {
-      "a": "Criptext will restart in",
-      "b": "seconds"
+    "activity": {
+        "activity_feed": "Activity Feed",
+        "deleted": "Deleted",
+        "downloaded": "downloaded",
+        "new": "new",
+        "older": "older",
+        "opened": "opened",
+        "someone": "Someone"
     },
-    "buttons": {
-      "restart_now": "Restart now"
-    }
-  },
-  "emails": {
-    "contact_support": {
-      "subject": "Customer Support - Desktop",
-      "recipient": {
-        "name": " Contact Support"
-      },
-      "content": "Do not write below this line."
-    }
-  },
-  "errors": {
-    "password": {
-      "length": {
-        "a": "Must be at least",
-        "b": "characters"
-      },
-      "match": "Passwords do not match"
-    },
-    "email": {
-      "invalid": "Invalid email"
-    },
-    "tooManyRequests": {
-      "name": "Too many requests",
-      "description": "Too many consecutive attempts.\nPlease try again in "
-    }
-  },
-  "header": {
-    "add_labels": "Add labels",
-    "archive": "Archive",
-    "back": "Back",
-    "delete": "Delete",
-    "discard_drafts": "Discard drafts",
-    "dismiss": "Dismiss",
-    "move_to": "Move to",
-    "move_to_inbox": "Move to inbox",
-    "restore": "Restore",
-    "search": "search",
-    "search_options": {
-      "from": "from",
-      "from_placeholder": "People by name or email address",
-      "has_attachment": "Has attachment",
-      "subject": "subject",
-      "subject_placeholder": "Enter a text",
-      "to": "to",
-      "to_placeholder": "People by name or email address"
-    },
-    "selected": "Selected",
-    "selected_plural": "Selected",
-    "print_all": "Print All"
-  },
-  "labelsItems": {
-    "inbox": "Inbox",
-    "spam": "Spam",
-    "sent": "Sent",
-    "starred": "Starred",
-    "draft": "Draft",
-    "trash": "Trash",
-    "allmail": "All Mail",
-    "search": "Search"
-  },
-  "mailbox": {
-    "all": "all",
-    "bcc": "Bcc",
-    "cc": "Cc",
-    "date": "Date",
-    "delete": "Delete",
-    "delete_permanently": "Delete permanently",
-    "empty": {
-      "inbox": {
-        "header": "Inbox is empty",
-        "subheader": "Relax and enjoy"
-      },
-      "starred": {
-        "header": "No starred emails",
-        "subheader": "Nothing's highlighted yet"
-      },
-      "trash": {
-        "header": "Trash is empty",
-        "subheader": "Trash is empty"
-      },
-      "draft": {
-        "header": "No Drafts",
-        "subheader": "Nothing to do here"
-      },
-      "sent": {
-        "header": "No Sent Emails",
-        "subheader": "Send something ;)"
-      },
-      "spam": {
-        "header": "No Spam Email",
-        "subheader": "Let's try and keep it that way ;)"
-      },
-      "allmail": {
-        "header": "No Emails",
-        "subheader": "At all!"
-      },
-      "search": {
-        "header": "No search results",
-        "subheader": "Trash & Spam emails are not displayed"
-      },
-      "default": {
-        "header": "You have no emails yet",
-        "subheader": "Send an email to get started"
-      },
-      "loading": "Loading"
-    },
-    "forward": "Forward",
-    "from": "From",
-    "mark_as_read": "Mark as Read",
-    "mark_as_spam": "Mark as Spam",
-    "mark_as_unread": "Mark as Unread",
-    "move_to_trash": "Move to trash",
-    "more": "more",
-    "not_starred": "Not starred",
-    "of": "of",
-    "reply": "Reply",
-    "reply_all": "Reply All",
-    "starred": "Starred",
-    "subject": "Subject",
-    "to": "To",
-    "unread": "unread",
-    "print_email": "Print",
-    "print_thread": "Print All",
-    "me": "Me",
-    "unsend": "Unsend",
-    "email_source": "Show Source",
-    "empty_body": "This email has no content",
-    "empty_subject": "No subject",
-    "unsentText": "Unsent"
-  },
-  "messages": {
-    "change_password": {
-      "success": {
-        "description": "Password changed"
-      },
-      "error": {
-        "description": "Failed to change password. The password has not been modified"
-      }
-    },
-    "download_file": {
-      "success": {
-        "description": "Download successfully. Check your 'Downloads' folder"
-      },
-      "error": {
-        "description": "An error occurred during download. The file was not saved"
-      }
-    },
-    "save_draft": {
-      "success": {
-        "description": "Draft saved"
-      },
-      "error": {
-        "description": "Failed to save draft"
-      }
-    },
-    "emailSent": {
-      "success": {
-        "description": "Your message has been sent.",
-        "action": "View message"
-      },
-      "error": {
-        "description": "Failed to send your message"
-      }
-    },
-    "fetchEmails": {
-      "description": "Failed to fetch the emails. Check your connection and try again"
-    },
-    "internet": {
-      "description": "Connection reestablished"
-    },
-    "network": {
-      "description": "Not connected. Trying to reconnect",
-      "action": "Try now"
-    },
-    "new_device": {
-      "ask": "Are you trying to access from"
-    },
-    "recovery_email_change": {
-      "success": {
-        "description": "Recovery email changed"
-      },
-      "error": {
-        "description": "Failed to change recovery email. Check your connection and try again"
-      }
-    },
-    "recovery_email_link_confirmation": {
-      "success": {
-        "description": "Confirmation link sent. Check your inbox and confirm"
-      },
-      "error": {
-        "description": "Failed to send confirmation link"
-      }
-    },
-    "remember_share_passphrase": {
-      "description": "Remember to send the passphrase to your non-Criptext recipients"
-    },
-    "reset_password_send_link": {
-      "success": {
-        "description": "A reset link was sent to your recovery email. The link will be valid for 30 minutes"
-      },
-      "error": {
-        "description": "You need to set and confirm a Recovery Email to reset your password"
-      }
-    },
-    "remove_device": {
-      "success": {
-        "description": "Device removed"
-      },
-      "error": {
-        "description": "Failed to remove the device. Try again"
-      }
-    },
-    "remove_threads": {
-      "description": "Error moving emails. Please try again"
-    },
-    "send_open_event": {
-      "description": "Failed to send open email. Try again"
-    },
-    "set_reply_to": {
-      "success": {
-        "description": "'Reply To' email successfully set!"
-      },
-      "error": {
-        "description": "Failed to set 'Reply To' email. It has not been modified"
-      }
-    },
-    "trash": {
-      "description": "Messages that have been in Trash more than 30 days will be automatically deleted",
-      "action": "Empty Trash"
-    },
-    "two_factor_auth_turn_off": {
-      "description": "Two-Factor Authentication was turned off"
-    },
-    "unsend_email": {
-      "description": "Failed to unsend the email. Unknown status code:"
-    },
-    "unsend_email_expired": {
-      "description": "Failed to unsend the email. Time (1h) for unsending has already expired."
-    },
-    "update": {
-      "description": "A new version of Criptext is available!",
-      "action": "Click here to Install Update"
-    },
-    "update_labels": {
-      "description": "Failed updating labels. Please try again"
-    },
-    "update_thread_labels": {
-      "description": "Failed updating email labels. Please try again"
-    },
-    "update_unread_threads": {
-      "description": "Failed updating email status. Please try again"
-    },
-    "manual_sync": {
-      "description": "Mailbox Sync Complete"
-    }
-  },
-  "momentLocales": {
-    "months": "January_February_March_April_May_June_July_August_September_October_November_December",
-    "monthsShort": "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec",
-    "weekdays": "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday",
-    "weekdaysShort": "Sun_Mon_Tue_Wed_Thu_Fri_Sat",
-    "weekdaysMin": "Su_Mo_Tu_We_Th_Fr_Sa",
-    "relativeTime": {
-      "future": "In %s",
-      "past": "%s ago",
-      "s": "Few seconds",
-      "ss": "%s seconds",
-      "m": "A minute",
-      "mm": "%d minutes",
-      "h": "A hour",
-      "hh": "%d hours",
-      "d": "A day",
-      "dd": "%d days",
-      "M": "A month",
-      "MM": "More than 2 months",
-      "y": "More than 2 months",
-      "yy": "More than 2 months"
-    },
-    "yesterdayText": "Yesterday",
-    "atText": "at"
-  },
-  "notification": {
-    "export_backup": {
-      "success": {
-        "title": "Backup exported successfully!",
-        "message": "Click here to open backup location folder"
-      },
-      "error": {
-        "title": "Criptext",
-        "message": "Oops! Something went wrong to export backup"
-      }
-    },
-    "newEmailGroup": {
-      "prefix": "You have ",
-      "sufix": " new emails"
-    },
-    "openEmail": {
-      "title": "Criptext",
-      "message": "📩 Email <subject> was opened"
-    }
-  },
-  "popups": {
-    "account_deleted": {
-      "title": "Account deleted",
-      "paragraphs": {
-        "header": "Removing all data..."
-      }
-    },
-    "change_password": {
-      "title": "Change Password",
-      "paragraphs": {
-        "header": "Enter your password then your new password and confirm it"
-      },
-      "input": {
-        "old_password": {
-          "placeholder": "Enter old password",
-          "button": "Forgot password?"
+    "crash": {
+        "title": "Oops! It looks like something went wrong",
+        "counter": {
+            "a": "Criptext will restart in",
+            "b": "seconds"
         },
-        "new_password": {
-          "placeholder": "Enter new password"
-        },
-        "repeat_password": {
-          "placeholder": "Repeat new password"
+        "buttons": {
+            "restart_now": "Restart now"
         }
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Confirm"
     },
-    "change_recovery_email": {
-      "title": "Change Recovery Email",
-      "paragraph": {
-        "password": "To confirm enter your password",
-        "recovery_email": "Enter your new Recovery email",
-        "note": "Note",
-        "note_text": "Changing your recovery email will disable two-factor authentication"
-      },
-      "input": {
-        "recovery_email": {
-          "placeholder": "Enter new recovery email"
-        },
-        "password": {
-          "placeholder": "Enter password",
-          "button": "Forgot password?"
-        }
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Send"
-    },
-    "creating_backup_file": {
-      "title": "Creating Backup File",
-      "paragraph": "Please wait a moment..."
-    },
-    "delete_account": {
-      "title": "Delete My Account",
-      "paragraphs": {
-        "header": "Deleting your account will also delete all your emails in this and any other device in which your account is logged into. It will also enable anyone to register an account with your current email address."
-      },
-      "subtitle": "To confirm enter your password",
-      "inputs": {
-        "password": {
-          "placeholder": "Enter password",
-          "errorMessages": {
-            "length": {
-              "prefix": "Must be at least",
-              "suffix": "characters"
+    "emails": {
+        "contact_support": {
+            "subject": "Customer Support - Desktop",
+            "recipient": {
+                "name": " Contact Support"
             },
-            "wrong": "Wrong password"
-          }
+            "content": "Do not write below this line."
         }
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Send"
     },
-    "export_backup": {
-      "title": "Export Backup File",
-      "switchLabel": "Encrypt Backup",
-      "description": "If you lose/forget this passphrase you won't be able to restore this backup in the future",
-      "inputPassphrase": {
-        "placeholder": "Enter passphrase",
-        "errorMessages": {
-          "len": {
-            "prefix": "Must have",
-            "suffix": "characters"
-          }
-        }
-      },
-      "note": {
-        "header": "Note: ",
-        "content": "For your security we sugest you chose to encrypt the backup file. "
-      },
-      "buttons": {
-        "send": "Save File",
-        "cancel": "Cancel"
-      }
-    },
-    "logout": {
-      "title": "Logout",
-      "paragraphs": {
-        "header": "Are you sure you want to logout?"
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Continue"
-    },
-    "mailbox_sync": {
-      "title": "Sync Warning",
-      "paragraphs": {
-        "header": "Your entire mailbox data will be erased and replaced with the mailbox data from your other device.",
-        "question": "Are you sure you want to continue?"
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Confirm"
-    },
-    "manual_sync_device_authentication": {
-      "title": "Device Authentication",
-      "message": "Check and approve this sign in from your existing Criptext devices",
-      "getPromptLabel": "Didn't get the prompt?",
-      "buttons": {
-        "sending": "Sending...",
-        "resend": "Resend it"
-      },
-      "cancelSyncLabel": "Cancel Sync"
-    },
-    "manual_sync_device_rejected": {
-      "title": "Authentication Rejected",
-      "message": "Your request to access this account was rejected by a verified device",
-      "warning": {
-        "strong": "Warning",
-        "text": "Multiple rejections could lead your device to be blacklisted from Criptext"
-      },
-      "closeButtonLabel": "Okay"
-    },
-    "manual_sync_device_approved": {
-      "header": "Mailbox Sync",
-      "messages": {
-        "error": "Error syncing your mailbox",
-        "retry": "Retry?",
-        "waitingForMailbox": "Waiting for mailbox",
-        "keepWaiting": {
-          "title": "Sync taking longer than usual",
-          "message": "Would you like to continue waiting?"
-        },
-        "downloadingMailbox": "Downloading mailbox",
-        "decryptingMailbox": "Decrypting mailbox",
-        "syncComplete": "Sync complete"
-      },
-      "cancelSyncLabel": "Cancel sync",
-      "continueLabel": "Continue"
-    },
-    "permanently_delete": {
-      "title": "Warning!",
-      "message": "This elements will be permanently deleted and you will not be able to recover them. Are you sure?",
-      "leftButtonLabel": "Cancel",
-      "rightButtonLabel": "Confirm"
-    },
-    "remove_device": {
-      "title": "Remove Device",
-      "paragraphs": {
-        "header": "Removing access will automatically sign you out of your account on this device.",
-        "password": "To confirm enter your password"
-      },
-      "input": {
+    "errors": {
         "password": {
-          "placeholder": "Enter password"
-        }
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Remove"
-    },
-    "remove_label": {
-      "title": "Remove Label",
-      "message": "Are you sure you want to permanently remove label {0}",
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Remove"
-    },
-    "restore_backup_request": {
-      "title": "Restore Backup",
-      "paragraph": "Restore your emails from a local backup. This can be done later from Settings>Account>Restore Backup",
-      "button": "Select file",
-      "cancel": "Cancel"
-    },
-    "restore_backup_from_file": {
-      "title": "Restore from Backup File",
-      "paragraphs": {
-        "backed_up": "Backed up",
-        "size": "Size"
-      },
-      "input": {
-        "label": "Introduce your passphrase",
-        "placeholder": "Passphrase"
-      },
-      "buttons": {
-        "restore": "Restore",
-        "cancel": "Cancel"
-      }
-    },
-    "restore_backup_invalid_file": {
-      "title": "Invalid File",
-      "paragraph": "The selected file is either corrupted or belongs to another email account",
-      "button": "Change file",
-      "cancel": "Cancel"
-    },
-    "restore_backup_progress": {
-      "header": "Restoring",
-      "cancelLabel": "Cancel"
-    },
-    "set_reply_to": {
-      "title": "Set Reply To Email",
-      "paragraph": "When someone replies to one of your emails, they will reply to the address set here.",
-      "input": {
+            "length": {
+                "a": "Must be at least",
+                "b": "characters"
+            },
+            "match": "Passwords do not match"
+        },
         "email": {
-          "placeholder": "Enter an email"
+            "invalid": "Invalid email"
+        },
+        "tooManyRequests": {
+            "name": "Too many requests",
+            "description": "Too many consecutive attempts.\nPlease try again in "
         }
-      },
-      "errors": {
-        "email": "Wrong email! Format: example@criptext.com"
-      },
-      "cancelButtonLabel": "Cancel",
-      "confirmButtonLabel": "Set"
     },
-    "select_backup_folder": {
-      "title": "Select Backup Folder",
-      "note": {
-        "header": "Note: ",
-        "content": "Auto backups are not password protected"
-      },
-      "buttons": {
+    "header": {
+        "add_labels": "Add labels",
+        "archive": "Archive",
+        "back": "Back",
+        "delete": "Delete",
+        "discard_drafts": "Discard drafts",
+        "dismiss": "Dismiss",
+        "move_to": "Move to",
+        "move_to_inbox": "Move to inbox",
+        "restore": "Restore",
+        "search": "search",
+        "search_options": {
+            "from": "from",
+            "from_placeholder": "People by name or email address",
+            "has_attachment": "Has attachment",
+            "subject": "subject",
+            "subject_placeholder": "Enter a text",
+            "to": "to",
+            "to_placeholder": "People by name or email address"
+        },
+        "selected": "Selected",
+        "selected_plural": "Selected",
+        "print_all": "Print All"
+    },
+    "labelsItems": {
+        "inbox": "Inbox",
+        "spam": "Spam",
+        "sent": "Sent",
+        "starred": "Starred",
+        "draft": "Draft",
+        "trash": "Trash",
+        "allmail": "All Mail",
+        "search": "Search"
+    },
+    "mailbox": {
+        "all": "all",
+        "bcc": "Bcc",
+        "cc": "Cc",
+        "date": "Date",
+        "delete": "Delete",
+        "delete_permanently": "Delete permanently",
+        "empty": {
+            "inbox": {
+                "header": "Inbox is empty",
+                "subheader": "Relax and enjoy"
+            },
+            "starred": {
+                "header": "No starred emails",
+                "subheader": "Nothing's highlighted yet"
+            },
+            "trash": {
+                "header": "Trash is empty",
+                "subheader": "Trash is empty"
+            },
+            "draft": {
+                "header": "No Drafts",
+                "subheader": "Nothing to do here"
+            },
+            "sent": {
+                "header": "No Sent Emails",
+                "subheader": "Send something ;)"
+            },
+            "spam": {
+                "header": "No Spam Email",
+                "subheader": "Let's try and keep it that way ;)"
+            },
+            "allmail": {
+                "header": "No Emails",
+                "subheader": "At all!"
+            },
+            "search": {
+                "header": "No search results",
+                "subheader": "Trash & Spam emails are not displayed"
+            },
+            "default": {
+                "header": "You have no emails yet",
+                "subheader": "Send an email to get started"
+            },
+            "loading": "Loading"
+        },
+        "forward": "Forward",
+        "from": "From",
+        "mark_as_read": "Mark as Read",
+        "mark_as_spam": "Mark as Spam",
+        "mark_as_unread": "Mark as Unread",
+        "move_to_trash": "Move to trash",
+        "more": "more",
+        "not_starred": "Not starred",
+        "of": "of",
+        "reply": "Reply",
+        "reply_all": "Reply All",
+        "starred": "Starred",
+        "subject": "Subject",
+        "to": "To",
+        "unread": "unread",
+        "print_email": "Print",
+        "print_thread": "Print All",
+        "me": "Me",
+        "unsend": "Unsend",
+        "email_source": "Show Source",
+        "empty_body": "This email has no content",
+        "empty_subject": "No subject",
+        "unsentText": "Unsent"
+    },
+    "messages": {
+        "change_password": {
+            "success": {
+                "description": "Password changed"
+            },
+            "error": {
+                "description": "Failed to change password. The password has not been modified"
+            }
+        },
+        "download_file": {
+            "success": {
+                "description": "Download successfully. Check your 'Downloads' folder"
+            },
+            "error": {
+                "description": "An error occurred during download. The file was not saved"
+            }
+        },
+        "save_draft": {
+            "success": {
+                "description": "Draft saved"
+            },
+            "error": {
+                "description": "Failed to save draft"
+            }
+        },
+        "emailSent": {
+            "success": {
+                "description": "Your message has been sent.",
+                "action": "View message"
+            },
+            "error": {
+                "description": "Failed to send your message"
+            }
+        },
+        "fetchEmails": {
+            "description": "Failed to fetch the emails. Check your connection and try again"
+        },
+        "internet": {
+            "description": "Connection reestablished"
+        },
+        "network": {
+            "description": "Not connected. Trying to reconnect",
+            "action": "Try now"
+        },
+        "new_device": {
+            "ask": "Are you trying to access from"
+        },
+        "recovery_email_change": {
+            "success": {
+                "description": "Recovery email changed"
+            },
+            "error": {
+                "description": "Failed to change recovery email. Check your connection and try again"
+            }
+        },
+        "recovery_email_link_confirmation": {
+            "success": {
+                "description": "Confirmation link sent. Check your inbox and confirm"
+            },
+            "error": {
+                "description": "Failed to send confirmation link"
+            }
+        },
+        "remember_share_passphrase": {
+            "description": "Remember to send the passphrase to your non-Criptext recipients"
+        },
+        "reset_password_send_link": {
+            "success": {
+                "description": "A reset link was sent to your recovery email. The link will be valid for 30 minutes"
+            },
+            "error": {
+                "description": "You need to set and confirm a Recovery Email to reset your password"
+            }
+        },
+        "remove_device": {
+            "success": {
+                "description": "Device removed"
+            },
+            "error": {
+                "description": "Failed to remove the device. Try again"
+            }
+        },
+        "remove_threads": {
+            "description": "Error moving emails. Please try again"
+        },
+        "send_open_event": {
+            "description": "Failed to send open email. Try again"
+        },
+        "set_reply_to": {
+            "success": {
+                "description": "'Reply To' email successfully set!"
+            },
+            "error": {
+                "description": "Failed to set 'Reply To' email. It has not been modified"
+            }
+        },
+        "trash": {
+            "description": "Messages that have been in Trash more than 30 days will be automatically deleted",
+            "action": "Empty Trash"
+        },
+        "two_factor_auth_turn_off": {
+            "description": "Two-Factor Authentication was turned off"
+        },
+        "unsend_email": {
+            "description": "Failed to unsend the email. Unknown status code:"
+        },
+        "unsend_email_expired": {
+            "description": "Failed to unsend the email. Time (1h) for unsending has already expired."
+        },
+        "update": {
+            "description": "A new version of Criptext is available!",
+            "action": "Click here to Install Update"
+        },
+        "update_labels": {
+            "description": "Failed updating labels. Please try again"
+        },
+        "update_thread_labels": {
+            "description": "Failed updating email labels. Please try again"
+        },
+        "update_unread_threads": {
+            "description": "Failed updating email status. Please try again"
+        },
+        "manual_sync": {
+            "description": "Mailbox Sync Complete"
+        }
+    },
+    "momentLocales": {
+        "months": "January_February_March_April_May_June_July_August_September_October_November_December",
+        "monthsShort": "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec",
+        "weekdays": "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday",
+        "weekdaysShort": "Sun_Mon_Tue_Wed_Thu_Fri_Sat",
+        "weekdaysMin": "Su_Mo_Tu_We_Th_Fr_Sa",
+        "relativeTime": {
+            "future": "In %s",
+            "past": "%s ago",
+            "s": "Few seconds",
+            "ss": "%s seconds",
+            "m": "A minute",
+            "mm": "%d minutes",
+            "h": "A hour",
+            "hh": "%d hours",
+            "d": "A day",
+            "dd": "%d days",
+            "M": "A month",
+            "MM": "More than 2 months",
+            "y": "More than 2 months",
+            "yy": "More than 2 months"
+        },
+        "yesterdayText": "Yesterday ",
+        "atText": "at"
+    },
+    "notification": {
+        "export_backup": {
+            "success": {
+                "title": "Backup exported successfully!",
+                "message": "Click here to open backup location folder"
+            },
+            "error": {
+                "title": "Criptext",
+                "message": "Oops! Something went wrong to export backup"
+            }
+        },
+        "newEmailGroup": {
+            "prefix": "You have ",
+            "sufix": " new emails"
+        },
+        "openEmail": {
+            "title": "Criptext",
+            "message": "📩 Email <subject> was opened"
+        }
+    },
+    "popups": {
+        "account_deleted": {
+            "title": "Account deleted",
+            "paragraphs": {
+                "header": "Removing all data..."
+            }
+        },
+        "change_password": {
+            "title": "Change Password",
+            "paragraphs": {
+                "header": "Enter your password then your new password and confirm it"
+            },
+            "input": {
+                "old_password": {
+                    "placeholder": "Enter old password",
+                    "button": "Forgot password?"
+                },
+                "new_password": {
+                    "placeholder": "Enter new password"
+                },
+                "repeat_password": {
+                    "placeholder": "Repeat new password"
+                }
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Confirm"
+        },
+        "change_recovery_email": {
+            "title": "Change Recovery Email",
+            "paragraph": {
+                "password": "To confirm enter your password",
+                "recovery_email": "Enter your new Recovery email",
+                "note": "Note",
+                "note_text": "Changing your recovery email will disable two-factor authentication"
+            },
+            "input": {
+                "recovery_email": {
+                    "placeholder": "Enter new recovery email"
+                },
+                "password": {
+                    "placeholder": "Enter password",
+                    "button": "Forgot password?"
+                }
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Send"
+        },
+        "creating_backup_file": {
+            "title": "Creating Backup File",
+            "paragraph": "Please wait a moment..."
+        },
+        "delete_account": {
+            "title": "Delete My Account",
+            "paragraphs": {
+                "header": "Deleting your account will also delete all your emails in this and any other device in which your account is logged into. It will also enable anyone to register an account with your current email address."
+            },
+            "subtitle": "To confirm enter your password",
+            "inputs": {
+                "password": {
+                    "placeholder": "Enter password",
+                    "errorMessages": {
+                        "length": {
+                            "prefix": "Must be at least",
+                            "suffix": "characters"
+                        },
+                        "wrong": "Wrong password"
+                    }
+                }
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Send"
+        },
+        "export_backup": {
+            "title": "Export Backup File",
+            "switchLabel": "Encrypt Backup",
+            "description": "If you lose\/forget this passphrase you won't be able to restore this backup in the future",
+            "inputPassphrase": {
+                "placeholder": "Enter passphrase",
+                "errorMessages": {
+                    "len": {
+                        "prefix": "Must have",
+                        "suffix": "characters"
+                    }
+                }
+            },
+            "note": {
+                "header": "Note:",
+                "content": "For your security we sugest you chose to encrypt the backup file. "
+            },
+            "buttons": {
+                "send": "Save File",
+                "cancel": "Cancel"
+            }
+        },
+        "logout": {
+            "title": "Logout",
+            "paragraphs": {
+                "header": "Are you sure you want to logout?"
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Continue"
+        },
+        "mailbox_sync": {
+            "title": "Sync Warning",
+            "paragraphs": {
+                "header": "Your entire mailbox data will be erased and replaced with the mailbox data from your other device.",
+                "question": "Are you sure you want to continue?"
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Confirm"
+        },
+        "manual_sync_device_authentication": {
+            "title": "Device Authentication",
+            "message": "Check and approve this sign in from your existing Criptext devices",
+            "getPromptLabel": "Didn't get the prompt?",
+            "buttons": {
+                "sending": "Sending...",
+                "resend": "Resend it"
+            },
+            "cancelSyncLabel": "Cancel Sync"
+        },
+        "manual_sync_device_rejected": {
+            "title": "Authentication Rejected",
+            "message": "Your request to access this account was rejected by a verified device",
+            "warning": {
+                "strong": "Warning",
+                "text": "Multiple rejections could lead your device to be blacklisted from Criptext"
+            },
+            "closeButtonLabel": "Okay"
+        },
+        "manual_sync_device_approved": {
+            "header": "Mailbox Sync",
+            "messages": {
+                "error": "Error syncing your mailbox",
+                "retry": "Retry?",
+                "waitingForMailbox": "Waiting for mailbox",
+                "keepWaiting": {
+                    "title": "Sync taking longer than usual",
+                    "message": "Would you like to continue waiting?"
+                },
+                "downloadingMailbox": "Downloading mailbox",
+                "decryptingMailbox": "Decrypting mailbox",
+                "syncComplete": "Sync complete"
+            },
+            "cancelSyncLabel": "Cancel sync",
+            "continueLabel": "Continue"
+        },
+        "permanently_delete": {
+            "title": "Warning!",
+            "message": "This elements will be permanently deleted and you will not be able to recover them. Are you sure?",
+            "leftButtonLabel": "Cancel",
+            "rightButtonLabel": "Confirm"
+        },
+        "remove_device": {
+            "title": "Remove Device",
+            "paragraphs": {
+                "header": "Removing access will automatically sign you out of your account on this device.",
+                "password": "To confirm enter your password"
+            },
+            "input": {
+                "password": {
+                    "placeholder": "Enter password"
+                }
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Remove"
+        },
+        "remove_label": {
+            "title": "Remove Label",
+            "message": "Are you sure you want to permanently remove label {0}",
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Remove"
+        },
+        "restore_backup_request": {
+            "title": "Restore Backup",
+            "paragraph": "Restore your emails from a local backup. This can be done later from Settings>Account>Restore Backup",
+            "button": "Select file",
+            "cancel": "Cancel"
+        },
+        "restore_backup_from_file": {
+            "title": "Restore from Backup File",
+            "paragraphs": {
+                "backed_up": "Backed up",
+                "size": "Size"
+            },
+            "input": {
+                "label": "Introduce your passphrase",
+                "placeholder": "Passphrase"
+            },
+            "buttons": {
+                "restore": "Restore",
+                "cancel": "Cancel"
+            }
+        },
+        "restore_backup_invalid_file": {
+            "title": "Invalid File",
+            "paragraph": "The selected file is either corrupted or belongs to another email account",
+            "button": "Change file",
+            "cancel": "Cancel"
+        },
+        "restore_backup_progress": {
+            "header": "Restoring",
+            "cancelLabel": "Cancel"
+        },
+        "set_reply_to": {
+            "title": "Set Reply To Email",
+            "paragraph": "When someone replies to one of your emails, they will reply to the address set here.",
+            "input": {
+                "email": {
+                    "placeholder": "Enter an email"
+                }
+            },
+            "errors": {
+                "email": "Wrong email! Format: example@criptext.com"
+            },
+            "cancelButtonLabel": "Cancel",
+            "confirmButtonLabel": "Set"
+        },
+        "select_backup_folder": {
+            "title": "Select Backup Folder",
+            "note": {
+                "header": "Note:",
+                "content": "Auto backups are not password protected"
+            },
+            "buttons": {
+                "cancel": "Cancel",
+                "select": "Select"
+            }
+        },
+        "suspended_account": {
+            "title": "You are suspended",
+            "paragraph": "This account has been temporarily suspended by your administrator. Please contact your company administrator for more information."
+        },
+        "two_fa": {
+            "title": "2FA Enabled!",
+            "paragraph": "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.",
+            "button": "Got it"
+        }
+    },
+    "settings": {
+        "about": "about",
+        "account": "Account",
+        "action": "Action",
+        "appearance": "Appearance",
+        "mailbox_backup": {
+            "auto": {
+                "label": "Auto Backup",
+                "description": "Note: Auto backups are not password protected",
+                "options": {
+                    "last_backup": "Last Backup",
+                    "backup_now": "Back up Now",
+                    "backup_folder": "Back Up Folder",
+                    "frequency": "Frequency",
+                    "frequencyLabels": {
+                        "daily": "Daily",
+                        "weekly": "Weekly",
+                        "monthly": "Monthly"
+                    }
+                }
+            },
+            "manual": {
+                "label": "Mailbox Backup",
+                "button": "Export Backup File",
+                "description": "Generate a backup of your inbox that can be exported to external drives"
+            },
+            "progress": {
+                "backing_up_mailbox": "Exporting backup file. This can take a few minutes...",
+                "backup_mailbox_success": "Backup file exported successfully!"
+            }
+        },
+        "restore_backup": {
+            "label": "Restore Backup",
+            "button": "Restore",
+            "description": "Easily restore your mailbox from a local backup file."
+        },
         "cancel": "Cancel",
-        "select": "Select"
-      }
+        "change": "Change",
+        "configurations": "Configurations",
+        "contact_support": "Contact Support",
+        "check_for_updates": "Check for updates",
+        "create_new_label": "Create new label",
+        "criptext_libraries": {
+            "label": "Criptext Libraries",
+            "description": "See some of the ingredients that have made Criptext possible"
+        },
+        "current_device": "Current Device",
+        "delete_account": {
+            "label": "Delete Account",
+            "description": "This action can’t be reversed",
+            "button": "Delete permanently"
+        },
+        "disabled": "disabled",
+        "edit": "Edit",
+        "email": "Email",
+        "enabled": "enabled",
+        "encrypt_to_externals": "Encrypt To Externals",
+        "encrypt_to_externals_description": "If enabled, when sending an email you will be asked for a password to encrypt the email for non-criptext recipient. If disable, criptext addresses will receive an encrypted email while others won't.",
+        "enter_new_label_name": "Enter new label name",
+        "faq": {
+            "label": "FAQ",
+            "description": "Get common questions answered"
+        },
+        "fullname": "Full Name",
+        "general": "general",
+        "language": {
+            "label": "Language",
+            "description": "Select a prefered language"
+        },
+        "last_activity": "Last activity",
+        "linked_devices": "Linked devices",
+        "logout": "Logout",
+        "mailbox_sync": {
+            "label": "Sync Mailbox",
+            "description": "Lets you transfer your entire mailbox from another device into this one",
+            "button": "Sync",
+            "tooltip": "You must have at least one additional device to sync"
+        },
+        "not_verified": "not verified",
+        "notifications": "Notifications",
+        "notification_preview": {
+            "label": "Show Notification Preview",
+            "description": "Preview email content in desktop notification"
+        },
+        "off": "off",
+        "on": "on",
+        "over_time": "Over 2 month ago",
+        "password": {
+            "label": "Password",
+            "description": "Choose a strong password, don’t reuse it"
+        },
+        "profile": "profile",
+        "privacy": "Privacy",
+        "privacy_policy": {
+            "label": "Privacy Policy",
+            "description": "See our commitment to protecting your privacy"
+        },
+        "read_receipts": "Read Receipts",
+        "read_receipts_description": "If you turn off read receipts, you won't be able to see read receipts from other people",
+        "recovery_email": {
+            "label": "Recovery Email",
+            "description": "This is in case you forget your password and need to reset it"
+        },
+        "recovery_not_set": "Recovery email not configured",
+        "remove": "Remove",
+        "reply_to": "Reply To",
+        "reply_to_email": "Reply To",
+        "reply_to_not_set": "When someone replies to one of your emails, they will reply to the address set here.",
+        "resend_link": "resend link",
+        "see_more": "See More",
+        "set_email": "Set Email",
+        "show_in_label_list": "Show in label list",
+        "signature": "Signature",
+        "sign_footer": {
+            "description": "Show “Sent with Criptext” footer"
+        },
+        "system_labels": "System Labels",
+        "theme": {
+            "label": "Theme",
+            "description": "Personalize your experience"
+        },
+        "themeLabels": {
+            "light": "Light",
+            "dark": "Dark"
+        },
+        "terms_of_service": {
+            "label": "Terms of service",
+            "description": "Our lawyers really emphasized this be here ;)"
+        },
+        "trusted_devices": "trusted devices",
+        "two_factor_authentication": "Two-Factor Authentication",
+        "two_factor_not_available_text": "To enable Two-Factor Authentication you must set and verify a recovery email",
+        "user_labels": "User Labels",
+        "verified": "verified"
     },
-    "suspended_account": {
-      "title": "You are suspended",
-      "paragraph": "This account has been temporarily suspended by your administrator. Please contact your company administrator for more information."
+    "sidebar": {
+        "compose": "compose",
+        "enter_new_label": "enter new label",
+        "invite_a_friend": "Invite a friend",
+        "labels": "Labels",
+        "new_label": "New label",
+        "settings": "Settings"
     },
-    "two_fa": {
-      "title": "2FA Enabled!",
-      "paragraph": "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.",
-      "button": "Got it"
-    }
-  },
-  "settings": {
-    "about": "about",
-    "account": "Account",
-    "action": "Action",
-    "appearance": "Appearance",
-    "mailbox_backup": {
-      "auto": {
-        "label": "Auto Backup",
-        "description": "Note: Auto backups are not password protected",
-        "options": {
-          "last_backup": "Last Backup",
-          "backup_now": "Back up Now",
-          "backup_folder": "Back Up Folder",
-          "frequency": "Frequency",
-          "frequencyLabels": {
-            "daily": "Daily",
-            "weekly": "Weekly",
-            "monthly": "Monthly"
-          }
+    "tooltips": {
+        "secure": "This email is encrypted"
+    },
+    "userGuide": {
+        "buttonCompose": {
+            "text": "Start by sending a new email",
+            "buttonLabel": "Okay"
+        },
+        "emailRead": {
+            "text": "Looks like this email was read!",
+            "buttonLabel": "Got it"
+        },
+        "activityFeed": {
+            "text": "See which emails have been read and by whom",
+            "buttonLabel": "Okay"
+        },
+        "secureMessage": {
+            "text": "Lock icon means this email is encrypted",
+            "buttonLabel": "Got it"
         }
-      },
-      "manual": {
-        "label": "Mailbox Backup",
-        "button": "Export Backup File",
-        "description": "Generate a backup of your inbox that can be exported to external drives"
-      },
-      "progress": {
-        "backing_up_mailbox": "Exporting backup file. This can take a few minutes...",
-        "backup_mailbox_success": "Backup file exported successfully!"
-      }
     },
-    "restore_backup": {
-      "label": "Restore Backup",
-      "button": "Restore",
-      "description": "Easily restore your mailbox from a local backup file."
-    },
-    "cancel": "Cancel",
-    "change": "Change",
-    "configurations": "Configurations",
-    "contact_support": "Contact Support",
-    "check_for_updates": "Check for updates",
-    "create_new_label": "Create new label",
-    "criptext_libraries": {
-      "label": "Criptext Libraries",
-      "description": "See some of the ingredients that have made Criptext possible"
-    },
-    "current_device": "Current Device",
-    "delete_account": {
-      "label": "Delete Account",
-      "description": "This action can’t be reversed",
-      "button": "Delete permanently"
-    },
-    "disabled": "disabled",
-    "edit": "Edit",
-    "email": "Email",
-    "enabled": "enabled",
-    "encrypt_to_externals": "Encrypt To Externals",
-    "encrypt_to_externals_description": "If enabled, when sending an email you will be asked for a password to encrypt the email for non-criptext recipient. If disable, criptext addresses will receive an encrypted email while others won't.",
-    "enter_new_label_name": "Enter new label name",
-    "faq": {
-      "label": "FAQ",
-      "description": "Get common questions answered"
-    },
-    "fullname": "Full Name",
-    "general": "general",
-    "language": {
-      "label": "Language",
-      "description": "Select a prefered language"
-    },
-    "last_activity": "Last activity",
-    "linked_devices": "Linked devices",
-    "logout": "Logout",
-    "mailbox_sync": {
-      "label": "Sync Mailbox",
-      "description": "Lets you transfer your entire mailbox from another device into this one",
-      "button": "Sync",
-      "tooltip": "You must have at least one additional device to sync"
-    },
-    "not_verified": "not verified",
-    "notifications": "Notifications",
-    "notification_preview": {
-      "label": "Show Notification Preview",
-      "description": "Preview email content in desktop notification"
-    },
-    "off": "off",
-    "on": "on",
-    "over_time": "Over 2 month ago",
-    "password": {
-      "label": "Password",
-      "description": "Choose a strong password, don’t reuse it"
-    },
-    "profile": "profile",
-    "privacy": "Privacy",
-    "privacy_policy": {
-      "label": "Privacy Policy",
-      "description": "See our commitment to protecting your privacy"
-    },
-    "read_receipts": "Read Receipts",
-    "read_receipts_description": "If you turn off read receipts, you won't be able to see read receipts from other people",
-    "recovery_email": {
-      "label": "Recovery Email",
-      "description": "This is in case you forget your password and need to reset it"
-    },
-    "recovery_not_set": "Recovery email not configured",
-    "remove": "Remove",
-    "reply_to": "Reply To",
-    "reply_to_email": "Reply To",
-    "reply_to_not_set": "When someone replies to one of your emails, they will reply to the address set here.",
-    "resend_link": "resend link",
-    "see_more": "See More",
-    "set_email": "Set Email",
-    "show_in_label_list": "Show in label list",
-    "signature": "Signature",
-    "sign_footer": {
-      "description": "Show “Sent with Criptext” footer"
-    },
-    "system_labels": "System Labels",
-    "theme": {
-      "label": "Theme",
-      "description": "Personalize your experience"
-    },
-    "themeLabels": {
-      "light": "Light",
-      "dark": "Dark"
-    },
-    "terms_of_service": {
-      "label": "Terms of service",
-      "description": "Our lawyers really emphasized this be here ;)"
-    },
-    "trusted_devices": "trusted devices",
-    "two_factor_authentication": "Two-Factor Authentication",
-    "two_factor_not_available_text": "To enable Two-Factor Authentication you must set and verify a recovery email",
-    "user_labels": "User Labels",
-    "verified": "verified"
-  },
-  "sidebar": {
-    "compose": "compose",
-    "enter_new_label": "enter new label",
-    "invite_a_friend": "Invite a friend",
-    "labels": "Labels",
-    "new_label": "New label",
-    "settings": "Settings"
-  },
-  "tooltips": {
-    "secure": "This email is encrypted"
-  },
-  "userGuide": {
-    "buttonCompose": {
-      "text": "Start by sending a new email",
-      "buttonLabel": "Okay"
-    },
-    "emailRead": {
-      "text": "Looks like this email was read!",
-      "buttonLabel": "Got it"
-    },
-    "activityFeed": {
-      "text": "See which emails have been read and by whom",
-      "buttonLabel": "Okay"
-    },
-    "secureMessage": {
-      "text": "Lock icon means this email is encrypted",
-      "buttonLabel": "Got it"
+    "welcome": {
+        "step_1": {
+            "title": "Welcome!",
+            "description": "Your secure email experience starts now. Be ready for privacy without compromise."
+        },
+        "step_2": {
+            "title": "Strong Privacy",
+            "description": "Criptext doesn't collect email data. Your emails are only stored on your device."
+        },
+        "step_3": {
+            "title": "The power is yours",
+            "description": "You create information, we believe you have a right to own it."
+        },
+        "skip_tour": "Skip tour"
     }
-  },
-  "welcome": {
-    "step_1": {
-      "title": "Welcome!",
-      "description": "Your secure email experience starts now. Be ready for privacy without compromise."
-    },
-    "step_2": {
-      "title": "Strong Privacy",
-      "description": "Criptext doesn`t collect email data. Your emails are only stored on your device."
-    },
-    "step_3": {
-      "title": "The power is yours",
-      "description": "You create information, we believe you have a right to own it."
-    },
-    "skip_tour": "Skip tour"
-  }
 }
