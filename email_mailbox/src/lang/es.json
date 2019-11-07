@@ -1,739 +1,739 @@
 {
-  "activity": {
-    "activity_feed": "Actividad Reciente",
-    "deleted": "Borrado",
-    "downloaded": "ha descargado",
-    "new": "nuevo",
-    "older": "antiguo",
-    "opened": "ha abierto",
-    "someone": "Alguien"
-  },
-  "crash": {
-    "title": "¡Ups! Parece que algo falló",
-    "counter": {
-      "a": "Criptext se reiniciará en",
-      "b": "segundos"
+    "activity": {
+        "activity_feed": "Actividad Reciente",
+        "deleted": "Borrado",
+        "downloaded": "ha descargado",
+        "new": "nuevo",
+        "older": "antiguo",
+        "opened": "ha abierto",
+        "someone": "Alguien"
     },
-    "buttons": {
-      "restart_now": "Reiniciar ya"
-    }
-  },
-  "emails": {
-    "contact_support": {
-      "subject": "Soporte - Escritorio",
-      "recipient": {
-        "name": " Soporte" 
-      },
-      "content": "No escriba debajo de esta línea."
-    }
-  },
-  "errors": {
-    "password": {
-      "length": {
-        "a": "Debe ser al menos",
-        "b": "caracteres"
-      },
-      "match": "La contraseña no coincide"
-    },
-    "email": {
-      "invalid": "Correo inválido"
-    },
-    "tooManyRequests": {
-      "name": "Limite de peticiones excedido",
-      "description": "Has realizado muchas peticiones consecutivas.\nPor favor, intenta nuevamente dentro de "
-    }
-  },
-  "header": {
-    "add_labels": "Agregar etiquetas",
-    "archive": "Archivar",
-    "back": "Atrás",
-    "delete": "Eliminar",
-    "discard_drafts": "Descartar borradores",
-    "dismiss": "Descartar",
-    "move_to": "Mover a",
-    "move_to_inbox": "Mover a Recibidos",
-    "restore": "Restaurar",
-    "search": "buscar",
-    "search_options": {
-      "from": "de",
-      "from_placeholder": "Usuarios por nombre o correo electrónico",
-      "has_attachment": "Tiene adjunto",
-      "subject": "asunto",
-      "subject_placeholder": "Ingresar texto",
-      "to": "para",
-      "to_placeholder": "Usuarios por nombre o correo electrónico"
-    },
-    "selected": "Seleccionado",
-    "selected_plural": "Seleccionados",
-    "print_all": "Imprimir todo"
-  },
-  "labelsItems": {
-    "inbox": "Recibidos",
-    "spam": "Spam",
-    "sent": "Enviados",
-    "starred": "Favoritos",
-    "draft": "Borrador",
-    "trash": "Papelera",
-    "allmail": "Todos",
-    "search": "Buscar"
-  },
-  "mailbox": {
-    "all": "todos",
-    "bcc": "Bcc",
-    "cc": "Cc",
-    "date": "Fecha",
-    "delete": "Borrar",
-    "delete_permanently": "Borrar permanentemente",
-    "empty": {
-      "inbox": {
-        "header": "Bandeja de Recibidos vacía",
-        "subheader": "Todo tranquilo y sereno"
-      },
-      "starred": {
-        "header": "No hay correos Favoritos",
-        "subheader": "Resalta tus correos importantes"
-      },
-      "trash": {
-        "header": "Papelera vacía",
-        "subheader": "Que limpio se ve todo ;)"
-      },
-      "draft": {
-        "header": "No hay Borradores",
-        "subheader": "Todo bien aquí ;)"
-      },
-      "sent": {
-        "header": "No hay correos Enviados",
-        "subheader": "Empieza enviando uno ;)"
-      },
-      "spam": {
-        "header": "No tienes Spam",
-        "subheader": "¡Qué bien! Mantengamoslo así"
-      },
-      "allmail": {
-        "header": "No hay Correos",
-        "subheader": "¡En lo absoluto!"
-      },
-      "search": {
-        "header": "No hay resultados de búsqueda",
-        "subheader": "Correos en Papelera & Spam no son mostrados"
-      },
-      "default": {
-        "header": "No tienes correos todavía",
-        "subheader": "Envía un correo para comenzar"
-      },
-      "loading": "Cargando"
-    },
-    "forward": "Reenviar",
-    "from": "De",
-    "mark_as_read": "Marcar como leído",
-    "mark_as_spam": "Marcar como Spam",
-    "mark_as_unread": "Marcar como no leído",
-    "more": "más",
-    "move_to_trash": "Mover a papelera",
-    "not_starred": "No favorito",
-    "of": "de",
-    "reply": "Responder",
-    "reply_all": "A todos",
-    "starred": "Favorito",
-    "subject": "Asunto",
-    "to": "Para",
-    "unread": "no leídos",
-    "print_email": "Imprimir",
-    "print_thread": "Imprimir todo",
-    "me": "Yo",
-    "unsend": "Retractar",
-    "email_source": "Mostrar Original",
-    "empty_body": "Este correo no tiene contenido",
-    "empty_subject": "Sin asunto",
-    "unsentText": "Retractado"
-  },
-  "messages": {
-    "change_password": {
-      "success": {
-        "description": "Se ha modificado su contraseña"
-      },
-      "error": {
-        "description": "Error al cambiar la contraseña. La contraseña no ha sido modificada"
-      }
-    },
-    "download_file": {
-      "success": {
-        "description": "Descarga exitosa. Revisa tu carpeta de 'Descargas'"
-      },
-      "error": {
-        "description": "Un error ha ocurrido durante la descarga. El archivo no fue guardado"
-      }
-    },
-    "save_draft": {
-      "success": {
-        "description": "Borrador guardado"
-      },
-      "error": {
-        "description": "Falló al guardar el borrador"
-      }
-    },
-    "emailSent": {
-      "success": {
-        "description": "Tu correo ha sido enviado.",
-        "action": "Ver Correo"
-      },
-      "error": {
-        "description": "Error al enviar tu correo"
-      }
-    },
-    "fetchEmails": {
-      "description": "Error al obtener correos. Comprueba tu conexión y vuelve a intentarlo"
-    },
-    "internet": {
-      "description": "Conexión restablecida"
-    },
-    "network": {
-      "description": "Sin conexión. Intentando reconectar",
-      "action": "Reconectar ahora"
-    },
-    "new_device": {
-      "ask": "Estás tratando de acceder desde"
-    },
-    "recovery_email_change": {
-      "success": {
-        "description": "Correo de recuperación ha sido modificado"
-      },
-      "error": {
-        "description": "Error al cambiar el correo de recuperación. Comprueba tu conexión y vuelve a intentarlo"
-      }
-    },
-    "recovery_email_link_confirmation": {
-      "success": {
-        "description": "Enlace de confirmación enviado. Revisa tu buzón y confírmalo."
-      },
-      "error": {
-        "description": "Error al enviar el enlace de confirmación."
-      }
-    },
-    "remember_share_passphrase": {
-      "description": "Recuerda enviar tu clave a los destinatarios que no son de Criptext"
-    },
-    "reset_password_send_link": {
-      "success": {
-        "description": "Se ha enviado un enlace para restablecer la contraseña a tu correo de recuperación. El enlace será valido por 30 minutos"
-      },
-      "error": {
-        "description": "Necesitas establecer y confirmar un Correo de Recuperación para restablecer tu contraseña"
-      }
-    },
-    "remove_device": {
-      "success": {
-        "description": "Dispositivo eliminado"
-      },
-      "error": {
-        "description": "Error al eliminar el dispositivo. Inténtalo de nuevo"
-      }
-    },
-    "remove_threads": {
-      "description": "Error al mover correos. Inténtalo de nuevo"
-    },
-    "send_open_event": {
-      "description": "Error al enviar notificación de leído. Inténtalo de nuevo"
-    },
-    "set_reply_to": {
-      "success": {
-        "description": "Correo de respuesta establecido satisfactoriamente!"
-      },
-      "error": {
-        "description": "Error al establecer correo de respuesta. No fue modificado."
-      }
-    },
-    "trash": {
-      "description": "Correos que estén en la papelera más de 30 días serán eliminados automáticamente",
-      "action": "Vaciar Papelera"
-    },
-    "two_factor_auth_turn_off": {
-      "description": "Autenticación dos factores fue desactivada"
-    },
-    "unsend_email": {
-      "description": "Error al retractar el correo. Código de error desconocido:"
-    },
-    "unsend_email_expired": {
-      "description": "Error al retractar el correo. Tiempo (1h) para retractar ya expiró."
-    },
-    "update": {
-      "description": "¡Una nueva versión de Criptext está disponible!",
-      "action": "Clic aquí para instalar la actualización"
-    },
-    "update_labels": {
-      "description": "Error al actualizar las etiquetas. Inténtalo de nuevo"
-    },
-    "update_thread_labels": {
-      "description": "Error al actualizar las etiquetas de correo. Inténtalo de nuevo"
-    },
-    "update_unread_threads": {
-      "description": "Error al actualizar el estado del correo. Inténtalo de nuevo"
-    },
-    "manual_sync": {
-      "description": "Sincronización de Buzón Completa"
-    }
-  },
-  "momentLocales": {
-    "months": "Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre",
-    "monthsShort": "Ene_Feb_Mar_Abr_May_Jun_Jul_Ago_Sep_Oct_Nov_Dic",
-    "weekdays": "Domingo_Lunes_Martes_Miércoles_Jueves_Viernes_Sábado",
-    "weekdaysShort": "Dom_Lun_Mar_Mie_Jue_Vie_Sab",
-    "weekdaysMin": "Do_Lu_Ma_Mi_Ju_Vi_Sa",
-    "relativeTime" : {
-      "future": "En %s",
-      "past": "Hace %s",
-      "s": "Pocos segundos",
-      "ss": "%s segundos",
-      "m": "Un minuto",
-      "mm": "%d minutos",
-      "h": "Una hora",
-      "hh": "%d horas",
-      "d": "Un día",
-      "dd": "%d días",
-      "M": "Un mes",
-      "MM": "Más de 2 meses",
-      "y": "Más de 2 meses",
-      "yy": "Más de 2 meses"
-    },
-    "yesterdayText": "Ayer",
-    "atText": "a las"
-  },
-  "notification": {
-    "export_backup": {
-      "success": {
-        "title": "Respaldo exportado exitosamente!",
-        "message": "Da clic aquí para abrir la ubicación del archivo de respaldo"
-      },
-      "error": {
-        "title": "Criptext",
-        "message": "Ups! Algo salió mal al crear tu archivo de respaldo"
-      }
-    },
-    "newEmailGroup": {
-      "prefix": "Tienes ",
-      "sufix": " correos nuevos"
-    },
-    "openEmail": {
-      "title": "Criptext",
-      "message": "📩 El correo <subject> fue abierto"
-    }
-  },
-  "popups": {
-    "account_deleted": {
-      "title": "Cuenta eliminada",
-      "paragraphs": {
-        "header": "Eliminando toda la información..."
-      }
-    },
-    "change_password": {
-      "title": "Cambiar Contraseña",
-      "paragraphs": {
-        "header": "Introduce tu contraseña, luego tu nueva contraseña y confírmala"
-      },
-      "input": {
-        "old_password": {
-          "placeholder": "Introduce la contraseña vieja",
-          "button": "¿Olvidaste tu contraseña?"
+    "crash": {
+        "title": "¡Ups! Parece que algo falló",
+        "counter": {
+            "a": "Criptext se reiniciará en",
+            "b": "segundos"
         },
-        "new_password": {
-          "placeholder": "Introduce la contraseña nueva"
-        },
-        "repeat_password": {
-          "placeholder": "Repite la contraseña nueva"
+        "buttons": {
+            "restart_now": "Reiniciar ya"
         }
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Guardar"
     },
-    "change_recovery_email": {
-      "title": "Correo de Recuperación",
-      "paragraph": {
-        "password": "Para confirmar introduce to contraseña",
-        "recovery_email": "Introduce tu nuevo correo de recuperación",
-        "note": "Nota",
-        "note_text": "Cambiar tu correo de recuperación deshabilitará la autenticación de dos factores"
-      },
-      "input": {
-        "recovery_email": {
-          "placeholder": "Introduce el nuevo correo"
-        },
-        "password": {
-          "placeholder": "Introduce la contraseña",
-          "button": "¿Olvidaste tu contraseña?"
-        }
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Cambiar"
-    },
-    "creating_backup_file": {
-      "title": "Creando Respaldo",
-      "paragraph": "Por favor, espere un momento..."
-    },
-    "delete_account": {
-      "title": "Eliminar Mi Cuenta",
-      "paragraphs": {
-        "header": "Al eliminar tu cuenta se borrarán todos los datos de todos tus dispositivos y se deshabilitará este nombre de usuario permanentemente. ¿Estás seguro de que quieres eliminar tu cuenta?"
-      },
-      "subtitle": "Para confirmar, ingresa tu contraseña",
-      "inputs": {
-        "password": {
-          "placeholder": "Ingresa tu contraseña",
-          "errorMessages": {
-            "length": {
-              "prefix": "Debe tener al menos",
-              "suffix": "caracteres"
+    "emails": {
+        "contact_support": {
+            "subject": "Soporte - Escritorio",
+            "recipient": {
+                "name": " Soporte"
             },
-            "wrong": "Contraseña incorrecta"
-          }
+            "content": "No escriba debajo de esta línea."
         }
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Enviar"
     },
-    "export_backup": {
-      "title": "Exportar Respaldo",
-      "switchLabel": "Encriptar respaldo",
-      "description": "Si olvidas/pierdes esta clave no podrás restaurar tu respaldo en el futuro",
-      "inputPassphrase": {
-        "placeholder": "Ingrese clave",
-        "errorMessages": {
-          "len": {
-            "prefix": "Debe tener",
-            "suffix": "caracteres"
-          }
-        }
-      },
-      "note": {
-        "header": "Nota: ",
-        "content": "Por tu seguridad, sugerimos encriptar el respaldo"
-      },
-      "buttons": {
-        "send": "Guardar",
-        "cancel": "Cancelar"
-      }
-    },
-    "logout": {
-      "title": "Cerrar sesión",
-      "paragraphs": {
-        "header": "¿Estás seguro que quieres cerrar sesión?"
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Continuar"
-    },
-    "mailbox_sync": {
-      "title": "Advertencia de Sincronización",
-      "paragraphs": {
-        "header": "Todos los datos de su buzón se borrarán y se reemplazarán con los datos del buzón de su otro dispositivo.",
-        "question": "¿Estás seguro que deseas continuar?"
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Confirmar"
-    },
-    "manual_sync_device_authentication": {
-      "title": "Autenticación de dispositivo",
-      "message": "Revisa y aprueba este inicio de sesión desde uno de tus dispositivos Criptext",
-      "getPromptLabel": "¿No recibiste el aviso?",
-      "buttons": {
-        "sending": "Enviando...",
-        "resend": "Reenviarlo"
-      },
-      "cancelSyncLabel": "Cancelar sincronización"
-    },
-    "manual_sync_device_rejected": {
-      "title": "Autenticación rechazada",
-      "message": "Tu solicitud para acceder a esta cuenta fue rechazada por un dispositivo verificado.",
-      "warning": {
-        "strong": "Advertencia",
-        "text": "Múltiples rechazos podría provocar que el dispositivo sea baneado de Criptext."
-      },
-      "closeButtonLabel": "Aceptar"
-    },
-    "manual_sync_device_approved": {
-      "header": "Sincronización de Buzón",
-      "messages": {
-        "error": "Error al sincronizar tu buzón",
-        "retry": "¿Reintentar?",
-        "waitingForMailbox": "Esperando Buzón",
-        "keepWaiting": {
-          "title": "La sincronización esta tardando más de lo habitual",
-          "message": "¿Te gustaría seguir esperando?"
-        },
-        "downloadingMailbox": "Descargando Buzón",
-        "decryptingMailbox": "Desencriptando Buzón",
-        "syncComplete": "¡Sincronización Completa!"
-      },
-      "cancelSyncLabel": "Cancelar Sincronización",
-      "continueLabel": "Continuar"
-    },
-    "permanently_delete": {
-      "title": "Advertencia!",
-      "message": "Estos elementos se eliminarán permanentemente y no podrás recuperarlos. ¿Estás seguro?",
-      "leftButtonLabel": "Cancelar",
-      "rightButtonLabel": "Confirmar"
-    },
-    "remove_device": {
-      "title": "Remover Dispositivo",
-      "paragraphs": {
-        "header":"Eliminar este dispositivo hará que se cierre la sesión de forma remota.",
-        "password": "Para confirmar introduzca su contraseña"
-      },
-      "input": {
+    "errors": {
         "password": {
-          "placeholder": "Contraseña"
-        }
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Remover"
-    },
-    "remove_label": {
-      "title": "Remover Etiqueta",
-      "message": "Estas seguro de querer eliminar permanentemente la etiqueta {0}",
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Remover"
-    },
-    "restore_backup_request": {
-      "title": "Restaurar respaldo",
-      "paragraph": "Restaura tus correos desde un archivo local. Esto puede realizarse después seleccionando Configuración > Cuenta > Restaurar respaldo",
-      "button": "Seleccionar archivo",
-      "cancel": "Cancelar"
-    },
-    "restore_backup_from_file": {
-      "title": "Restaurar respaldo",
-      "paragraphs": {
-        "backed_up": "Respaldado",
-        "size": "Tamaño"
-      },
-      "input": {
-        "label": "Introduce tu clave",
-        "placeholder": "Clave"
-      },
-      "buttons": {
-        "restore": "Restaurar",
-        "cancel": "Cancelar"
-      }
-    },
-    "restore_backup_invalid_file": {
-      "title": "Archivo Inválido",
-      "paragraph": "El archivo seleccionado esta corrompido o le pertenece a otra cuenta de correo",
-      "button": "Cambiar archivo",
-      "cancel": "Cancelar"
-    },
-    "restore_backup_progress": {
-      "header": "Restaurando",
-      "cancelLabel": "Cancelar"
-    },
-    "set_reply_to": {
-      "title": "Correo de Respuesta",
-      "paragraph": "Cuando alguien responde un correo que has enviado, lo hará a esta dirección.",
-      "input": {
+            "length": {
+                "a": "Debe ser al menos",
+                "b": "caracteres"
+            },
+            "match": "La contraseña no coincide"
+        },
         "email": {
-          "placeholder": "Ingresa un correo"
+            "invalid": "Correo inválido"
+        },
+        "tooManyRequests": {
+            "name": "Limite de peticiones excedido",
+            "description": "Has realizado muchas peticiones consecutivas.\nPor favor, intenta nuevamente dentro de "
         }
-      },
-      "errors": {
-        "email": "Correo Inválido! Ejemplo: example@criptext.com"
-      },
-      "cancelButtonLabel": "Cancelar",
-      "confirmButtonLabel": "Establecer"
     },
-    "select_backup_folder": {
-      "title": "Selecciona Carpeta de Respaldo",
-      "note": {
-        "header": "Nota: ",
-        "content": "Auto-Respaldos no son protegidos con contraseña"
-      },
-      "buttons": {
+    "header": {
+        "add_labels": "Agregar etiquetas",
+        "archive": "Archivar",
+        "back": "Atrás",
+        "delete": "Eliminar",
+        "discard_drafts": "Descartar borradores",
+        "dismiss": "Descartar",
+        "move_to": "Mover a",
+        "move_to_inbox": "Mover a Recibidos",
+        "restore": "Restaurar",
+        "search": "buscar",
+        "search_options": {
+            "from": "de",
+            "from_placeholder": "Usuarios por nombre o correo electrónico",
+            "has_attachment": "Tiene adjunto",
+            "subject": "asunto",
+            "subject_placeholder": "Ingresar texto",
+            "to": "para",
+            "to_placeholder": "Usuarios por nombre o correo electrónico"
+        },
+        "selected": "Seleccionado",
+        "selected_plural": "Seleccionados",
+        "print_all": "Imprimir todo"
+    },
+    "labelsItems": {
+        "inbox": "Recibidos",
+        "spam": "Spam",
+        "sent": "Enviados",
+        "starred": "Favoritos",
+        "draft": "Borrador",
+        "trash": "Papelera",
+        "allmail": "Todos",
+        "search": "Buscar"
+    },
+    "mailbox": {
+        "all": "todos",
+        "bcc": "Bcc",
+        "cc": "Cc",
+        "date": "Fecha",
+        "delete": "Borrar",
+        "delete_permanently": "Borrar permanentemente",
+        "empty": {
+            "inbox": {
+                "header": "Bandeja de Recibidos vacía",
+                "subheader": "Todo tranquilo y sereno"
+            },
+            "starred": {
+                "header": "No hay correos Favoritos",
+                "subheader": "Resalta tus correos importantes"
+            },
+            "trash": {
+                "header": "Papelera vacía",
+                "subheader": "Que limpio se ve todo ;)"
+            },
+            "draft": {
+                "header": "No hay Borradores",
+                "subheader": "Todo bien aquí ;)"
+            },
+            "sent": {
+                "header": "No hay correos Enviados",
+                "subheader": "Empieza enviando uno ;)"
+            },
+            "spam": {
+                "header": "No tienes Spam",
+                "subheader": "¡Qué bien! Mantengamoslo así"
+            },
+            "allmail": {
+                "header": "No hay Correos",
+                "subheader": "¡En lo absoluto!"
+            },
+            "search": {
+                "header": "No hay resultados de búsqueda",
+                "subheader": "Correos en Papelera & Spam no son mostrados"
+            },
+            "default": {
+                "header": "No tienes correos todavía",
+                "subheader": "Envía un correo para comenzar"
+            },
+            "loading": "Cargando"
+        },
+        "forward": "Reenviar",
+        "from": "De",
+        "mark_as_read": "Marcar como leído",
+        "mark_as_spam": "Marcar como Spam",
+        "mark_as_unread": "Marcar como no leído",
+        "move_to_trash": "Mover a papelera",
+        "more": "más",
+        "not_starred": "No favorito",
+        "of": "de",
+        "reply": "Responder",
+        "reply_all": "A todos",
+        "starred": "Favorito",
+        "subject": "Asunto",
+        "to": "Para",
+        "unread": "no leídos",
+        "print_email": "Imprimir",
+        "print_thread": "Imprimir todo",
+        "me": "Yo",
+        "unsend": "Retractar",
+        "email_source": "Mostrar Original",
+        "empty_body": "Este correo no tiene contenido",
+        "empty_subject": "Sin asunto",
+        "unsentText": "Retractado"
+    },
+    "messages": {
+        "change_password": {
+            "success": {
+                "description": "Se ha modificado su contraseña"
+            },
+            "error": {
+                "description": "Error al cambiar la contraseña. La contraseña no ha sido modificada"
+            }
+        },
+        "download_file": {
+            "success": {
+                "description": "Descarga exitosa. Revisa tu carpeta de 'Descargas'"
+            },
+            "error": {
+                "description": "Un error ha ocurrido durante la descarga. El archivo no fue guardado"
+            }
+        },
+        "save_draft": {
+            "success": {
+                "description": "Borrador guardado"
+            },
+            "error": {
+                "description": "Falló al guardar el borrador"
+            }
+        },
+        "emailSent": {
+            "success": {
+                "description": "Tu correo ha sido enviado.",
+                "action": "Ver Correo"
+            },
+            "error": {
+                "description": "Error al enviar tu correo"
+            }
+        },
+        "fetchEmails": {
+            "description": "Error al obtener correos. Comprueba tu conexión y vuelve a intentarlo"
+        },
+        "internet": {
+            "description": "Conexión restablecida"
+        },
+        "network": {
+            "description": "Sin conexión. Intentando reconectar",
+            "action": "Reconectar ahora"
+        },
+        "new_device": {
+            "ask": "Estás tratando de acceder desde"
+        },
+        "recovery_email_change": {
+            "success": {
+                "description": "Correo de recuperación ha sido modificado"
+            },
+            "error": {
+                "description": "Error al cambiar el correo de recuperación. Comprueba tu conexión y vuelve a intentarlo"
+            }
+        },
+        "recovery_email_link_confirmation": {
+            "success": {
+                "description": "Enlace de confirmación enviado. Revisa tu buzón y confírmalo."
+            },
+            "error": {
+                "description": "Error al enviar el enlace de confirmación."
+            }
+        },
+        "remember_share_passphrase": {
+            "description": "Recuerda enviar tu clave a los destinatarios que no son de Criptext"
+        },
+        "reset_password_send_link": {
+            "success": {
+                "description": "Se ha enviado un enlace para restablecer la contraseña a tu correo de recuperación. El enlace será valido por 30 minutos"
+            },
+            "error": {
+                "description": "Necesitas establecer y confirmar un Correo de Recuperación para restablecer tu contraseña"
+            }
+        },
+        "remove_device": {
+            "success": {
+                "description": "Dispositivo eliminado"
+            },
+            "error": {
+                "description": "Error al eliminar el dispositivo. Inténtalo de nuevo"
+            }
+        },
+        "remove_threads": {
+            "description": "Error al mover correos. Inténtalo de nuevo"
+        },
+        "send_open_event": {
+            "description": "Error al enviar notificación de leído. Inténtalo de nuevo"
+        },
+        "set_reply_to": {
+            "success": {
+                "description": "Correo de respuesta establecido satisfactoriamente!"
+            },
+            "error": {
+                "description": "Error al establecer correo de respuesta. No fue modificado."
+            }
+        },
+        "trash": {
+            "description": "Correos que estén en la papelera más de 30 días serán eliminados automáticamente",
+            "action": "Vaciar Papelera"
+        },
+        "two_factor_auth_turn_off": {
+            "description": "Autenticación dos factores fue desactivada"
+        },
+        "unsend_email": {
+            "description": "Error al retractar el correo. Código de error desconocido:"
+        },
+        "unsend_email_expired": {
+            "description": "Error al retractar el correo. Tiempo (1h) para retractar ya expiró."
+        },
+        "update": {
+            "description": "¡Una nueva versión de Criptext está disponible!",
+            "action": "Clic aquí para instalar la actualización"
+        },
+        "update_labels": {
+            "description": "Error al actualizar las etiquetas. Inténtalo de nuevo"
+        },
+        "update_thread_labels": {
+            "description": "Error al actualizar las etiquetas de correo. Inténtalo de nuevo"
+        },
+        "update_unread_threads": {
+            "description": "Error al actualizar el estado del correo. Inténtalo de nuevo"
+        },
+        "manual_sync": {
+            "description": "Sincronización de Buzón Completa"
+        }
+    },
+    "momentLocales": {
+        "months": "Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre",
+        "monthsShort": "Ene_Feb_Mar_Abr_May_Jun_Jul_Ago_Sep_Oct_Nov_Dic",
+        "weekdays": "Domingo_Lunes_Martes_Miércoles_Jueves_Viernes_Sábado",
+        "weekdaysShort": "Dom_Lun_Mar_Mie_Jue_Vie_Sab",
+        "weekdaysMin": "Do_Lu_Ma_Mi_Ju_Vi_Sa",
+        "relativeTime": {
+            "future": "En %s",
+            "past": "Hace %s",
+            "s": "Pocos segundos",
+            "ss": "%s segundos",
+            "m": "Un minuto",
+            "mm": "%d minutos",
+            "h": "Una hora",
+            "hh": "%d horas",
+            "d": "Un día",
+            "dd": "%d días",
+            "M": "Un mes",
+            "MM": "Más de 2 meses",
+            "y": "Más de 2 meses",
+            "yy": "Más de 2 meses"
+        },
+        "yesterdayText": "Ayer",
+        "atText": "a las"
+    },
+    "notification": {
+        "export_backup": {
+            "success": {
+                "title": "Respaldo exportado exitosamente!",
+                "message": "Da clic aquí para abrir la ubicación del archivo de respaldo"
+            },
+            "error": {
+                "title": "Criptext",
+                "message": "Ups! Algo salió mal al crear tu archivo de respaldo"
+            }
+        },
+        "newEmailGroup": {
+            "prefix": "Tienes ",
+            "sufix": " correos nuevos"
+        },
+        "openEmail": {
+            "title": "Criptext",
+            "message": "📩 El correo <subject> fue abierto"
+        }
+    },
+    "popups": {
+        "account_deleted": {
+            "title": "Cuenta eliminada",
+            "paragraphs": {
+                "header": "Eliminando toda la información..."
+            }
+        },
+        "change_password": {
+            "title": "Cambiar Contraseña",
+            "paragraphs": {
+                "header": "Introduce tu contraseña, luego tu nueva contraseña y confírmala"
+            },
+            "input": {
+                "old_password": {
+                    "placeholder": "Introduce la contraseña vieja",
+                    "button": "¿Olvidaste tu contraseña?"
+                },
+                "new_password": {
+                    "placeholder": "Introduce la contraseña nueva"
+                },
+                "repeat_password": {
+                    "placeholder": "Repite la contraseña nueva"
+                }
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Guardar"
+        },
+        "change_recovery_email": {
+            "title": "Correo de Recuperación",
+            "paragraph": {
+                "password": "Para confirmar introduce to contraseña",
+                "recovery_email": "Introduce tu nuevo correo de recuperación",
+                "note": "Nota",
+                "note_text": "Cambiar tu correo de recuperación deshabilitará la autenticación de dos factores"
+            },
+            "input": {
+                "recovery_email": {
+                    "placeholder": "Introduce el nuevo correo"
+                },
+                "password": {
+                    "placeholder": "Introduce la contraseña",
+                    "button": "¿Olvidaste tu contraseña?"
+                }
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Cambiar"
+        },
+        "creating_backup_file": {
+            "title": "Creando Respaldo",
+            "paragraph": "Por favor, espere un momento..."
+        },
+        "delete_account": {
+            "title": "Eliminar Mi Cuenta",
+            "paragraphs": {
+                "header": "Al eliminar tu cuenta se borrarán todos los datos de todos tus dispositivos y se deshabilitará este nombre de usuario permanentemente. ¿Estás seguro de que quieres eliminar tu cuenta?"
+            },
+            "subtitle": "Para confirmar, ingresa tu contraseña",
+            "inputs": {
+                "password": {
+                    "placeholder": "Ingresa tu contraseña",
+                    "errorMessages": {
+                        "length": {
+                            "prefix": "Debe tener al menos",
+                            "suffix": "caracteres"
+                        },
+                        "wrong": "Contraseña incorrecta"
+                    }
+                }
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Enviar"
+        },
+        "export_backup": {
+            "title": "Exportar Respaldo",
+            "switchLabel": "Encriptar respaldo",
+            "description": "Si olvidas\/pierdes esta clave no podrás restaurar tu respaldo en el futuro",
+            "inputPassphrase": {
+                "placeholder": "Ingrese clave",
+                "errorMessages": {
+                    "len": {
+                        "prefix": "Debe tener",
+                        "suffix": "caracteres"
+                    }
+                }
+            },
+            "note": {
+                "header": "Nota:",
+                "content": "Por tu seguridad, sugerimos encriptar el respaldo"
+            },
+            "buttons": {
+                "send": "Guardar",
+                "cancel": "Cancelar"
+            }
+        },
+        "logout": {
+            "title": "Cerrar sesión",
+            "paragraphs": {
+                "header": "¿Estás seguro que quieres cerrar sesión?"
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Continuar"
+        },
+        "mailbox_sync": {
+            "title": "Advertencia de Sincronización",
+            "paragraphs": {
+                "header": "Todos los datos de su buzón se borrarán y se reemplazarán con los datos del buzón de su otro dispositivo.",
+                "question": "¿Estás seguro que deseas continuar?"
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Confirmar"
+        },
+        "manual_sync_device_authentication": {
+            "title": "Autenticación de dispositivo",
+            "message": "Revisa y aprueba este inicio de sesión desde uno de tus dispositivos Criptext",
+            "getPromptLabel": "¿No recibiste el aviso?",
+            "buttons": {
+                "sending": "Enviando...",
+                "resend": "Reenviarlo"
+            },
+            "cancelSyncLabel": "Cancelar sincronización"
+        },
+        "manual_sync_device_rejected": {
+            "title": "Autenticación rechazada",
+            "message": "Tu solicitud para acceder a esta cuenta fue rechazada por un dispositivo verificado.",
+            "warning": {
+                "strong": "Advertencia",
+                "text": "Múltiples rechazos podría provocar que el dispositivo sea baneado de Criptext."
+            },
+            "closeButtonLabel": "Aceptar"
+        },
+        "manual_sync_device_approved": {
+            "header": "Sincronización de Buzón",
+            "messages": {
+                "error": "Error al sincronizar tu buzón",
+                "retry": "¿Reintentar?",
+                "waitingForMailbox": "Esperando Buzón",
+                "keepWaiting": {
+                    "title": "La sincronización esta tardando más de lo habitual",
+                    "message": "¿Te gustaría seguir esperando?"
+                },
+                "downloadingMailbox": "Descargando Buzón",
+                "decryptingMailbox": "Desencriptando Buzón",
+                "syncComplete": "¡Sincronización Completa!"
+            },
+            "cancelSyncLabel": "Cancelar Sincronización",
+            "continueLabel": "Continuar"
+        },
+        "permanently_delete": {
+            "title": "Advertencia!",
+            "message": "Estos elementos se eliminarán permanentemente y no podrás recuperarlos. ¿Estás seguro?",
+            "leftButtonLabel": "Cancelar",
+            "rightButtonLabel": "Confirmar"
+        },
+        "remove_device": {
+            "title": "Remover Dispositivo",
+            "paragraphs": {
+                "header": "Eliminar este dispositivo hará que se cierre la sesión de forma remota.",
+                "password": "Para confirmar introduzca su contraseña"
+            },
+            "input": {
+                "password": {
+                    "placeholder": "Contraseña"
+                }
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Remover"
+        },
+        "remove_label": {
+            "title": "Remover Etiqueta",
+            "message": "Estas seguro de querer eliminar permanentemente la etiqueta {0}",
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Remover"
+        },
+        "restore_backup_request": {
+            "title": "Restaurar respaldo",
+            "paragraph": "Restaura tus correos desde un archivo local. Esto puede realizarse después seleccionando Configuración > Cuenta > Restaurar respaldo",
+            "button": "Seleccionar archivo",
+            "cancel": "Cancelar"
+        },
+        "restore_backup_from_file": {
+            "title": "Restaurar respaldo",
+            "paragraphs": {
+                "backed_up": "Respaldado",
+                "size": "Tamaño"
+            },
+            "input": {
+                "label": "Introduce tu clave",
+                "placeholder": "Clave"
+            },
+            "buttons": {
+                "restore": "Restaurar",
+                "cancel": "Cancelar"
+            }
+        },
+        "restore_backup_invalid_file": {
+            "title": "Archivo Inválido",
+            "paragraph": "El archivo seleccionado esta corrompido o le pertenece a otra cuenta de correo",
+            "button": "Cambiar archivo",
+            "cancel": "Cancelar"
+        },
+        "restore_backup_progress": {
+            "header": "Restaurando",
+            "cancelLabel": "Cancelar"
+        },
+        "set_reply_to": {
+            "title": "Correo de Respuesta",
+            "paragraph": "Cuando alguien responde un correo que has enviado, lo hará a esta dirección.",
+            "input": {
+                "email": {
+                    "placeholder": "Ingresa un correo"
+                }
+            },
+            "errors": {
+                "email": "Correo Inválido! Ejemplo: example@criptext.com"
+            },
+            "cancelButtonLabel": "Cancelar",
+            "confirmButtonLabel": "Establecer"
+        },
+        "select_backup_folder": {
+            "title": "Selecciona Carpeta de Respaldo",
+            "note": {
+                "header": "Nota:",
+                "content": "Auto-Respaldos no son protegidos con contraseña"
+            },
+            "buttons": {
+                "cancel": "Cancelar",
+                "select": "Seleccionar"
+            }
+        },
+        "suspended_account": {
+            "title": "Estás suspendido",
+            "paragraph": "Esta cuenta ha sido suspendida temporalmente por tu administrador. Por favor, contacta al admiistrador de tu compañía para más información."
+        },
+        "two_fa": {
+            "title": "¡A2F Habilitada!",
+            "paragraph": "La próxima vez que inicies sesión en otro dispositivo, deberás ingresar tu contraseña y luego validar el inicio de sesión desde un dispositivo existente.",
+            "button": "¡Listo!"
+        }
+    },
+    "settings": {
+        "about": "Acerca de",
+        "account": "Cuenta",
+        "action": "Acción",
+        "appearance": "Apariencia",
+        "mailbox_backup": {
+            "auto": {
+                "label": "Auto Respaldo",
+                "description": "Nota: Auto-respaldos no están protegidos con contraseña",
+                "options": {
+                    "last_backup": "Último respaldo",
+                    "backup_now": "Respaldar ahora",
+                    "backup_folder": "Carpeta de respaldo",
+                    "frequency": "Frecuencia",
+                    "frequencyLabels": {
+                        "daily": "Diario",
+                        "weekly": "Semanal",
+                        "monthly": "Mensual"
+                    }
+                }
+            },
+            "manual": {
+                "label": "Respaldo de buzón",
+                "button": "Exportar Respaldo",
+                "description": "Genera un archivo exportable a cualquier otro medio o disco"
+            },
+            "progress": {
+                "backing_up_mailbox": "Respaldando buzón. Esto puede tomar unos minutos...",
+                "backup_mailbox_success": "Buzón respaldado exitosamente"
+            }
+        },
+        "restore_backup": {
+            "label": "Restaurar Respaldo",
+            "button": "Restaurar",
+            "description": "Restaura tu buzón desde un respaldo local que hayas hecho anteriormente"
+        },
         "cancel": "Cancelar",
-        "select": "Seleccionar"
-      }
+        "change": "Cambiar",
+        "configurations": "Configuraciones",
+        "contact_support": "Soporte",
+        "check_for_updates": "Buscar actualizaciones",
+        "create_new_label": "Crear nueva etiqueta",
+        "criptext_libraries": {
+            "label": "Librerías de Criptext",
+            "description": "Revisa nuestros ingredientes que hacen posible que Criptext exista"
+        },
+        "current_device": "Dispositivo Actual",
+        "delete_account": {
+            "label": "Eliminar cuenta",
+            "description": "Esta acción no puede ser revertida",
+            "button": "Eliminar permanentemente"
+        },
+        "disabled": "desactivada",
+        "edit": "Editar",
+        "email": "Correo",
+        "enabled": "activada",
+        "encrypt_to_externals": "Encriptar a Emails Externos",
+        "encrypt_to_externals_description": "Si esta activado, al enviar un correo se te preguntara por una contraseña para encriptar el correo a usuarios que no son de criptext. Si esta desactivado, el correo se enviara encriptado para usuarios de criptext y sin encriptar para el resto.",
+        "enter_new_label_name": "Introducir nueva etiqueta",
+        "faq": {
+            "label": "Preguntas Frecuentes",
+            "description": "Encuentra respuestas de nuestras preguntas frecuentes"
+        },
+        "fullname": "Nombre Completo",
+        "general": "general",
+        "language": {
+            "label": "Lenguaje",
+            "description": "Selecciona tu lenguaje preferido"
+        },
+        "last_activity": "Última actividad",
+        "linked_devices": "Dispositivos enlazados",
+        "logout": "Cerrar Sesión",
+        "mailbox_sync": {
+            "label": "Sincronizar Buzón",
+            "description": "Transfiere todo tu buzón a otro dispositivo",
+            "button": "Sincronizar",
+            "tooltip": "Debes tener al menos un dispositivo adicional para sincronizar"
+        },
+        "not_verified": "no verificado",
+        "notifications": "Notificaciones",
+        "notification_preview": {
+            "label": "Mostrar Notificación Previa",
+            "description": "Previo contenido del email en las notificaciones de escritorio"
+        },
+        "off": "desactivado",
+        "on": "activado",
+        "over_time": "Hace más de 2 meses",
+        "password": {
+            "label": "Contraseña",
+            "description": "Cambia por una contraseña fuerte, no la repitas"
+        },
+        "profile": "perfil",
+        "privacy": "Privacidad",
+        "privacy_policy": {
+            "label": "Políticas de Privacidad",
+            "description": "Revisa nuestra política de privacidad"
+        },
+        "read_receipts": "Confirmación de Leído",
+        "read_receipts_description": "Si desactivas confirmación de leído, no podrás saber cuando otros leen tus correos tampoco.",
+        "recovery_email": {
+            "label": "Correo de Recuperación",
+            "description": "Para el caso que olvides tu contraseña y requieras reestablecerla"
+        },
+        "recovery_not_set": "Correo de Recuperación no establecido",
+        "remove": "Remover",
+        "reply_to": "Responder A",
+        "reply_to_email": "Correo de Respuesta",
+        "reply_to_not_set": "Cuando alguien responde un correo que has enviado, lo hará a esta dirección.",
+        "resend_link": "Reenviar enlace",
+        "see_more": "Ver más",
+        "set_email": "Establecer correo",
+        "show_in_label_list": "Mostrar en lista de etiquetas",
+        "signature": "Firma",
+        "sign_footer": {
+            "description": "Mostrar “Enviado con Criptext”"
+        },
+        "system_labels": "Etiquetas del Sistema",
+        "theme": {
+            "label": "Tema",
+            "description": "Personaliza tu experiencia"
+        },
+        "themeLabels": {
+            "light": "Claro",
+            "dark": "Oscuro"
+        },
+        "terms_of_service": {
+            "label": "Términos de servicio",
+            "description": "Nuestras leyes están definidas aquí ;)"
+        },
+        "trusted_devices": "dispositivos verificados",
+        "two_factor_authentication": "Autenticación de dos factores",
+        "two_factor_not_available_text": "Para deshabilitar Autenticación de dos factores deberás introducir tu correo de recuperación",
+        "user_labels": "Etiquetas del Usuario",
+        "verified": "verificado"
     },
-    "suspended_account": {
-      "title": "Estás suspendido",
-      "paragraph": "Esta cuenta ha sido suspendida temporalmente por tu administrador. Por favor, contacta al admiistrador de tu compañía para más información."
+    "sidebar": {
+        "compose": "redactar",
+        "enter_new_label": "Agregar etiqueta",
+        "invite_a_friend": "Invita a un amigo",
+        "labels": "Etiquetas",
+        "new_label": "Nueva etiqueta",
+        "settings": "Configuración"
     },
-    "two_fa": {
-      "title": "¡A2F Habilitada!",
-      "paragraph": "La próxima vez que inicies sesión en otro dispositivo, deberás ingresar tu contraseña y luego validar el inicio de sesión desde un dispositivo existente.",
-      "button": "¡Listo!"
-    }
-  },
-  "settings": {
-    "about": "Acerca de",
-    "account": "Cuenta",
-    "action": "Acción",
-    "appearance": "Apariencia",
-    "mailbox_backup": {
-      "auto": {
-        "label": "Auto Respaldo",
-        "description": "Nota: Auto-respaldos no están protegidos con contraseña",
-        "options": {
-          "last_backup": "Último respaldo",
-          "backup_now": "Respaldar ahora",
-          "backup_folder": "Carpeta de respaldo",
-          "frequency": "Frecuencia",
-          "frequencyLabels": {
-            "daily": "Diario",
-            "weekly": "Semanal",
-            "monthly": "Mensual"
-          }
+    "tooltips": {
+        "secure": "Este correo está encriptado"
+    },
+    "userGuide": {
+        "buttonCompose": {
+            "text": "Empieza enviando un correo nuevo",
+            "buttonLabel": "Ok"
+        },
+        "emailRead": {
+            "text": "¡Parece que este correo fue leído!",
+            "buttonLabel": "Entendido"
+        },
+        "activityFeed": {
+            "text": "Mira cuáles correos fueron leídos",
+            "buttonLabel": "Ok"
+        },
+        "secureMessage": {
+            "text": "Este ícono significa que este correo está encriptado",
+            "buttonLabel": "Entendido"
         }
-      },
-      "manual": {
-        "label": "Respaldo de buzón",
-        "button": "Exportar Respaldo",
-        "description": "Genera un archivo exportable a cualquier otro medio o disco"
-      },
-      "progress": {
-        "backing_up_mailbox": "Respaldando buzón. Esto puede tomar unos minutos...",
-        "backup_mailbox_success": "Buzón respaldado exitosamente"
-      }
     },
-    "restore_backup": {
-      "label": "Restaurar Respaldo",
-      "button": "Restaurar",
-      "description": "Restaura tu buzón desde un respaldo local que hayas hecho anteriormente"
-    },
-    "cancel": "Cancelar",
-    "change": "Cambiar",
-    "configurations": "Configuraciones",
-    "contact_support": "Soporte",
-    "check_for_updates": "Buscar actualizaciones",
-    "create_new_label": "Crear nueva etiqueta",
-    "criptext_libraries": {
-      "label": "Librerías de Criptext",
-      "description": "Revisa nuestros ingredientes que hacen posible que Criptext exista"
-    },
-    "current_device": "Dispositivo Actual",
-    "delete_account": {
-      "label": "Eliminar cuenta",
-      "description": "Esta acción no puede ser revertida",
-      "button": "Eliminar permanentemente"
-    },
-    "disabled": "desactivada",
-    "edit": "Editar",
-    "email": "Correo",
-    "enabled": "activada",
-    "encrypt_to_externals": "Encriptar a Emails Externos",
-    "encrypt_to_externals_description": "Si esta activado, al enviar un correo se te preguntara por una contraseña para encriptar el correo a usuarios que no son de criptext. Si esta desactivado, el correo se enviara encriptado para usuarios de criptext y sin encriptar para el resto.",
-    "enter_new_label_name": "Introducir nueva etiqueta",
-    "faq": {
-      "label": "Preguntas Frecuentes",
-      "description": "Encuentra respuestas de nuestras preguntas frecuentes"
-    },
-    "fullname": "Nombre Completo",
-    "general": "general",
-    "language": {
-      "label": "Lenguaje",
-      "description": "Selecciona tu lenguaje preferido"
-    },
-    "last_activity": "Última actividad",
-    "linked_devices": "Dispositivos enlazados",
-    "logout": "Cerrar Sesión",
-    "mailbox_sync": {
-      "label": "Sincronizar Buzón",
-      "description": "Transfiere todo tu buzón a otro dispositivo",
-      "button": "Sincronizar",
-      "tooltip": "Debes tener al menos un dispositivo adicional para sincronizar"
-    },
-    "not_verified": "no verificado",
-    "notifications": "Notificaciones",
-    "notification_preview": {
-      "label": "Mostrar Notificación Previa",
-      "description": "Previo contenido del email en las notificaciones de escritorio"
-    },
-    "off": "desactivado",
-    "on": "activado",
-    "over_time": "Hace más de 2 meses",
-    "password": {
-      "label": "Contraseña",
-      "description": "Cambia por una contraseña fuerte, no la repitas"
-    },
-    "privacy": "Privacidad",
-    "privacy_policy": {
-      "label": "Políticas de Privacidad",
-      "description": "Revisa nuestra política de privacidad"
-    },
-    "profile": "perfil",
-    "read_receipts": "Confirmación de Leído",
-    "read_receipts_description": "Si desactivas confirmación de leído, no podrás saber cuando otros leen tus correos tampoco.",
-    "recovery_email": {
-      "label": "Correo de Recuperación",
-      "description": "Para el caso que olvides tu contraseña y requieras reestablecerla"
-    },
-    "recovery_not_set": "Correo de Recuperación no establecido",
-    "remove": "Remover",
-    "reply_to": "Responder A",
-    "reply_to_email": "Correo de Respuesta",
-    "reply_to_not_set": "Cuando alguien responde un correo que has enviado, lo hará a esta dirección.",
-    "resend_link": "Reenviar enlace",
-    "see_more": "Ver más",
-    "set_email": "Establecer correo",
-    "show_in_label_list": "Mostrar en lista de etiquetas",
-    "signature": "Firma",
-    "sign_footer": {
-      "description": "Mostrar “Enviado con Criptext”"
-    },
-    "system_labels": "Etiquetas del Sistema",
-    "theme": {
-      "label": "Tema",
-      "description": "Personaliza tu experiencia"
-    },
-    "themeLabels": {
-      "light": "Claro",
-      "dark": "Oscuro"
-    },
-    "terms_of_service": {
-      "label": "Términos de servicio",
-      "description": "Nuestras leyes están definidas aquí ;)"
-    },
-    "trusted_devices": "dispositivos verificados",
-    "two_factor_authentication": "Autenticación de dos factores",
-    "two_factor_not_available_text" : "Para deshabilitar Autenticación de dos factores deberás introducir tu correo de recuperación",
-    "user_labels": "Etiquetas del Usuario",
-    "verified": "verificado"
-  },
-  "sidebar": {
-    "compose": "redactar",
-    "enter_new_label": "Agregar etiqueta",
-    "invite_a_friend": "Invita a un amigo",
-    "labels": "Etiquetas",
-    "new_label": "Nueva etiqueta",
-    "settings": "Configuración"
-  },
-  "tooltips": {
-    "secure": "Este correo está encriptado"
-  },
-  "userGuide": {
-    "buttonCompose": {
-      "text": "Empieza enviando un correo nuevo",
-      "buttonLabel": "Ok"
-    },
-    "emailRead": {
-      "text": "¡Parece que este correo fue leído!",
-      "buttonLabel": "Entendido"
-    },
-    "activityFeed": {
-      "text": "Mira cuáles correos fueron leídos",
-      "buttonLabel": "Ok"
-    },
-    "secureMessage": {
-      "text": "Este ícono significa que este correo está encriptado",
-      "buttonLabel": "Entendido"
+    "welcome": {
+        "step_1": {
+            "title": "¡Bienvenido!",
+            "description": "Tu experiencia con el correo seguro comienza aquí. Prepárate para privacidad total."
+        },
+        "step_2": {
+            "title": "Privacidad Fuerte",
+            "description": "Criptext no guarda tus correos en sus servidores. Tus correos únicamente se guardan en tu dispositivo."
+        },
+        "step_3": {
+            "title": "El poder es tuyo",
+            "description": "Tú creas la información, nosotros creemos que tienes derecho a que sólo sea tuya."
+        },
+        "skip_tour": "Omitir"
     }
-  },
-  "welcome": {
-    "step_1": {
-      "title": "¡Bienvenido!",
-      "description": "Tu experiencia con el correo seguro comienza aquí. Prepárate para privacidad total."
-    },
-    "step_2": {
-      "title": "Privacidad Fuerte",
-      "description": "Criptext no guarda tus correos en sus servidores. Tus correos únicamente se guardan en tu dispositivo."
-    },
-    "step_3": {
-      "title": "El poder es tuyo",
-      "description": "Tú creas la información, nosotros creemos que tienes derecho a que sólo sea tuya."
-    },
-    "skip_tour": "Omitir"
-  }
 }
