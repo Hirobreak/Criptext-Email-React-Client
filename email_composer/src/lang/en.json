@@ -1,98 +1,98 @@
 {
-  "inputLabels": {
-    "to": "To:",
-    "cc": "Cc:",
-    "bcc": "Bcc:"
-  },
-  "subject": {
-    "placeholder": "Subject"
-  },
-  "editor": {
-    "placeholder": "Message"
-  },
-  "dropFilesArea": {
-    "text": "Drop files here"
-  },
-  "sendButtonLabel": "Send",
-  "criptextSignature": {
-    "sent_with": "Sent with",
-    "secure_email": "secure email"
-  },
-  "popups": {
-    "nonCriptextRecipients": {
-      "title": "Non-Criptext Recipient",
-      "switchLabel": "Send Encrypted",
-      "description": "Set a passphrase and share it with non-Criptext recipients so they can read your email",
-      "inputPassphrase": {
-        "placeholder": "Enter passphrase",
-        "errorMessages": {
-          "len": {
-            "prefix": "Must have",
-            "suffix": "characters"
-          }
+    "inputLabels": {
+        "to": "To:",
+        "cc": "Cc:",
+        "bcc": "Bcc:"
+    },
+    "subject": {
+        "placeholder": "Subject"
+    },
+    "editor": {
+        "placeholder": "Message"
+    },
+    "dropFilesArea": {
+        "text": "Drop files here"
+    },
+    "sendButtonLabel": "Send",
+    "criptextSignature": {
+        "sent_with": "Sent with",
+        "secure_email": "secure email"
+    },
+    "popups": {
+        "nonCriptextRecipients": {
+            "title": "Non-Criptext Recipient",
+            "switchLabel": "Send Encrypted",
+            "description": "Set a passphrase and share it with non-Criptext recipients so they can read your email",
+            "inputPassphrase": {
+                "placeholder": "Enter passphrase",
+                "errorMessages": {
+                    "len": {
+                        "prefix": "Must have",
+                        "suffix": "characters"
+                    }
+                }
+            },
+            "note": {
+                "header": "Note:",
+                "content": "Non-Criptext email addresses will receive a normal, un-encrypted email."
+            },
+            "buttons": {
+                "send": "Send",
+                "cancel": "Cancel"
+            }
         }
-      },
-      "note": {
-        "header": "Note: ",
-        "content": "Non-Criptext email addresses will receive a normal, un-encrypted email."
-      },
-      "buttons": {
-        "send": "Send",
-        "cancel": "Cancel"
-      }
+    },
+    "errors": {
+        "attachmentsTotalSize": {
+            "name": "Error",
+            "description": {
+                "prefix": "The email has surpassed the attachment limit of ",
+                "suffix": "."
+            }
+        },
+        "encrypting": {
+            "name": "Encrypting error",
+            "description": "An error occurred while encrypting message.\nCode: "
+        },
+        "nonExistingUsers": {
+            "name": "Non existing users",
+            "description": "One or more users doesn't exists.\nCheck the recipients and try again"
+        },
+        "pendingFiles": {
+            "name": "Pending files",
+            "description": "You have uploading or failed files. Please check your files and try again"
+        },
+        "tooBigFile": {
+            "name": "Too big file",
+            "description": {
+                "prefix": "The file",
+                "suffix": "exceeds",
+                "defaultEnd": "allowed size"
+            }
+        },
+        "tooManyRecipients": {
+            "name": "Too many recipients",
+            "description": "Your emails can only contain until 300 recipients.\nPlease verify and try again."
+        },
+        "tooManyRequests": {
+            "name": "Too many requests",
+            "description": "Too many consecutive attempts.\nPlease try again in "
+        },
+        "unableToConnect": {
+            "name": "Unable to connect",
+            "description": "Unable to connect to server"
+        },
+        "unauthorized": {
+            "name": "Encrypting error",
+            "description": "An error occurred in your request.\nPlease try again"
+        },
+        "uploadFailed": {
+            "name": "Upload failed",
+            "description": "An error occurred while uploading file.\nPlease try again"
+        },
+        "suspendedUser": {
+            "name": "You are suspended",
+            "description": "This account has been temporarily suspended by your administrator. Please contact your company administrator for more information."
+        }
     }
-  },
-  "errors": {
-    "attachmentsTotalSize": {
-      "name": "Error",
-      "description": {
-        "prefix": "The email has surpassed the attachment limit of ",
-        "suffix": "."
-      }
-    },
-    "encrypting": {
-      "name": "Encrypting error",
-      "description": "An error occurred while encrypting message.\nCode: "
-    },
-    "nonExistingUsers":{
-      "name": "Non existing users",
-      "description": "One or more users doesn't exists.\nCheck the recipients and try again"
-    },
-    "pendingFiles":{
-      "name": "Pending files",
-      "description": "You have uploading or failed files. Please check your files and try again"
-    },
-    "tooBigFile":{
-      "name": "Too big file",
-      "description": {
-        "prefix": "The file",
-        "suffix": "exceeds",
-        "defaultEnd": "allowed size"
-      }
-    },
-    "tooManyRecipients": {
-      "name": "Too many recipients",
-      "description": "Your emails can only contain until 300 recipients.\nPlease verify and try again."
-    },
-    "tooManyRequests": {
-      "name": "Too many requests",
-      "description": "Too many consecutive attempts.\nPlease try again in "
-    },
-    "unableToConnect": {
-      "name": "Unable to connect",
-      "description": "Unable to connect to server"
-    },
-    "unauthorized": {
-      "name": "Encrypting error",
-      "description": "An error occurred in your request.\nPlease try again"
-    },
-    "uploadFailed": {
-      "name": "Upload failed",
-      "description": "An error occurred while uploading file.\nPlease try again"
-    },
-    "suspendedUser": {
-      "name": "You are suspended",
-      "description": "This account has been temporarily suspended by your administrator. Please contact your company administrator for more information."
-    }
-  }
 }
