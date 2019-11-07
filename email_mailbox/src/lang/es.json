@@ -3,6 +3,8 @@
         "activity_feed": "Actividad Reciente",
         "deleted": "Borrado",
         "downloaded": "ha descargado",
+        "empty_title": "No hay nada nuevo aún",
+        "empty_message": "Disfruta tu día",
         "new": "nuevo",
         "older": "antiguo",
         "opened": "ha abierto",
