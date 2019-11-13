@@ -30,10 +30,12 @@ const createAccount = async params => {
 };
 
 const getAccount = async () => {
+  if (!getDB()) return [];
   return await Account().findAll();
 };
 
 const getAccountByParams = async params => {
+  if (!getDB()) return [];
   return await Account().findAll({ where: params });
 };
 
@@ -636,21 +638,23 @@ const getTrashExpiredEmails = () => {
   const daysAgo = 30;
 
   return Email().findAll({
-    include: [{
-      model: EmailLabel(),
-      where: {
-        labelId
+    include: [
+      {
+        model: EmailLabel(),
+        where: {
+          labelId
+        }
       }
-    }],
+    ],
     where: {
-      trashDate: {[Op.not]: null},
+      trashDate: { [Op.not]: null },
       [Op.and]: [
         getDB().literal(
           `DATETIME(Email.trashDate) < DATETIME('now','-${daysAgo} days')`
         )
       ]
     }
-  })
+  });
 };
 
 const updateEmail = async ({
@@ -737,7 +741,7 @@ const createLabel = async params => {
     });
     return await Label().bulkCreate(labelsToInsert);
   }
-  
+
   if (!params.uuid) {
     labelsToInsert = Object.assign(params, { uuid: genUUID() });
   }

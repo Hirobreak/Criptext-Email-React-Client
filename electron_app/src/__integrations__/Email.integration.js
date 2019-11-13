@@ -310,7 +310,7 @@ const emailTrash = {
     secure: true,
     messageId: 'messageIdK',
     fromAddress: 'User me <user@criptext.com>',
-    trashDate: '2018-10-25 08:30:20.120',
+    trashDate: '2018-10-25 08:30:20.120'
   },
   recipients: {
     from: ['User me <user@criptext.com>'],
@@ -608,18 +608,18 @@ describe('Delete emails from Email Table:', () => {
   it('Should delete emails from DB by only threadId', async () => {
     await DBManager.createEmail(emailReReply);
     const threadIds = [emailReReply.email.threadId];
-    const result = await DBManager.deleteEmailsByThreadIdAndLabelId(
-      threadIds
-    );
+    const result = await DBManager.deleteEmailsByThreadIdAndLabelId(threadIds);
     expect(result).toBe(1);
     const emailDeleted = await DBManager.getEmailByKey(emailReReply.email.key);
     expect(emailDeleted).toEqual([]);
   });
 
-  it('Should delete emails expired fromDB', async ()=> {
+  it('Should delete emails expired fromDB', async () => {
     await DBManager.createEmail(emailTrash);
     const a = await DBManager.getTrashExpiredEmails();
-    const b = a.map(i=> {return i.id});
+    const b = a.map(i => {
+      return i.id;
+    });
     console.log(b);
   });
 });
@@ -752,19 +752,13 @@ describe('Load data thread from Email Table:', () => {
       labelId: -2,
       rejectedLabelIds: [2, 7]
     };
-    const [
-      plainSubjectFound
-    ] = await DBManager.getEmailsGroupByThreadByParams(
+    const [plainSubjectFound] = await DBManager.getEmailsGroupByThreadByParams(
       plainParamsSubject
     );
-    const [
-      plainPreviewFound
-    ] = await DBManager.getEmailsGroupByThreadByParams(
+    const [plainPreviewFound] = await DBManager.getEmailsGroupByThreadByParams(
       plainParamsPreview
     );
-    const [
-      specificFromFound
-    ] = await DBManager.getEmailsGroupByThreadByParams(
+    const [specificFromFound] = await DBManager.getEmailsGroupByThreadByParams(
       specificParamsFrom
     );
     const [specificToFound] = await DBManager.getEmailsGroupByThreadByParams(

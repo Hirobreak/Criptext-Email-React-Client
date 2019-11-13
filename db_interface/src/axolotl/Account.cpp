@@ -35,6 +35,8 @@ int CriptextDB::createAccount(string dbPath, string password, char* recipientId,
     bool hasRow = false;
     sqlcipher_config config;
     config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
+    std::cout << password << std::endl;
+    std::cout << dbPath << std::endl;
     config.key = password;
     sqlcipher_database db(dbPath, config);
     db << "begin;";

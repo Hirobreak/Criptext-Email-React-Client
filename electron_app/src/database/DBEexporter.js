@@ -480,7 +480,11 @@ const exportContactTable = async () => {
   let shouldEnd = false;
   let offset = 0;
   while (!shouldEnd) {
-    const result = await Contact().findAll({attributes: { exclude: ['score'] }, offset, limit: SELECT_ALL_BATCH});
+    const result = await Contact().findAll({
+      attributes: { exclude: ['score'] },
+      offset,
+      limit: SELECT_ALL_BATCH
+    });
     contactRows = [...contactRows, ...result];
     if (result.length < SELECT_ALL_BATCH) {
       shouldEnd = true;
@@ -489,14 +493,18 @@ const exportContactTable = async () => {
     }
   }
   return formatTableRowsToString(Table.CONTACT, contactRows);
-}
+};
 
 const exportLabelTable = async () => {
   let labelRows = [];
   let shouldEnd = false;
   let offset = 0;
   while (!shouldEnd) {
-    const result = await Label().findAll({ where: {type: 'custom'}, offset, limit: SELECT_ALL_BATCH});
+    const result = await Label().findAll({
+      where: { type: 'custom' },
+      offset,
+      limit: SELECT_ALL_BATCH
+    });
     labelRows = [...labelRows, ...result];
     if (result.length < SELECT_ALL_BATCH) {
       shouldEnd = true;
@@ -515,7 +523,11 @@ const exportEmailTable = async db => {
   let shouldEnd = false;
   let offset = 0;
   while (!shouldEnd) {
-    const result = await Email().findAll({ where: {type: 'custom'}, offset, limit: SELECT_ALL_BATCH});
+    const result = await Email().findAll({
+      where: { type: 'custom' },
+      offset,
+      limit: SELECT_ALL_BATCH
+    });
     // const rows = await db.raw(
     //   `SELECT * FROM ${
     //     Table.EMAIL
