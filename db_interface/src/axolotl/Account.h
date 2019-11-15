@@ -2,10 +2,12 @@
 #define ACCOUNT_H_
 
 #include <sqlite_modern_cpp/sqlcipher.h>
+#include <sqlite_modern_cpp.h>
 #include <cstring>
 #include <string>
 #include <memory>
 #include <vector>
+#include "../dbUtils.h"
 
 using namespace std;
 

@@ -6,10 +6,7 @@ using namespace sqlite;
 using namespace std;
 
 CriptextDB::IdentityKey CriptextDB::getIdentityKey(string dbPath, string password, string recipientId, long int deviceId) {
-  sqlcipher_config config;
-  config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READONLY;
-  config.key = password;
-  sqlcipher_database db(dbPath, config);
+  database db = initializeDB(dbPath, password);
 
   IdentityKey identityKey;
   db << "Select * from identitykeyrecord where recipientId == ? and deviceId == ?;"
@@ -32,10 +29,7 @@ CriptextDB::IdentityKey CriptextDB::getIdentityKey(string dbPath, string passwor
 bool CriptextDB::createIdentityKey(string dbPath, string password, string recipientId, int deviceId, char *identityKey) {
   try {
     bool hasRow = false;
-    sqlcipher_config config;
-    config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    config.key = password;
-    sqlcipher_database db(dbPath, config);
+    database db = initializeDB(dbPath, password);
     db << "begin;";
     db << "Select * from identitykeyrecord where recipientId == ? and deviceId == ?;"
      << recipientId

@@ -5,10 +5,7 @@ using namespace std;
 using namespace sqlite;
 
 CriptextDB::Account CriptextDB::getAccount(string dbPath, string password, char *recipientId) {
-  sqlcipher_config config;
-  config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READONLY;
-  config.key = password;
-  sqlcipher_database db(dbPath, config);
+  database db = initializeDB(dbPath, password);
   
   string myPrivKey;
   string myPubKey;
@@ -32,13 +29,10 @@ CriptextDB::Account CriptextDB::getAccount(string dbPath, string password, char 
 
 int CriptextDB::createAccount(string dbPath, string password, char* recipientId, char* name, int deviceId, char* pubKey, char* privKey, int registrationId) {
   try {
+    database db = initializeDB(dbPath, password);
+
     bool hasRow = false;
-    sqlcipher_config config;
-    config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    std::cout << password << std::endl;
-    std::cout << dbPath << std::endl;
-    config.key = password;
-    sqlcipher_database db(dbPath, config);
+    
     db << "begin;";
     db << "Select recipientId from account where recipientId == ?;"
      << recipientId

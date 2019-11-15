@@ -5,6 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <sqlite_modern_cpp/sqlcipher.h>
+#include "../dbUtils.h"
 
 using namespace std;
 

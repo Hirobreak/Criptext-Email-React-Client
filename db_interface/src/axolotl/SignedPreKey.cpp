@@ -8,11 +8,7 @@ using namespace std;
 using namespace sqlite;
 
 CriptextDB::SignedPreKey CriptextDB::getSignedPreKey(string dbPath, string password, short int id) {
-  sqlcipher_config config;
-  config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READONLY;
-  config.key = password;
-  sqlcipher_database db(dbPath, config);
-
+  database db = initializeDB(dbPath, password);
   string mySignedPreKey;
   int myLen = 0;
   db << "Select * from signedprekeyrecord where signedPreKeyId == ?;"
@@ -35,10 +31,7 @@ CriptextDB::SignedPreKey CriptextDB::getSignedPreKey(string dbPath, string passw
 
 bool CriptextDB::createSignedPreKey(string dbPath, string password, short int id, char *keyRecord, size_t len) {
   try {
-    sqlcipher_config config;
-    config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    config.key = password;
-    sqlcipher_database db(dbPath, config);  
+    database db = initializeDB(dbPath, password);
     db << "insert into signedprekeyrecord (signedPreKeyId, record, recordLength) values (?,?,?);"
      << id
      << keyRecord
@@ -52,10 +45,7 @@ bool CriptextDB::createSignedPreKey(string dbPath, string password, short int id
 
 bool CriptextDB::deleteSignedPreKey(string dbPath, string password, short int id) {
   try {
-    sqlcipher_config config;
-    config.flags = OpenFlags::FULLMUTEX | OpenFlags::SHAREDCACHE | OpenFlags::READWRITE;
-    config.key = password;
-    sqlcipher_database db(dbPath, config);
+    database db = initializeDB(dbPath, password);
     db << "delete from signedPrekeyrecord where signedPreKeyId == ?;"
      << id;
     return true;
