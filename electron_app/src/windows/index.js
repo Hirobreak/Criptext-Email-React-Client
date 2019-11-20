@@ -11,6 +11,7 @@ const wsClient = require('./../socketClient');
 const { initClient } = require('./../clientManager');
 const { initNucleus } = require('./../nucleusManager');
 const globalManager = require('./../globalManager');
+const aliceManager = require('./../aliceManager');
 const { isFromStore, getSystemLanguage } = require('./windowUtils');
 
 const upStepDBEncryptedWithoutPIN = async () => {
@@ -53,6 +54,8 @@ const upApp = async ({ shouldSave, pin }) => {
     }
     globalManager.databaseKey.set(pin);
   }
+
+  aliceManager.startAlice();
 
   const [existingAccount] = await dbManager.getAccount();
   if (!existingAccount) {

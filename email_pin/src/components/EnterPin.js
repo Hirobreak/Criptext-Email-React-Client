@@ -24,7 +24,7 @@ class EnterPin extends Component {
     return (
       <section id="enter-pin-containter">
         <div className="enter-pin-content">
-          <div className="logo"></div>
+          <div className="logo" />
           <h1>{page_enter_pin.title}</h1>
           <div
             className={

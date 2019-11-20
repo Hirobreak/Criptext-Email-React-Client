@@ -20,7 +20,7 @@ class EnterRecoveryKey extends Component {
           <div className="enter-recovery-key">
             <h2>{page_enter_recovery_key.enter_key}</h2>
             <div className="enter-recovery-key-block">
-              <div className="icon"></div>
+              <div className="icon" />
               <input defaultValue={this.props.pin} type="text" />
             </div>
             <span>

@@ -15,7 +15,7 @@ class Encrypt extends Component {
     return (
       <section>
         <div className="encrypt-content">
-          <div className="encrypt-icon"></div>
+          <div className="encrypt-icon" />
           <h1>{page_encrypt.title}</h1>
           <div className="encrypt-loading">
             <div className="bar">
