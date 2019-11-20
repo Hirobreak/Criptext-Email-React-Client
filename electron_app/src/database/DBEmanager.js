@@ -18,7 +18,8 @@ const {
   initDatabaseEncrypted,
   resetKeyDatabase,
   Op,
-  Table
+  Table,
+  databasePath
 } = require('./DBEmodel.js');
 const moment = require('moment');
 const { noNulls } = require('../utils/ObjectUtils');
@@ -1198,6 +1199,12 @@ const InitDatabaseEncrypted = async ({
   if (shouldAddSystemLabels) await createSystemLabels();
 };
 
+/* Pending Event */
+
+const getPendingEvents = async () => {
+  return (await Pendingevent().findAll()) || {};
+};
+
 module.exports = {
   Account,
   Contact,
@@ -1214,6 +1221,7 @@ module.exports = {
   Settings,
   Signedprekeyrecord,
   Table,
+  databasePath,
   createAccount,
   createContact,
   createContactsIfOrNotStore,
@@ -1254,6 +1262,7 @@ module.exports = {
   getFilesByTokens,
   getLabelById,
   getLabelsByText,
+  getPendingEvents,
   getSettings,
   getTrashExpiredEmails,
   initDatabaseEncrypted: InitDatabaseEncrypted,

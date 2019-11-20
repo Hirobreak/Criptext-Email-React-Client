@@ -402,5 +402,6 @@ module.exports = {
   initDatabaseEncrypted,
   Op,
   resetKeyDatabase,
-  Table
+  Table,
+  databasePath: myDBEncryptPath()
 };
