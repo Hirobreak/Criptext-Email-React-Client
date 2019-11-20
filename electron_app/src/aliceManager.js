@@ -80,7 +80,6 @@ const startAlice = async () => {
   if (!alice) {
     const myPort = await portscanner.findAPortNotInUse(8085);
     port = myPort;
-
     const alicePath = getAlicePath(process.env.NODE_ENV);
     const dbpath = path.resolve(dbManager.databasePath);
     const logspath = path.resolve(getLogsPath(process.env.NODE_ENV));
@@ -118,7 +117,7 @@ const closeAlice = () => {
 };
 
 const restartAlice = async force => {
-  console.log('Restarting ALice');
+  console.log('Restarting Alice');
   const isReachable = await checkReachability();
   if (isReachable && !force) {
     return;
