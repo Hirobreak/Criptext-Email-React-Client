@@ -81,11 +81,11 @@ class Signedprekeyrecord extends Model {}
 const getDB = () => sequelize;
 
 const setConfiguration = key => {
+  const result = myDBEncryptPath();
   sequelize = new Sequelize(null, null, key, {
     dialect: 'sqlite',
     dialectModulePath: '@journeyapps/sqlcipher',
-    storage: myDBEncryptPath(),
-    logging: console.log
+    storage: result
   });
 };
 

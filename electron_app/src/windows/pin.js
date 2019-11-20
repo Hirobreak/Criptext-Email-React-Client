@@ -11,7 +11,6 @@ const {
 } = require('../database/DBEmanager');
 const keytar = require('keytar');
 const globalManager = require('./../globalManager');
-const aliceManager = require('./../aliceManager');
 const { encryptDataBase } = require('./../utils/dataBaseUtils');
 let pinWindow;
 let shouldCloseForce = false;
