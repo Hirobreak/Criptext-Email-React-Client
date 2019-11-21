@@ -1032,6 +1032,49 @@ const getFilesByTokens = async tokens => {
 const getAllFeedItems = async () => {
   return await Feeditem().findAll({ raw: true });
   // return db.select('*').from(Table.FEEDITEM);
+}
+
+/* Settings
+----------------------------- */
+const getSettings = async () => {
+  return (await Settings().findOne()).dataValues;
+  // return (await db.table(Table.SETTINGS).first('*')) || {};
+};
+
+const updateSettings = async ({
+  language,
+  opened,
+  theme,
+  autoBackupEnable,
+  autoBackupFrequency,
+  autoBackupLastDate,
+  autoBackupLastSize,
+  autoBackupNextDate,
+  autoBackupPath
+}) => {
+  const params = noNulls({
+    language,
+    opened,
+    theme,
+    autoBackupEnable,
+    autoBackupFrequency,
+    autoBackupLastDate,
+    autoBackupLastSize,
+    autoBackupNextDate,
+    autoBackupPath
+  });
+  if (Object.keys(params).length < 1) {
+    return Promise.resolve(true);
+  }
+  const dbResponse = await db
+    .table(Table.SETTINGS)
+    .where({ id: 1 })
+    .update(params);
+  mySettings.update(params);
+  if (params.language) {
+    setLanguage(params.language);
+  }
+  return dbResponse;
 };
 
 const getFeedItemsCounterBySeen = async (seen = 0) => {
@@ -1211,6 +1254,7 @@ module.exports = {
   getFilesByTokens,
   getLabelById,
   getLabelsByText,
+  getSettings,
   getTrashExpiredEmails,
   initDatabaseEncrypted: InitDatabaseEncrypted,
   resetKeyDatabase,
