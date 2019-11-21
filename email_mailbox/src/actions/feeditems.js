@@ -67,7 +67,7 @@ export const updateFeedItems = ({ ids, seen }) => {
     try {
       await updateFeedItemsDB({ ids, seen });
       const badge = await getFeedItemsCounterBySeen(0);
-      dispatch(updateFeedItemsSuccess({ ids, seen, badge: badge[0].count }));
+      dispatch(updateFeedItemsSuccess({ ids, seen, badge }));
     } catch (e) {
       // TO DO
     }
