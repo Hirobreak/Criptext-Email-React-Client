@@ -1039,6 +1039,34 @@ const updateFilesByEmailId = ({ emailId, status }) => {
   return File().update(params, { where: { emailId } });
 };
 
+/* Feed Item
+----------------------------- */
+const createFeedItem = params => {
+  return Feeditem().create(params);
+};
+
+const deleteFeedItemById = id => {
+  return Feeditem().destroy({ where: { id } });
+};
+
+const getAllFeedItems = () => {
+  return Feeditem()
+    .findAll()
+    .map(feeditem => feeditem.toJSON());
+};
+
+const getFeedItemsCounterBySeen = (seen = false) => {
+  return Feeditem().count({
+    where: { seen }
+  });
+};
+
+const updateFeedItems = ({ ids, seen }) => {
+  const params = {};
+  if (typeof seen === 'boolean') params.seen = seen;
+  return Feeditem().update(params, { where: { id: ids } });
+};
+
 /* Functions
 ----------------------------- */
 const clearAndFormatDateEmails = emailObjOrArray => {
@@ -1170,6 +1198,7 @@ module.exports = {
   createContactsIfOrNotStore,
   createEmail,
   createEmailLabel,
+  createFeedItem,
   createFile,
   createLabel,
   deleteDatabase,
@@ -1178,6 +1207,7 @@ module.exports = {
   deleteEmailLabel,
   deleteEmailAndRelations,
   deleteEmailsByThreadIdAndLabelId,
+  deleteFeedItemById,
   deleteLabelById,
   filterEmailLabelIfNotStore,
   getDB,
@@ -1185,6 +1215,7 @@ module.exports = {
   getAccountByParams,
   getAllContacts,
   getAllLabels,
+  getAllFeedItems,
   getContactByEmails,
   getContactByIds,
   getContactsByEmailId,
@@ -1201,6 +1232,7 @@ module.exports = {
   getEmailsGroupByThreadByParamsToSearch,
   getEmailsToDeleteByThreadIdAndLabelId,
   getEmailsUnredByLabelId,
+  getFeedItemsCounterBySeen,
   getFilesByEmailId,
   getFilesByTokens,
   getLabelById,
@@ -1214,6 +1246,7 @@ module.exports = {
   updateContactSpamScore,
   updateEmail,
   updateEmails,
+  updateFeedItems,
   updateFilesByEmailId,
   updateLabel,
   updateUnreadEmailByThreadIds
