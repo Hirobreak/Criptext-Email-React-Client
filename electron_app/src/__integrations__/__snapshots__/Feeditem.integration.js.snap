@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Store data fedditem to Feeditem Table: Should insert feeditem 1`] = `
+Object {
+  "contactId": 1,
+  "date": 2018-06-14T13:23:19.120Z,
+  "emailId": 1,
+  "id": 1,
+  "seen": false,
+  "type": 7,
+}
+`;

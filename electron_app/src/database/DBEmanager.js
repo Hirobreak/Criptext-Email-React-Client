@@ -1024,6 +1024,28 @@ const updateFilesByEmailId = ({ emailId, status }) => {
   return File().update(params, { where: { emailId } });
 };
 
+/* Feed Item
+----------------------------- */
+const createFeedItem = params => {
+  return Feeditem().create(params);
+};
+
+const getAllFeedItems = async () => {
+  return await Feeditem().findAll({ raw: true });
+  // return db.select('*').from(Table.FEEDITEM);
+};
+
+const getFeedItemsCounterBySeen = async (seen = 0) => {
+  return await Feeditem().count({
+    where: { seen }
+  });
+
+  // const query = `SELECT COUNT(DISTINCT ${Table.FEEDITEM}.id) AS count
+  // FROM ${Table.FEEDITEM}
+  // WHERE ${Table.FEEDITEM}.seen = ${seen}`;
+  // return db.raw(query);
+};
+
 /* Functions
 ----------------------------- */
 const clearAndFormatDateEmails = emailObjOrArray => {
@@ -1155,6 +1177,7 @@ module.exports = {
   createContactsIfOrNotStore,
   createEmail,
   createEmailLabel,
+  createFeedItem,
   createFile,
   createLabel,
   deleteDatabase,
@@ -1170,6 +1193,7 @@ module.exports = {
   getAccountByParams,
   getAllContacts,
   getAllLabels,
+  getAllFeedItems,
   getContactByEmails,
   getContactByIds,
   getContactsByEmailId,
@@ -1186,6 +1210,7 @@ module.exports = {
   getEmailsGroupByThreadByParamsToSearch,
   getEmailsToDeleteByThreadIdAndLabelId,
   getEmailsUnredByLabelId,
+  getFeedItemsCounterBySeen,
   getFilesByEmailId,
   getFilesByTokens,
   getLabelById,
