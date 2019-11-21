@@ -26,7 +26,7 @@ export const defineFeedItems = async () => {
     {}
   );
 
-  return { feedItems, badge: badge[0].count };
+  return { feedItems, badge };
 };
 
 const defineFeedAction = type => {

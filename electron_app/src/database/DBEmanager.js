@@ -1027,6 +1027,24 @@ const getFilesByTokens = async tokens => {
   //   .whereIn('token', tokens);
 };
 
+/* Feed Item
+----------------------------- */
+const getAllFeedItems = async () => {
+  return await Feeditem().findAll({ raw: true });
+  // return db.select('*').from(Table.FEEDITEM);
+};
+
+const getFeedItemsCounterBySeen = async (seen = 0) => {
+  return await Feeditem().count({
+    where: { seen }
+  });
+
+  // const query = `SELECT COUNT(DISTINCT ${Table.FEEDITEM}.id) AS count
+  // FROM ${Table.FEEDITEM}
+  // WHERE ${Table.FEEDITEM}.seen = ${seen}`;
+  // return db.raw(query);
+};
+
 /* Functions
 ----------------------------- */
 const clearAndFormatDateEmails = emailObjOrArray => {
@@ -1172,6 +1190,7 @@ module.exports = {
   getAccountByParams,
   getAllContacts,
   getAllLabels,
+  getAllFeedItems,
   getContactByEmails,
   getContactByIds,
   getContactsByEmailId,
@@ -1188,6 +1207,7 @@ module.exports = {
   getEmailsGroupByThreadByParamsToSearch,
   getEmailsToDeleteByThreadIdAndLabelId,
   getEmailsUnredByLabelId,
+  getFeedItemsCounterBySeen,
   getFilesByTokens,
   getLabelById,
   getLabelsByText,
