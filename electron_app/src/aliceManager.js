@@ -85,6 +85,14 @@ const startAlice = async () => {
     const logspath = path.resolve(getLogsPath(process.env.NODE_ENV));
     await cleanAliceRemenants();
     alice = spawn(alicePath, [dbpath, myPort, logspath, getPassword()]);
+    console.log(
+      'STARTING ALICE : ',
+      alicePath,
+      dbpath,
+      myPort,
+      logspath,
+      getPassword()
+    );
     alice.stdout.on('data', data => {
       console.log(`-----alice-----\n${data}\n -----end-----`);
     });
