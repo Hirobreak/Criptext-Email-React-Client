@@ -23,7 +23,7 @@ const upStepDBEncryptedWithoutPIN = async () => {
 
 const upStepCheckPINDBEncrypted = async () => {
   const pin = await pinWindow.checkPin();
-  if (!pin) {
+  if (true) {
     globalManager.pinData.set({ pinType: 'new' });
     pinWindow.show();
     return;
@@ -41,6 +41,7 @@ const upStepCheckPINDBEncrypted = async () => {
 };
 
 const upApp = async ({ shouldSave, pin }) => {
+  console.log('HAS PIN', pin);
   if (pin) {
     if (shouldSave) {
       keytar
@@ -52,6 +53,7 @@ const upApp = async ({ shouldSave, pin }) => {
           console.log('error', error);
         });
     }
+    console.log('MY PIN: ', pin);
     globalManager.databaseKey.set(pin);
   }
 
