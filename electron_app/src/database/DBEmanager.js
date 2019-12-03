@@ -881,8 +881,22 @@ const createSystemLabels = () => {
   return createLabel(labels);
 };
 
-const deleteLabelById = id => {
-  return Label().destroy({ where: { id } });
+const deleteLabelById = async id => {
+  return await getDB().transaction(async trx => {
+    const ids = await EmailLabel()
+      .findAll({
+        attributes: ['id'],
+        where: { labelId: id },
+        raw: true,
+        transaction: trx
+      })
+      .reduce((result, emailLabel) => {
+        return [...result, emailLabel.id];
+      }, []);
+    if (ids.length)
+      await EmailLabel().destroy({ where: { id: ids }, transaction: trx });
+    return await Label().destroy({ where: { id }, transaction: trx });
+  });
 };
 
 const getAllLabels = () => {
@@ -920,7 +934,7 @@ const updateLabel = ({ id, color, text, visible }) => {
 
 /* EmailLabel
 ----------------------------- */
-const createEmailLabel = async (emailLabels, prevTrx) => {
+const createEmailLabel = (emailLabels, prevTrx) => {
   return createOrUseTrx(prevTrx, async trx => {
     const toInserts = await filterEmailLabelIfNotStore(emailLabels, trx);
     if (toInserts.length) {
@@ -930,7 +944,7 @@ const createEmailLabel = async (emailLabels, prevTrx) => {
   });
 };
 
-const deleteEmailLabel = async ({ emailIds, labelIds }, prevTrx) => {
+const deleteEmailLabel = ({ emailIds, labelIds }, prevTrx) => {
   const emailLabels = emailIds.map(item => {
     return {
       emailId: item,
@@ -958,8 +972,8 @@ const deleteEmailAndRelations = async (id, optionalEmailToSave) => {
   });
 };
 
-const deleteEmailLabelsByEmailId = async (emailId, trx) => {
-  return await EmailLabel().destroy({ where: { emailId }, transaction: trx });
+const deleteEmailLabelsByEmailId = (emailId, trx) => {
+  return EmailLabel().destroy({ where: { emailId }, transaction: trx });
 };
 
 const filterEmailLabelIfNotStore = async (emailLabels, trx) => {
@@ -983,8 +997,8 @@ const filterEmailLabelIfNotStore = async (emailLabels, trx) => {
     .filter(item => item !== null);
 };
 
-const getEmailLabelsByEmailId = async emailId => {
-  return await EmailLabel().findAll({
+const getEmailLabelsByEmailId = emailId => {
+  return EmailLabel().findAll({
     attributes: ['labelId'],
     where: { emailId }
   });
