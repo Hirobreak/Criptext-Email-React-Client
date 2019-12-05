@@ -769,12 +769,10 @@ const getTrashExpiredEmails = () => {
       }
     ],
     where: {
-      trashDate: { [Op.not]: null },
-      [Op.and]: [
-        getDB().literal(
-          `DATETIME(Email.trashDate) < DATETIME('now','-${daysAgo} days')`
-        )
-      ]
+      trashDate: { 
+        [Op.not]: null,
+        [Op.lte]: moment().subtract(daysAgo, 'days').toDate()
+      }
     }
   });
 };

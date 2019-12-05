@@ -332,7 +332,7 @@ const emailNewTrash = {
     secure: true,
     messageId: 'messageIdL',
     fromAddress: 'User me <user@criptext.com>',
-    trashDate: '2018-10-25 08:30:20.120'
+    trashDate: '2019-12-01 08:30:20.120'
   },
   recipients: {
     from: ['User me <user@criptext.com>'],
@@ -739,10 +739,14 @@ describe('Delete emails from Email Table:', () => {
 
   it('Should delete emails expired fromDB', async () => {
     await DBManager.createEmail(emailNewTrash);
-    const a = await DBManager.getTrashExpiredEmails();
-    const b = a.map(i => {
-      return i.id;
+    await DBManager.updateEmails({
+      keys: [emailTrash.email.key], trashDate: emailTrash.email.trashDate
     });
+    const trashExpiredEmails = await DBManager.getTrashExpiredEmails();
+    const trashExpiredEmailIds = trashExpiredEmails.map(i => {
+      return i.key;
+    });
+    expect(trashExpiredEmailIds).toEqual([emailTrash.email.key]);
   });
 });
 
