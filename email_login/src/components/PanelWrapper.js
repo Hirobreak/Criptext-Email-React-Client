@@ -14,6 +14,7 @@ import { toCapitalize } from './../utils/StringUtils';
 import {
   createTemporalAccount,
   deleteTemporalAccount,
+  hasPin,
   socketClient,
   confirmWaitingApprovalLogin
 } from './../utils/electronInterface';
@@ -31,6 +32,7 @@ import {
   login,
   openCreateKeysLoadingWindow,
   openPinWindow,
+  sendPin,
   throwError
 } from '../utils/ipc.js';
 import { validateEmail, validateUsername } from './../validators/validators';
@@ -882,8 +884,16 @@ class PanelWrapper extends Component {
             ...body,
             recipientId: this.state.values.usernameOrEmailAddress
           };
+          const hasPIN = hasPin();
+          if (!hasPIN)
+            await sendPin({
+              pin: '1234',
+              shouldSave: false,
+              shouldExport: false
+            });
           openCreateKeysLoadingWindow({
             loadingType: 'link-new-device',
+            shouldResetPIN: !hasPIN,
             remoteData
           });
           deleteTemporalAccount();

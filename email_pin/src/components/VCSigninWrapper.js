@@ -83,6 +83,7 @@ class VCSigninWrapper extends Component {
   };
 
   handleClickCompleteIt = async value => {
+    console.log('222222handleClickCompleteIt');
     await sendPin({
       pin: this.pin,
       shouldSave: value,
@@ -93,7 +94,7 @@ class VCSigninWrapper extends Component {
     //   loadingType: 'signup',
     //   remoteData
     // });
-    closePinWindow();
+    closePinWindow({forceClose: true});
   };
 
   concat = (array, item) => {

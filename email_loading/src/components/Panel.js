@@ -3,7 +3,11 @@ import LoadingWrapper from './LoadingWrapper';
 import LinkNewDeviceWrapper from './LinkNewDeviceWrapper';
 import LinkOldDeviceWrapper from './LinkOldDeviceWrapper';
 import SyncMailboxWrapper from './SyncMailboxWrapper';
-import { loadingType, mySettings } from '../utils/electronInterface';
+import {
+  loadingType,
+  mySettings,
+  shouldResetPIN
+} from '../utils/electronInterface';
 
 const loadingTypes = {
   SIGNUP: 'signup',
@@ -30,7 +34,7 @@ const renderDialog = () => {
     case loadingTypes.SIGNIN_NEW_PASSWORD:
       return <LoadingWrapper loadingType={loadingType} />;
     case loadingTypes.LINK_NEW_DEVICE:
-      return <LinkNewDeviceWrapper />;
+      return <LinkNewDeviceWrapper shouldResetPIN={shouldResetPIN} />;
     case loadingTypes.SYNC_MAILBOX_REQUEST:
       return <SyncMailboxWrapper />;
     case loadingTypes.LINK_DEVICE_REQUEST:
