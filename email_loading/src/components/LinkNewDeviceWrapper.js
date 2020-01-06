@@ -122,6 +122,7 @@ class LoadingWrapper extends Component {
   };
 
   generateAccountAndKeys = params => {
+    console.log('generateAccountAndKeys', params);
     this.setState(
       {
         message: messages.sendingKeys,
@@ -134,6 +135,7 @@ class LoadingWrapper extends Component {
         try {
           this.incrementPercentage();
           await cleanKeys();
+          console.log('cleanKeys');
           const keybundle = await signal.generateAccountAndKeys(params);
           if (!keybundle) {
             await cleanKeys();
@@ -142,6 +144,7 @@ class LoadingWrapper extends Component {
           }
           this.uploadKeys(keybundle);
         } catch (e) {
+          console.log(e);
           this.linkingDevicesThrowError();
         }
       }
@@ -302,23 +305,28 @@ class LoadingWrapper extends Component {
       async () => {
         this.incrementPercentage();
         await decryptBackupFile(ArrayBufferToBuffer(decryptedKey));
-        await importDatabase();
-        this.setState(
-          {
-            message: messages.syncComplete,
-            pauseAt: 100,
-            delay: (100 - this.state.percent) / ANIMATION_DURATION,
-            lastStep: STEPS.PROCESS_MAILBOX
-          },
-          async () => {
-            this.incrementPercentage();
-            clearSyncData();
-            await setTimeout(() => {
-              openMailboxWindow();
-              closeCreatingKeysLoadingWindow();
-            }, 4000);
-          }
-        );
+        await importDatabase()
+          .then(() => {
+            this.setState(
+              {
+                message: messages.syncComplete,
+                pauseAt: 100,
+                delay: (100 - this.state.percent) / ANIMATION_DURATION,
+                lastStep: STEPS.PROCESS_MAILBOX
+              },
+              async () => {
+                this.incrementPercentage();
+                clearSyncData();
+                await setTimeout(() => {
+                  openMailboxWindow();
+                  closeCreatingKeysLoadingWindow();
+                }, 4000);
+              }
+            );
+          })
+          .catch(() => {
+            this.linkingDevicesThrowError();
+          });
       }
     );
   };

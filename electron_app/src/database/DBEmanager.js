@@ -49,7 +49,9 @@ const getAccount = () => {
 
 const getAccountByParams = params => {
   if (!getDB()) return [];
-  return Account().findAll({ where: params });
+  return Account()
+    .findAll({ where: params })
+    .map(account => account.toJSON());
 };
 
 const updateAccount = ({
@@ -141,6 +143,7 @@ const getContactByEmails = (emails, trx) => {
   return Contact().findAll({
     attributes: ['id', 'email', 'score', 'spamScore'],
     where: { email: emails },
+    raw: true,
     transaction: trx
   });
 };
@@ -1143,6 +1146,54 @@ const getSessionRecordByRecipientIds = recipientIds => {
 
 /* Functions
 ----------------------------- */
+const cleanDataBase = async () => {
+  return await getDB().transaction(async trx => {
+    await EmailContact().destroy({ where: {}, transaction: trx });
+    await EmailLabel().destroy({ where: {}, transaction: trx });
+    await Feeditem().destroy({ where: {}, transaction: trx });
+    await Contact().destroy({ where: {}, transaction: trx });
+    await Account().destroy({ where: {}, transaction: trx });
+    await Email().destroy({ where: {}, transaction: trx });
+    await Label().destroy({ where: { type: 'custom' }, transaction: trx });
+    await File().destroy({ where: {}, transaction: trx });
+    await Pendingevent().destroy({ where: {}, transaction: trx });
+    await Settings().destroy({ where: {}, transaction: trx });
+    await Prekeyrecord().destroy({ where: {}, transaction: trx });
+    await Signedprekeyrecord().destroy({ where: {}, transaction: trx });
+    await Sessionrecord().destroy({ where: {}, transaction: trx });
+    await Identitykeyrecord().destroy({ where: {}, transaction: trx });
+  });
+};
+
+const cleanDataLogout = async recipientId => {
+  const params = {
+    deviceId: '',
+    jwt: '',
+    refreshToken: ''
+  };
+
+  return await getDB().transaction(async trx => {
+    await Account().update(params, {
+      where: { recipientId },
+      transaction: trx
+    });
+    await Prekeyrecord().destroy({ where: {}, transaction: trx });
+    await Signedprekeyrecord().destroy({ where: {}, transaction: trx });
+    await Sessionrecord().destroy({ where: {}, transaction: trx });
+    await Identitykeyrecord().destroy({ where: {}, transaction: trx });
+  });
+};
+
+const cleanKeys = async () => {
+  if (!getDB()) return [];
+  return await getDB().transaction(async trx => {
+    await Prekeyrecord().destroy({ where: {}, transaction: trx });
+    await Signedprekeyrecord().destroy({ where: {}, transaction: trx });
+    await Sessionrecord().destroy({ where: {}, transaction: trx });
+    await Identitykeyrecord().destroy({ where: {}, transaction: trx });
+  });
+};
+
 const clearAndFormatDateEmails = emailObjOrArray => {
   let tempArr = [];
   const isAnEmailArray = Array.isArray(emailObjOrArray);
@@ -1269,6 +1320,9 @@ module.exports = {
   Table,
   Op,
   databasePath,
+  cleanDataBase,
+  cleanDataLogout,
+  cleanKeys,
   createAccount,
   createContact,
   createContactsIfOrNotStore,

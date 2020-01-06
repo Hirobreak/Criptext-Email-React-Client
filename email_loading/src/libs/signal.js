@@ -8,7 +8,6 @@ import {
   cleanDatabase,
   createContact,
   createLabel,
-  createTables,
   getAccount,
   getComputerName,
   getKeyBundle,
@@ -44,7 +43,6 @@ const createAccount = async ({
   if (username) {
     await cleanDatabase(username);
   }
-  // await createTables();
   const keybundle = await createAcountAndGetKeyBundle({
     recipientId,
     name,
@@ -101,10 +99,10 @@ const createAcountAndGetKeyBundle = async ({
   deviceType,
   deviceId
 }) => {
+  console.log('createAcountAndGetKeyBundle');
   const [currentAccount] = await getAccount();
   if (currentAccount && currentAccount.recipientId !== recipientId) {
     await cleanDatabase(currentAccount.recipientId);
-    await createTables();
   }
   const accountRes = await aliceRequestWrapper(() => {
     return createAccountCredentials({
@@ -113,12 +111,14 @@ const createAcountAndGetKeyBundle = async ({
       deviceId
     });
   });
+  console.log('accountRes', accountRes);
   if (accountRes.status !== 200) {
     throw CustomError(string.errors.updateAccountData);
   }
   const keybundleRes = await aliceRequestWrapper(() => {
     return generateKeyBundle({ recipientId });
   });
+  console.log('keybundleRes', keybundleRes);
   if (keybundleRes.status !== 200) {
     throw CustomError(string.errors.prekeybundleFailed);
   }
@@ -130,7 +130,7 @@ const createAcountAndGetKeyBundle = async ({
     deviceType,
     ...jsonRes
   };
-
+  console.log('keybundle', keybundle);
   return keybundle;
 };
 
@@ -180,11 +180,6 @@ const generateAccountAndKeys = async ({
   deviceType,
   deviceId
 }) => {
-  const [currentAccount] = await getAccount();
-  if (currentAccount && currentAccount.recipientId !== recipientId) {
-    await cleanDatabase(currentAccount.recipientId);
-    await createTables();
-  }
   const keybundle = await createAcountAndGetKeyBundle({
     recipientId,
     deviceId,
@@ -227,7 +222,6 @@ const createAccountToDB = async ({
   } catch (createAccountDbError) {
     throw CustomError(string.errors.updateAccountData);
   }
-  await createSystemLabels();
   const email = isRecipientApp ? `${recipientId}@${appDomain}` : recipientId;
   await createOwnContact(name, email);
   const [newAccount] = await getAccount();
