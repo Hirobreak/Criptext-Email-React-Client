@@ -141,6 +141,7 @@ const getContactByEmails = (emails, trx) => {
   return Contact().findAll({
     attributes: ['id', 'email', 'score', 'spamScore'],
     where: { email: emails },
+    raw: true,
     transaction: trx
   });
 };
@@ -1048,6 +1049,7 @@ const updateFilesByEmailId = ({ emailId, status }) => {
 /* Feed Item
 ----------------------------- */
 const createFeedItem = params => {
+  console.log('createFeedItem', params);
   return Feeditem().create(params);
 };
 

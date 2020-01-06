@@ -39,6 +39,7 @@ const createAccount = async ({
   deviceType,
   recoveryEmail
 }) => {
+  console.log('createAccount');
   const [currentAccount] = await getAccount();
   const username = currentAccount ? currentAccount.recipientId : null;
   if (username) {
@@ -101,6 +102,7 @@ const createAcountAndGetKeyBundle = async ({
   deviceType,
   deviceId
 }) => {
+  console.log('createAcountAndGetKeyBundle');
   const [currentAccount] = await getAccount();
   if (currentAccount && currentAccount.recipientId !== recipientId) {
     await cleanDatabase(currentAccount.recipientId);
@@ -179,6 +181,7 @@ const generateAccountAndKeys = async ({
   deviceType,
   deviceId
 }) => {
+  console.log('generateAccountAndKeys');
   const [currentAccount] = await getAccount();
   if (currentAccount && currentAccount.recipientId !== recipientId) {
     await cleanDatabase(currentAccount.recipientId);
