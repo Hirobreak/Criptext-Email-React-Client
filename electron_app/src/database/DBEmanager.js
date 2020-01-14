@@ -416,7 +416,8 @@ const getEmailsByThreadIdAndLabelId = (threadIds, labelId) => {
       }
     ],
     where: { threadId: threadIds },
-    group: ['threadId']
+    group: ['threadId'],
+    raw: true
   });
 };
 
