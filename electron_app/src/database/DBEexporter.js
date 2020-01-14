@@ -27,7 +27,11 @@ const {
 const myAccount = require('./../Account');
 const systemLabels = require('./../systemLabels');
 const { APP_DOMAIN, LINK_DEVICES_FILE_VERSION } = require('../utils/const');
-const { getEmailBody, getEmailHeaders } = require('./../utils/FileUtils');
+const {
+  getEmailBody,
+  getEmailHeaders,
+  saveEmailBody
+} = require('./../utils/FileUtils');
 
 const CIPHER_ALGORITHM = 'aes-128-cbc';
 const STREAM_SIZE = 512 * 1024;
@@ -868,6 +872,7 @@ const importDatabaseFromFile = async ({ filepath, isStrict }) => {
               emails.push(object);
               if (emails.length === EMAILS_BATCH) {
                 lineReader.pause();
+                await storeEmailBodies(emails);
                 await Email().bulkCreate(emails, { transaction: trx });
                 emails = [];
                 lineReader.resume();
@@ -1004,6 +1009,7 @@ const importDatabaseFromFile = async ({ filepath, isStrict }) => {
             await insertRemainingRows(accounts, Account(), trx);
             await insertRemainingRows(contacts, Contact(), trx);
             await insertRemainingRows(labels, Label(), trx);
+            await storeEmailBodies(emails);
             await insertRemainingRows(emails, Email(), trx);
             await insertRemainingRows(emailContacts, EmailContact(), trx);
             await insertRemainingEmailLabelsRows(
@@ -1051,6 +1057,27 @@ const insertRemainingEmailLabelsRows = async (rows, Table, trx) => {
   }
 };
 
+const storeEmailBodies = emailRows => {
+  const username = myAccount.recipientId.includes('@')
+    ? myAccount.recipientId
+    : `${myAccount.recipientId}@${APP_DOMAIN}`;
+  return Promise.all(
+    emailRows.map(email => {
+      const body = email.content;
+      const headers = email.headers;
+      email.content = '';
+      delete email.headers;
+      return saveEmailBody({
+        body,
+        headers,
+        username,
+        metadataKey: email.key,
+        password: globalManager.databaseKey.get()
+      });
+    })
+  );
+};
+
 /* Utils
 ----------------------------- */
 const decryptStreamFile = ({ inputFile, outputFile, key }) => {
@@ -1060,6 +1087,27 @@ const decryptStreamFile = ({ inputFile, outputFile, key }) => {
     const iv = readBytesSync(inputFile, ivStartPosition, ivEndPosition);
     const reader = fs.createReadStream(inputFile, {
       start: DEFAULT_KEY_LENGTH,
+      highWaterMark: STREAM_SIZE
+    });
+    const writer = fs.createWriteStream(outputFile);
+    reader
+      .pipe(crypto.createDecipheriv(CIPHER_ALGORITHM, key, iv))
+      .pipe(zlib.createGunzip())
+      .pipe(writer)
+      .on('error', reject)
+      .on('finish', resolve);
+  });
+};
+
+const decryptStreamFileWithPassword = ({ inputFile, outputFile, password }) => {
+  return new Promise((resolve, reject) => {
+    const saltSize = 8;
+    const ivSize = 16;
+    const salt = readBytesSync(inputFile, 0, saltSize);
+    const iv = readBytesSync(inputFile, saltSize, ivSize);
+    const { key } = generateKeyAndIvFromPassword(password, salt);
+    const reader = fs.createReadStream(inputFile, {
+      start: saltSize + ivSize,
       highWaterMark: STREAM_SIZE
     });
     const writer = fs.createWriteStream(outputFile);
@@ -1109,6 +1157,21 @@ const generateKeyAndIv = (keySize, ivSize) => {
       iv: null
     };
   }
+};
+
+const generateKeyAndIvFromPassword = (password, customSalt) => {
+  const salt = customSalt || crypto.randomBytes(8);
+  const iterations = 10000;
+  const pbkdf2Name = 'sha256';
+  const key = crypto.pbkdf2Sync(
+    Buffer.from(password, 'utf8'),
+    salt,
+    iterations,
+    DEFAULT_KEY_LENGTH,
+    pbkdf2Name
+  );
+  const iv = crypto.randomBytes(DEFAULT_KEY_LENGTH);
+  return { key, iv, salt };
 };
 
 const getCustomLinesByStream = (filename, lineCount, callback) => {
@@ -1171,6 +1234,7 @@ const saveToFile = ({ data, filepath, mode }, isFirstRecord) => {
 
 module.exports = {
   decryptStreamFile,
+  decryptStreamFileWithPassword,
   encryptStreamFile,
   exportNotEncryptDatabaseToFile,
   exportContactTable,
@@ -1181,6 +1245,7 @@ module.exports = {
   exportFileTable,
   exportLabelTable,
   generateKeyAndIv,
+  generateKeyAndIvFromPassword,
   getCustomLinesByStream,
   importDatabaseFromFile
 };
