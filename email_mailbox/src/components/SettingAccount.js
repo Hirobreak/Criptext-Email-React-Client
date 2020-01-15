@@ -35,6 +35,7 @@ const SettingAccount = props => (
       <div className="cptx-section-block-content">
         <ReadReceiptsBlock {...props} />
         <TwoFactorAuthenticationBlock {...props} />
+        <SecurityPin {...props} />
       </div>
       <div className="cptx-section-block-title">
         <h1>{string.settings.configurations}</h1>
@@ -141,6 +142,22 @@ const RecoveryEmailLoading = () => (
     <div />
     <div />
     <div />
+  </div>
+);
+
+const SecurityPin = props => (
+  <div className="cptx-section-item">
+    <span className="cptx-section-item-title">
+      {string.settings.security_pin.label}
+    </span>
+    <span className="cptx-section-item-description">
+      {string.settings.security_pin.description}
+    </span>
+    <div className="cptx-section-item-control">
+      <button className="button-b" onClick={props.onClickChangeSecurityPin}>
+        <span>{string.settings.change}</span>
+      </button>
+    </div>
   </div>
 );
 
@@ -302,6 +319,10 @@ RecoveryEmailBlock.propTypes = {
   recoveryEmailIsLoading: PropTypes.bool,
   resendLinkText: PropTypes.string
 };
+
+SecurityPin.propTypes = {
+  onClickChangeSecurityPin: PropTypes.func
+}
 
 TwoFactorAuthenticationBlock.propTypes = {
   onChangeSwitchTwoFactor: PropTypes.func,
