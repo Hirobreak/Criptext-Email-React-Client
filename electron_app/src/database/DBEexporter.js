@@ -30,6 +30,8 @@ const { APP_DOMAIN, LINK_DEVICES_FILE_VERSION } = require('../utils/const');
 const {
   getEmailBody,
   getEmailHeaders,
+  removeEmailsCopy,
+  replaceEmailsWithCopy,
   saveEmailBody
 } = require('./../utils/FileUtils');
 
@@ -80,8 +82,8 @@ const exportNotEncryptDatabaseToFile = async ({ databasePath, outputPath }) => {
   const filepath = outputPath;
   const dbConn = await createNotEncryptDatabaseConnection(databasePath);
 
-  const accounts = await _exportAccountTable(dbConn);
-  saveToFile({ data: accounts, filepath, mode: 'w' }, true);
+  const accountsData = await _exportAccountTable(dbConn);
+  saveToFile({ data: accountsData.rowsString, filepath, mode: 'w' }, true);
 
   const contacts = await _exportContactTable(dbConn);
   saveToFile({ data: contacts, filepath, mode: 'a' });
@@ -89,7 +91,18 @@ const exportNotEncryptDatabaseToFile = async ({ databasePath, outputPath }) => {
   const labels = await _exportLabelTable(dbConn);
   saveToFile({ data: labels, filepath, mode: 'a' });
 
-  const emails = await _exportEmailTable(dbConn);
+  let userEmail;
+  if (myAccount.recipientId) {
+    userEmail = myAccount.recipientId.includes('@')
+      ? myAccount.recipientId
+      : `${myAccount.recipientId}@${APP_DOMAIN}`;
+  } else {
+    const firstAccount = accountsData.firstAccount;
+    userEmail = firstAccount.recipientId.includes('@')
+      ? firstAccount.recipientId
+      : `${firstAccount.recipientId}@${APP_DOMAIN}`;
+  }
+  const emails = await _exportEmailTable(dbConn, userEmail);
   saveToFile({ data: emails, filepath, mode: 'a' });
 
   const emailContacts = await _exportEmailContactTable(dbConn);
@@ -152,7 +165,10 @@ const _exportAccountTable = async db => {
       offset += SELECT_ALL_BATCH;
     }
   }
-  return formatTableRowsToString(Table.ACCOUNT, accountRows);
+  return {
+    rowsString: formatTableRowsToString(Table.ACCOUNT, accountRows),
+    firstAccount: accountRows[0]
+  };
 };
 
 const _exportContactTable = async db => {
@@ -208,7 +224,7 @@ const _exportLabelTable = async db => {
   return formatTableRowsToString(Table.LABEL, labelRows);
 };
 
-const _exportEmailTable = async db => {
+const _exportEmailTable = async (db, userEmail) => {
   let emailRows = [];
   let shouldEnd = false;
   let offset = 0;
@@ -219,7 +235,7 @@ const _exportEmailTable = async db => {
       } WHERE ${whereRawEmailQuery} LIMIT ${SELECT_ALL_BATCH} OFFSET ${offset}`
     );
     const result = await Promise.all(
-      rows.map(row => {
+      rows.map(async row => {
         if (!row.unsendDate) {
           delete row.unsendDate;
         } else {
@@ -241,17 +257,26 @@ const _exportEmailTable = async db => {
           delete row.boundary;
         }
 
-        const body = row.content;
+        const body = await getEmailBody({
+          username: userEmail,
+          metadataKey: row.key
+        });
+        const headers = await getEmailHeaders({
+          username: userEmail,
+          metadataKey: row.key
+        });
         const key = parseInt(row.key);
         return Object.assign(row, {
           unread: !!row.unread,
           secure: !!row.secure,
           content: body,
+          headers: headers,
           key,
           date: parseDate(row.date)
         });
       })
     );
+
     emailRows = [...emailRows, ...result];
     if (rows.length < SELECT_ALL_BATCH) {
       shouldEnd = true;
@@ -1041,9 +1066,12 @@ const importDatabaseFromFile = async ({ filepath, isStrict }) => {
               Signedprekeyrecord(),
               trx
             );
+            await replaceEmailsWithCopy(userEmail);
             resolve();
           } catch (error) {
+            console.log(error);
             const a = new Error(error.name);
+            await removeEmailsCopy(userEmail);
             reject(a);
           }
         });
@@ -1082,7 +1110,8 @@ const storeEmailBodies = (emailRows, userEmail) => {
         headers,
         username: userEmail,
         metadataKey: email.key,
-        password: globalManager.databaseKey.get()
+        password: globalManager.databaseKey.get(),
+        isCopy: true
       });
     })
   );

@@ -46,7 +46,7 @@ const encryptDataBase = async () => {
 const deleteNotEncryptDatabase = async () => {
   const myOldDBPath = getFilenamePath(process.env.NODE_ENV, 'Criptext.db');
   await deleteFile(myOldDBPath);
-}
+};
 
 const deleteFile = async filepath => {
   await remove(filepath);

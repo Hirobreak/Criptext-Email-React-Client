@@ -123,7 +123,10 @@ const setUpPin = async ({
   if (shouldResetPin) {
     await resetKeyDatabase(pin);
   } else {
-    await initDatabaseEncrypted({ key: pin, shouldAddSystemLabels: !shouldExport });
+    await initDatabaseEncrypted({
+      key: pin,
+      shouldAddSystemLabels: !shouldExport
+    });
   }
 
   if (shouldExport) {
