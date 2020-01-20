@@ -933,7 +933,9 @@ const getLabelById = id => {
 };
 
 const getLabelByUuid = uuid => {
-  return Label().findAll({ where: { uuid } });
+  return Label()
+    .findAll({ where: { uuid } })
+    .map(label => label.toJSON());
 };
 
 const getLabelsByText = async textArray => {
