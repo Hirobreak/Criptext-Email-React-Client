@@ -104,6 +104,7 @@ class LoadingWrapper extends Component {
         failed: false
       });
     } catch (e) {
+      console.log('ERROR : ', e);
       if (e.code === 'ECONNREFUSED') {
         throwError(string.errors.unableToConnect);
       } else {

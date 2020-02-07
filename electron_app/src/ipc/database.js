@@ -86,9 +86,10 @@ ipc.answerRenderer('db-get-all-feed-items', params => {
 
 ipc.answerRenderer('db-get-all-labels', () => dbManager.getAllLabels());
 
-ipc.answerRenderer('db-get-contact-by-emails', emails =>
-  dbManager.getContactByEmails(emails)
-);
+ipc.answerRenderer('db-get-contact-by-emails', emails => {
+  const data = { emails, accountId };
+  return dbManager.getContactByEmails(data);
+});
 
 ipc.answerRenderer('db-get-contact-by-emailid', emailId =>
   dbManager.getContactsByEmailId(emailId)
