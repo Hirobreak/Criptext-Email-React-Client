@@ -507,6 +507,7 @@ const getEmailsByThreadId = ({ accountId, threadId }) => {
 };
 
 const getEmailsByThreadIdAndLabelId = ({ accountId, threadIds, labelId }) => {
+  console.log('GET : ', labelId);
   const sequelize = getDB();
   return Email()
     .findAll({
