@@ -160,13 +160,19 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(AccountContact, { foreignKey: 'accountId' });
-  Contact.hasMany(AccountContact, { foreignKey: 'contactId' });
+  Account.hasMany(AccountContact, {
+    foreignKey: 'accountId',
+    onDelete: 'CASCADE'
+  });
+  Contact.hasMany(AccountContact, {
+    foreignKey: 'contactId',
+    onDelete: 'CASCADE'
+  });
 
   Email.init(
     {
       id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      key: { type: Sequelize.STRING, unique: true },
+      key: { type: Sequelize.STRING },
       threadId: Sequelize.STRING,
       subject: Sequelize.STRING,
       content: Sequelize.STRING,
@@ -224,7 +230,7 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Email, { foreignKey: 'accountId' });
+  Account.hasMany(Email, { foreignKey: 'accountId', onDelete: 'CASCADE' });
 
   Label.init(
     {
@@ -243,7 +249,7 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Label, { foreignKey: 'accountId' });
+  Account.hasMany(Label, { foreignKey: 'accountId', onDelete: 'CASCADE' });
 
   EmailContact.init(
     {
@@ -258,8 +264,11 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Contact.hasMany(EmailContact, { foreignKey: 'contactId' });
-  Email.hasMany(EmailContact, { foreignKey: 'emailId' });
+  Contact.hasMany(EmailContact, {
+    foreignKey: 'contactId',
+    onDelete: 'CASCADE'
+  });
+  Email.hasMany(EmailContact, { foreignKey: 'emailId', onDelete: 'CASCADE' });
 
   EmailLabel.init(
     {
@@ -273,8 +282,8 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Label.hasMany(EmailLabel, { foreignKey: 'labelId' });
-  Email.hasMany(EmailLabel, { foreignKey: 'emailId' });
+  Label.hasMany(EmailLabel, { foreignKey: 'labelId', onDelete: 'CASCADE' });
+  Email.hasMany(EmailLabel, { foreignKey: 'emailId', onDelete: 'CASCADE' });
 
   File.init(
     {
@@ -307,7 +316,7 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  File.belongsTo(Email, { foreignKey: 'emailId' });
+  File.belongsTo(Email, { foreignKey: 'emailId', onDelete: 'CASCADE' });
 
   Feeditem.init(
     {
@@ -334,10 +343,10 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Feeditem, { foreignKey: 'accountId' });
-  Feeditem.belongsTo(Email, { foreignKey: 'emailId' });
-  Feeditem.belongsTo(Contact, { foreignKey: 'contactId' });
-  Feeditem.belongsTo(File, { foreignKey: 'fileId' });
+  Account.hasMany(Feeditem, { foreignKey: 'accountId', onDelete: 'CASCADE' });
+  Feeditem.belongsTo(Email, { foreignKey: 'emailId', onDelete: 'CASCADE' });
+  Feeditem.belongsTo(Contact, { foreignKey: 'contactId', onDelete: 'CASCADE' });
+  Feeditem.belongsTo(File, { foreignKey: 'fileId', onDelete: 'CASCADE' });
 
   Identitykeyrecord.init(
     {
@@ -354,7 +363,10 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Identitykeyrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Identitykeyrecord, {
+    foreignKey: 'accountId',
+    onDelete: 'CASCADE'
+  });
 
   Pendingevent.init(
     {
@@ -369,7 +381,10 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Pendingevent, { foreignKey: 'accountId' });
+  Account.hasMany(Pendingevent, {
+    foreignKey: 'accountId',
+    onDelete: 'CASCADE'
+  });
 
   Prekeyrecord.init(
     {
@@ -386,7 +401,10 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Prekeyrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Prekeyrecord, {
+    foreignKey: 'accountId',
+    onDelete: 'CASCADE'
+  });
 
   Sessionrecord.init(
     {
@@ -404,7 +422,10 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Sessionrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Sessionrecord, {
+    foreignKey: 'accountId',
+    onDelete: 'CASCADE'
+  });
 
   Settings.init(
     {
@@ -436,7 +457,10 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Signedprekeyrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Signedprekeyrecord, {
+    foreignKey: 'accountId',
+    onDelete: 'CASCADE'
+  });
 
   await sequelize.sync({});
 
