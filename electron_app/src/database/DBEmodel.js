@@ -160,13 +160,17 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(AccountContact, { foreignKey: 'accountId' });
-  Contact.hasMany(AccountContact, { foreignKey: 'contactId' });
+  Account.hasMany(AccountContact, {
+    foreignKey: 'accountId'
+  });
+  Contact.hasMany(AccountContact, {
+    foreignKey: 'contactId'
+  });
 
   Email.init(
     {
       id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      key: { type: Sequelize.STRING, unique: true },
+      key: { type: Sequelize.STRING },
       threadId: Sequelize.STRING,
       subject: Sequelize.STRING,
       content: Sequelize.STRING,
@@ -258,7 +262,9 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Contact.hasMany(EmailContact, { foreignKey: 'contactId' });
+  Contact.hasMany(EmailContact, {
+    foreignKey: 'contactId'
+  });
   Email.hasMany(EmailContact, { foreignKey: 'emailId' });
 
   EmailLabel.init(
@@ -354,7 +360,9 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Identitykeyrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Identitykeyrecord, {
+    foreignKey: 'accountId'
+  });
 
   Pendingevent.init(
     {
@@ -369,7 +377,9 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Pendingevent, { foreignKey: 'accountId' });
+  Account.hasMany(Pendingevent, {
+    foreignKey: 'accountId'
+  });
 
   Prekeyrecord.init(
     {
@@ -386,7 +396,9 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Prekeyrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Prekeyrecord, {
+    foreignKey: 'accountId'
+  });
 
   Sessionrecord.init(
     {
@@ -404,7 +416,9 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Sessionrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Sessionrecord, {
+    foreignKey: 'accountId'
+  });
 
   Settings.init(
     {
@@ -436,7 +450,9 @@ const initDatabaseEncrypted = async ({ key, shouldReset }) => {
     }
   );
 
-  Account.hasMany(Signedprekeyrecord, { foreignKey: 'accountId' });
+  Account.hasMany(Signedprekeyrecord, {
+    foreignKey: 'accountId'
+  });
 
   await sequelize.sync({});
 
