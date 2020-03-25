@@ -17,7 +17,7 @@
       "need_help": "Need help?",
       "title" : {
         "first": "Step ",
-        "second": " of 3"
+        "second": " of 4"
       },
       "step1": {
         "title": "Let's set up your domain",
@@ -264,6 +264,14 @@
       },
       "error": {
         "description": "Произошла ошибка во время загрузки. Файл не был сохранен"
+      }
+    },
+    "custom_domain_deleted": {
+      "success": {
+        "description": "Domain deleted successfully"
+      },
+      "error": {
+        "description": "Failed to delete domain"
       }
     },
     "save_draft": {
@@ -524,6 +532,21 @@
         "unknown": "Uknown Error ({0}), please try again"
       }
     },
+    "delete_custom_domain": {
+      "title": "Remove your domain",
+      "description": "Are you sure you want to delete your domain? Your mails will not disapear, but aliases with this domain will be deleted.",
+      "buttons": {
+        "cancelLabel": "Cancel",
+        "continueLabel": "Delete",
+        "okLabel": "Ok"
+      }, 
+      "errors": {
+        "title": "Domain could not be deleted",
+        "nodomain": "Domain not found",
+        "unknown": "Uknown Error ({0}), please try again",
+        "timeout": "Connection Timeout. Please Try Again"
+      }
+    },
     "export_backup": {
       "title": "Экспорт резервного файла",
       "switchLabel": "Зашифровать резервную копию",
@@ -711,7 +734,8 @@
     "custom_domains": {
       "title": "Custom Domains",
       "description": "Send emails from a personal domain that you own.",
-      "add": "Add Domain"
+      "add": "Add Domain",
+      "remove": "Remove domain"
     },
     "mailbox_backup": {
       "auto": {

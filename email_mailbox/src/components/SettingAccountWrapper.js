@@ -6,6 +6,8 @@ import {
   changeRecoveryEmail,
   deleteAddress,
   deleteAliases,
+  deleteCustomDomain, //database
+  deleteDomain, // api
   setReplyTo,
   setTwoFactorAuth,
   createDefaultBackupFolder
@@ -49,6 +51,7 @@ const SETTINGS_POPUP_TYPES = {
   CHANGE_SECURITY_PIN: 'change-security-pin',
   DELETE_ACCOUNT: 'delete-account',
   DELETE_ALIAS: 'delete-alias',
+  DELETE_CUSTOM_DOMAIN: 'delete-custom-domain',
   EXPORT_BACKUP: 'export-backup',
   LOGOUT: 'logout',
   MANUAL_SYNC: 'manual-sync',
@@ -114,6 +117,10 @@ class SettingAccountWrapper extends Component {
         email: undefined,
         error: undefined
       },
+      deleteCustomDomainsParams: {
+        domain: undefined,
+        error: undefined
+      },
       recoveryEmailParams: {
         recoveryEmail: props.recoveryEmail,
         recoveryEmailConfirmed: props.recoveryEmailConfirmed,
@@ -176,8 +183,12 @@ class SettingAccountWrapper extends Component {
         onChangePanel={this.props.onChangePanel}
         onChangeAliasStatus={this.props.onChangeAliasStatus}
         onConfirmDeleteAlias={this.handleConfirmDeleteAlias}
+        onConfirmDeleteCustomDomain={this.handleConfirmDeleteCustomDomain}
         deleteAliasParams={this.state.deleteAliasParams}
+        deleteCustomDomainsParams={this.state.deleteCustomDomainsParams}
+        domains={this.props.domains}
         onClickDeleteAlias={this.handleClickDeleteAlias}
+        onClickDeleteCustomDomain={this.handleClickDeleteCustomDomain}
         changePasswordPopupParams={this.state.changePasswordPopupParams}
         changeRecoveryEmailPopupParams={
           this.state.changeRecoveryEmailPopupParams
@@ -431,6 +442,15 @@ class SettingAccountWrapper extends Component {
         };
         break;
       }
+      case SETTINGS_POPUP_TYPES.DELETE_CUSTOM_DOMAIN: {
+        newState = {
+          deleteCustomDomainsParams: {
+            domain: undefined,
+            error: undefined
+          }
+        };
+        break;
+      }
       default:
         newState = {};
         break;
@@ -452,6 +472,17 @@ class SettingAccountWrapper extends Component {
       deleteAliasParams: {
         addressId: rowId,
         email,
+        error: undefined
+      }
+    });
+  };
+
+  handleClickDeleteCustomDomain = domain => {
+    this.setState({
+      isHiddenSettingsPopup: false,
+      settingsPopupType: SETTINGS_POPUP_TYPES.DELETE_CUSTOM_DOMAIN,
+      deleteCustomDomainsParams: {
+        domain,
         error: undefined
       }
     });
@@ -828,6 +859,52 @@ class SettingAccountWrapper extends Component {
     }
   };
 
+  handleConfirmDeleteCustomDomain = async () => {
+    if (!this.state.deleteCustomDomainsParams) return;
+    const { domain } = this.state.deleteCustomDomainsParams;
+    const res = await deleteDomain(domain); //api
+
+    if (!res) {
+      this.setState({
+        deleteCustomDomainsParams: {
+          ...this.state.deleteCustomDomainsParams,
+          error: string.popups.delete_custom_domain.errors.timeout
+        }
+      });
+      return;
+    }
+
+    switch (res.status) {
+      case 200: {
+        this.handleClosePopup();
+        this.handleClearPopupParams(SETTINGS_POPUP_TYPES.DELETE_CUSTOM_DOMAIN);
+        await deleteCustomDomain(domain); //database
+        this.props.onRemoveCustomDomain(domain);
+        break;
+      }
+      case 400: {
+        this.setState({
+          deleteCustomDomainsParams: {
+            ...this.state.deleteCustomDomainsParams,
+            error: string.popups.delete_custom_domain.errors.nodomain
+          }
+        });
+        break;
+      }
+      default: {
+        this.setState({
+          deleteCustomDomainsParams: {
+            ...this.state.deleteCustomDomainsParams,
+            error: string.formatString(
+              string.popups.delete_custom_domain.errors.unknown,
+              res.status
+            )
+          }
+        });
+      }
+    }
+  };
+
   handleConfirmSetReplyTo = async () => {
     const email = this.state.setReplyToPopupParams.replyToInput.email;
     const SUCCESS_STATUS = 200;
@@ -1119,6 +1196,7 @@ class SettingAccountWrapper extends Component {
 SettingAccountWrapper.propTypes = {
   aliasesByDomain: PropTypes.object,
   devices: PropTypes.array,
+  domains: PropTypes.array,
   isHiddenSettingsPopup: PropTypes.bool,
   onChangeAliasStatus: PropTypes.func,
   onChangePanel: PropTypes.func,
@@ -1126,6 +1204,7 @@ SettingAccountWrapper.propTypes = {
   onResendConfirmationEmail: PropTypes.func,
   onResetPassword: PropTypes.func,
   onRemoveAlias: PropTypes.func,
+  onRemoveCustomDomain: PropTypes.func,
   onSetReadReceiptsTracking: PropTypes.func,
   onUpdateAccount: PropTypes.func,
   readReceiptsEnabled: PropTypes.bool,
