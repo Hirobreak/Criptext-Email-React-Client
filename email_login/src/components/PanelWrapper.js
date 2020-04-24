@@ -6,6 +6,7 @@ import SignInToApprove from './SignInToApprove';
 import ChangePasswordWrapper from './ChangePasswordWrapper';
 import DeleteDeviceWrapperPopup from './DeleteDeviceWrapperPopup';
 import RecoveryCodeWrapperPopup from './RecoveryCodeWrapperPopup';
+import UpgradeToPlusPopup from './UpgradeToPlusPopup';
 import PopupHOC from './PopupHOC';
 import ForgotPasswordPopup from './ForgotPasswordPopup';
 import DialogPopup, { DialogTypes } from './DialogPopup';
@@ -34,7 +35,8 @@ import {
   openCreateKeysLoadingWindow,
   openPinWindow,
   sendPin,
-  throwError
+  throwError,
+  upgradeToPlus
 } from '../utils/ipc.js';
 import { validateEmail, validateUsername } from './../validators/validators';
 import { DEVICE_TYPE, appDomain, externalDomains } from '../utils/const';
@@ -56,6 +58,7 @@ const mode = {
 };
 
 export const popupType = {
+  UPGRADE_PLUS: 'UPGRADE_PLUS',
   RECOVERY_CODE: 'RECOVERY_CODE',
   WARNING_RECOVERY_EMAIL: 'WARNING_RECOVERY_EMAIL',
   WARNING_SIGNIN_WITH_PASSWORD: 'WARNING_SIGNIN_WITH_PASSWORD',
@@ -91,6 +94,7 @@ const SignInAnotherAccount = PopupHOC(DialogPopup);
 const DeleteDevicePopup = PopupHOC(DeleteDeviceWrapperPopup);
 const TooManyRequest = PopupHOC(DialogPopup);
 const RecoveryCodePopup = PopupHOC(RecoveryCodeWrapperPopup);
+const UpgradePlusPopup = PopupHOC(UpgradeToPlusPopup);
 
 const commitNewUser = validInputData => {
   const hasPIN = hasPin();
@@ -121,13 +125,15 @@ class PanelWrapper extends Component {
         usernameOrEmailAddress: '',
         password: ''
       },
+      customerType: 0,
       disabledResendLoginRequest: false,
       errorMessage: '',
       ephemeralToken: undefined,
       hasTwoFactorAuth: undefined,
       popupContent: undefined,
       oldPassword: undefined,
-      popupType: undefined
+      popupType: undefined,
+      removeDevicesData: undefined
     };
     this.blurEmailRecovery = undefined;
     this.forgotPasswordStatus = undefined;
@@ -207,6 +213,7 @@ class PanelWrapper extends Component {
             setPopupContent={this.setPopupContent}
             onDismiss={this.dismissPopup}
             devicesDeleted={this.handleDevicesDeleted}
+            {...this.state.removeDevicesData}
           />
         );
       case popupType.WARNING_SIGNIN_WITH_PASSWORD:
@@ -248,6 +255,14 @@ class PanelWrapper extends Component {
             jwt={this.state.ephemeralToken}
             onDismiss={this.dismissPopup}
             onCodeValidationSuccess={this.handleCodeSuccess}
+          />
+        );
+      case popupType.UPGRADE_PLUS:
+        return (
+          <UpgradePlusPopup
+            onDismiss={this.showRemoveDevicesPopup}
+            upgradeToPlus={this.handleUpgradeToPlus}
+            maxDevices={this.state.removeDevicesData.maxDevices}
           />
         );
       default:
@@ -293,6 +308,7 @@ class PanelWrapper extends Component {
             dismissPopup={this.dismissPopup}
             goToWaitingApproval={this.goToWaitingApproval}
             hasTwoFactorAuth={this.state.hasTwoFactorAuth}
+            removeDevicesData={this.state.removeDevicesData}
             setPopupContent={this.setPopupContent}
             onGoToChangePassword={this.hangleGoToChangePassword}
             value={this.state.values.usernameOrEmailAddress}
@@ -304,6 +320,7 @@ class PanelWrapper extends Component {
             emailAddress={this.state.values.usernameOrEmailAddress}
             oldPassword={this.state.oldPassword}
             values={''}
+            goBack={this.onClickBackView}
           />
         );
       case mode.SIGNIN:
@@ -371,7 +388,10 @@ class PanelWrapper extends Component {
     const nextMode = this.state.popupContent.successMode;
     this.dismissPopup();
     if (nextMode === mode.SIGNINTOAPPROVE) {
-      this.setState({ buttonSignInState: ButtonState.LOADING });
+      this.setState({
+        buttonSignInState: ButtonState.LOADING,
+        removeDevicesData: undefined
+      });
       await this.initLinkDevice(this.state.values.usernameOrEmailAddress);
       return;
     } else if (nextMode === mode.SIGNUP) {
@@ -566,7 +586,10 @@ class PanelWrapper extends Component {
   handleClickSignIn = async ev => {
     ev.preventDefault();
     ev.stopPropagation();
-    this.setState({ buttonSignInState: ButtonState.LOADING });
+    this.setState({
+      buttonSignInState: ButtonState.LOADING,
+      removeDevicesData: undefined
+    });
     const { usernameOrEmailAddress } = this.state.values;
     const [recipientId] = usernameOrEmailAddress.includes(`@${appDomain}`)
       ? usernameOrEmailAddress.split('@')
@@ -665,9 +688,18 @@ class PanelWrapper extends Component {
   obtainEphemeralToken = async ({ username, domain }) => {
     const { status, body } = await linkBegin({ username, domain });
     if (status === 439) {
-      this.setState({
-        popupType: popupType.DELETE_DEVICE
-      });
+      this.setState(
+        {
+          removeDevicesData: {
+            customerType: body.customerType,
+            maxDevices: body.maxDevices,
+            needsRemoveDevices: true
+          }
+        },
+        () => {
+          this.goToPasswordLogin();
+        }
+      );
     } else if (status === 400) {
       this.goToPasswordLogin();
     } else if (status === 404) {
@@ -829,6 +861,21 @@ class PanelWrapper extends Component {
           });
         }
         break;
+      case popupType.DELETE_DEVICE:
+        {
+          const popType =
+            this.state.removeDevicesData.customerType === 1
+              ? popup
+              : popupType.UPGRADE_PLUS;
+          this.setState({
+            popupType: popType,
+            removeDevicesData: {
+              ...this.state.removeDevicesData,
+              ...data
+            }
+          });
+        }
+        break;
       default:
         break;
     }
@@ -839,6 +886,19 @@ class PanelWrapper extends Component {
       buttonSignInState: ButtonState.ENABLED,
       popupContent: undefined,
       popupType: undefined
+    });
+  };
+
+  showRemoveDevicesPopup = () => {
+    this.setState({
+      popupType: popupType.DELETE_DEVICE
+    });
+  };
+
+  handleUpgradeToPlus = () => {
+    upgradeToPlus(this.state.removeDevicesData.token);
+    this.setState({
+      popupType: popupType.DELETE_DEVICE
     });
   };
 
