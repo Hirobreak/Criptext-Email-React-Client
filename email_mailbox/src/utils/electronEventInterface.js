@@ -508,6 +508,9 @@ export const handleEvent = ({
     case SocketCommand.REACTIVATED_ACCOUNT_EVENT: {
       return handleReactivatedAccountEvent(incomingEvent, accountRecipientId);
     }
+    case SocketCommand.CUSTOMER_TYPE_UPDATE: {
+      return handleCustomerTypeUpdateEvent(incomingEvent, accountRecipientId);
+    }
     case SocketCommand.ADDRESS_CREATED: {
       return handleAddressCreatedEvent(incomingEvent, accountId);
     }
@@ -1363,6 +1366,17 @@ const handleReactivatedAccountEvent = accountRecipientId => {
   }
   emitter.emit(Event.REACTIVATED_ACCOUNT);
   return { rowid: null };
+};
+
+const handleCustomerTypeUpdateEvent = async (
+  { rowid, params },
+  accountRecipientId
+) => {
+  const { newCustomerType } = params;
+  const recipientId = accountRecipientId || myAccount.recipientId;
+
+  await updateAccount({ customerType: newCustomerType, recipientId });
+  return { rowid };
 };
 
 const handleAddressCreatedEvent = async ({ rowid, params }, accountId) => {

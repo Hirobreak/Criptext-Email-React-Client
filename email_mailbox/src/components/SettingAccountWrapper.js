@@ -60,7 +60,8 @@ const SETTINGS_POPUP_TYPES = {
   NONE: 'none',
   SELECT_BACKUP_FOLDER: 'select-backup-folder',
   SET_REPLY_TO: 'reply-to',
-  TWO_FACTOR_AUTH_ENABLED: 'two-factor-auth-enabled'
+  TWO_FACTOR_AUTH_ENABLED: 'two-factor-auth-enabled',
+  UPGRADE_PLUS: 'upgrade-to-plus'
 };
 
 const changePasswordErrors = {
@@ -171,7 +172,8 @@ class SettingAccountWrapper extends Component {
         showSelectPathDialog: false,
         type: '',
         password: ''
-      }
+      },
+      upgradeToPlusType: undefined
     };
     this.isEnterprise = myAccount.recipientId.includes('@');
     this.initEventHandlers();
@@ -181,9 +183,10 @@ class SettingAccountWrapper extends Component {
     const devicesQuantity = this.props.devices ? this.props.devices.length : 0;
     return (
       <SettingAccount
+        onClickSection={this.props.onClickSection}
         aliasesByDomain={this.props.aliasesByDomain}
-        onChangePanel={this.props.onChangePanel}
-        onChangeAliasStatus={this.props.onChangeAliasStatus}
+        onChangePanel={this.handleChangePanel}
+        onChangeAliasStatus={this.handleChangeAliasStatus}
         onConfirmDeleteAlias={this.handleConfirmDeleteAlias}
         onConfirmDeleteCustomDomain={this.handleConfirmDeleteCustomDomain}
         deleteAliasParams={this.state.deleteAliasParams}
@@ -258,6 +261,7 @@ class SettingAccountWrapper extends Component {
         onSetExportBackupPassword={this.handleSetExportBackupPassword}
         onSelectBackupFolder={this.handleSelectBackupFolder}
         onClearMailboxBackupParams={this.handleClearMailboxBackupParams}
+        upgradeToPlusType={this.state.upgradeToPlusType}
       />
     );
   }
@@ -471,7 +475,35 @@ class SettingAccountWrapper extends Component {
     });
   };
 
+  showUpgradeToPlusPopup = type => {
+    this.setState({
+      isHiddenSettingsPopup: false,
+      settingsPopupType: SETTINGS_POPUP_TYPES.UPGRADE_PLUS,
+      upgradeToPlusType: type
+    });
+  };
+
+  handleChangeAliasStatus = (...args) => {
+    if (!myAccount.customerType) {
+      this.showUpgradeToPlusPopup('alias');
+      return;
+    }
+    this.props.onChangeAliasStatus(...args);
+  };
+
+  handleChangePanel = (...args) => {
+    if (!myAccount.customerType) {
+      this.showUpgradeToPlusPopup(args[0]);
+      return;
+    }
+    this.props.onChangePanel(...args);
+  };
+
   handleClickDeleteAlias = (rowId, email) => {
+    if (!myAccount.customerType) {
+      this.showUpgradeToPlusPopup('alias');
+      return;
+    }
     this.setState({
       isHiddenSettingsPopup: false,
       settingsPopupType: SETTINGS_POPUP_TYPES.DELETE_ALIAS,
@@ -485,6 +517,10 @@ class SettingAccountWrapper extends Component {
   };
 
   handleClickDeleteCustomDomain = domainObject => {
+    if (!myAccount.customerType) {
+      this.showUpgradeToPlusPopup('custom-domains');
+      return;
+    }
     this.setState({
       isHiddenSettingsPopup: false,
       settingsPopupType: SETTINGS_POPUP_TYPES.DELETE_CUSTOM_DOMAIN,
@@ -1217,6 +1253,7 @@ SettingAccountWrapper.propTypes = {
   onChangeAliasStatus: PropTypes.func,
   onChangePanel: PropTypes.func,
   onClickIsFromNotVerifiedOption: PropTypes.func,
+  onClickSection: PropTypes.func,
   onDeleteDeviceData: PropTypes.func,
   onResendConfirmationEmail: PropTypes.func,
   onResetPassword: PropTypes.func,

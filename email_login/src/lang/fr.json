@@ -73,6 +73,7 @@
       },
       {
         "title": "Supprimer des périphériques",
+        "message": "You have too many devices. You need to remove {0} device(s) more in orther to continue",
         "buttons": {
           "cancel": "Retour",
           "confirm": "Retirer"
@@ -129,6 +130,14 @@
       "errors": {
         "unknown": "Impossible de valider le code",
         "wrong": "Vous avez entré un mauvais code"
+      }
+    },
+    "upgradePlus": {
+      "title": "You need Plus for this",
+      "message": "You've reached your maximum devices allowed ({0}). Upgrade to Plus to get up to 5 devices connected on your account. Otherwise, remove an existing device in order to continue logging in.",
+      "buttons": {
+        "cancel": "No, Thanks",
+        "confirm": "Get Plus"
       }
     }
   },

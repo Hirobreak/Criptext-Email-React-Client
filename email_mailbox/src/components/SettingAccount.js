@@ -81,6 +81,7 @@ const SettingAccount = props => (
       }
       onClickChangePasswordInputType={props.onClickChangePasswordInputType}
       onClickForgotPasswordLink={props.onClickForgotPasswordLink}
+      onClickSection={props.onClickSection}
       onClosePopup={props.onClosePopup}
       onConfirmChangePassword={props.onConfirmChangePassword}
       onConfirmChangeRecoveryEmail={props.onConfirmChangeRecoveryEmail}
@@ -94,6 +95,7 @@ const SettingAccount = props => (
       onSetExportBackupPassword={props.onSetExportBackupPassword}
       onSelectBackupFolder={props.onSelectBackupFolder}
       type={props.settingsPopupType}
+      upgradeToPlusType={props.upgradeToPlusType}
     />
   </div>
 );
@@ -316,10 +318,6 @@ const RecoveryEmailConfirmationMessage = ({
   );
 };
 
-CustomDomainsBlock.propTypes = {
-  onChangePanel: PropTypes.func
-};
-
 PasswordBlock.propTypes = {
   onClickChangePasswordButton: PropTypes.func
 };
@@ -397,6 +395,7 @@ SettingAccount.propTypes = {
   onClickChangeRecoveryEmailInputType: PropTypes.func,
   onClickChangePasswordInputType: PropTypes.func,
   onClickForgotPasswordLink: PropTypes.func,
+  onClickSection: PropTypes.func,
   onClosePopup: PropTypes.func,
   onConfirmChangePassword: PropTypes.func,
   onConfirmChangeRecoveryEmail: PropTypes.func,
@@ -407,7 +406,8 @@ SettingAccount.propTypes = {
   onSetExportBackupPassword: PropTypes.func,
   onShowSettingsPopup: PropTypes.func,
   setReplyToPopupParams: PropTypes.object,
-  settingsPopupType: PropTypes.string
+  settingsPopupType: PropTypes.string,
+  upgradeToPlusType: PropTypes.string
 };
 
 export default SettingAccount;
