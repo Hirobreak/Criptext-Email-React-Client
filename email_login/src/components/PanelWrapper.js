@@ -128,6 +128,7 @@ class PanelWrapper extends Component {
       customerType: 0,
       disabledResendLoginRequest: false,
       errorMessage: '',
+      isRemoveDevicesLinkActive: false,
       ephemeralToken: undefined,
       hasTwoFactorAuth: undefined,
       popupContent: undefined,
@@ -307,6 +308,7 @@ class PanelWrapper extends Component {
             dismissPopup={this.dismissPopup}
             goToWaitingApproval={this.goToWaitingApproval}
             hasTwoFactorAuth={this.state.hasTwoFactorAuth}
+            isRemoveDevicesLinkActive={this.state.isRemoveDevicesLinkActive}
             removeDevicesData={this.state.removeDevicesData}
             setPopupContent={this.setPopupContent}
             onGoToChangePassword={this.hangleGoToChangePassword}
@@ -692,6 +694,7 @@ class PanelWrapper extends Component {
         {
           removeDevicesData: {
             customerType: body.customerType,
+            maxDevices: body.maxDevices,
             needsRemoveDevices: true
           }
         },
@@ -733,7 +736,7 @@ class PanelWrapper extends Component {
     if (this.state.hasTwoFactorAuth && !this.state.values.password) {
       this.goToPasswordLogin();
     } else if (!this.state.hasTwoFactorAuth && this.state.values.password) {
-      this.requestLogin();
+      await this.requestLogin();
     } else if (this.state.ephemeralToken) {
       const response = await this.sendLoginConfirmationRequest(
         this.state.ephemeralToken
@@ -757,6 +760,9 @@ class PanelWrapper extends Component {
         this.goToPasswordLogin();
       }
     }
+    this.setState({
+      isRemoveDevicesLinkActive: false
+    });
   };
 
   concat = (array, item) => {
@@ -1021,6 +1027,7 @@ class PanelWrapper extends Component {
       state => {
         return {
           buttonSignInState: ButtonState.LOADING,
+          isRemoveDevicesLinkActive: true,
           popupType: undefined,
           values: {
             ...state.values,
