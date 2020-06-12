@@ -94,6 +94,8 @@ import {
 } from './FetchUtils';
 import string from './../lang';
 import { processPendingEvents } from './ipc';
+import { version as appVersion } from '../../package.json';
+import semver from 'semver';
 
 const EventEmitter = window.require('events');
 const electron = window.require('electron');
@@ -1332,13 +1334,11 @@ const handlePeerRecoveryEmailConfirmed = accountRecipientId => {
 };
 
 const handleNewAnnouncementEvent = async ({ rowid, params }) => {
-  const { code } = params;
+  const { code, version, operator } = params;
   const updateAnnouncement = await getNews({ code });
   if (!updateAnnouncement) return { rowid };
   if (updateAnnouncement.largeImageUrl) {
-    emitter.emit(Event.BIG_UPDATE_AVAILABLE, {
-      ...updateAnnouncement
-    });
+    handleNewAnnouncement(updateAnnouncement, version, parseInt(operator));
     return { rowid };
   }
   const messageData = {
@@ -1348,6 +1348,35 @@ const handleNewAnnouncementEvent = async ({ rowid, params }) => {
   };
   emitter.emit(Event.DISPLAY_MESSAGE, messageData);
   return { rowid };
+};
+
+const handleNewAnnouncement = (announcement, version, operator) => {
+  let shouldShowAnnouncement = true;
+  switch (operator) {
+    case 1:
+      shouldShowAnnouncement = semver.lt(appVersion, version);
+      break;
+    case 2:
+      shouldShowAnnouncement = semver.lte(appVersion, version);
+      break;
+    case 3:
+      shouldShowAnnouncement = semver.eq(appVersion, version);
+      break;
+    case 4:
+      shouldShowAnnouncement = semver.gte(appVersion, version);
+      break;
+    case 5:
+      shouldShowAnnouncement = semver.gt(appVersion, version);
+      break;
+    default:
+      break;
+  }
+  if (!shouldShowAnnouncement) return;
+
+  emitter.emit(Event.BIG_UPDATE_AVAILABLE, {
+    ...announcement,
+    showUpdateNow: semver.gt(version, appVersion)
+  });
 };
 
 const handleNewUpdateAvailable = async ({ rowid }) => {
