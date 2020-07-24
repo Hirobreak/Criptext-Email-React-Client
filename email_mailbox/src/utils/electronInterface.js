@@ -63,6 +63,14 @@ export const showSaveFileDialog = fileName => {
   return dialog.showSaveDialog(null, { defaultPath: fileName });
 };
 
+export const showOpenFileDialog = () => {
+  return dialog.showOpenDialog(null, {
+    filters: {
+      extensions: ['mbox']
+    }
+  });
+};
+
 /*  News Client
 ----------------------------- */
 export const getNews = ({ code }) => {

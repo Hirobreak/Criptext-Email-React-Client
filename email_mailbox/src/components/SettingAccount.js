@@ -15,6 +15,7 @@ import string from './../lang';
 import './settingaccount.scss';
 import './signatureeditor.scss';
 import AddressManagerBlock from './AddressManagerBlock';
+import ImportMailboxBlock from './ImportMailboxBlock';
 
 const TWO_FACTOR_NOT_AVAILABLE_TEXT =
   string.settings.two_factor_not_available_text;
@@ -62,6 +63,7 @@ const SettingAccount = props => (
           onShowSettingsPopup={props.onShowSettingsPopup}
           devicesQuantity={props.devicesQuantity}
         />
+        <ImportMailboxBlock {...props}/>
         {!props.isEnterprise && (
           <SettingBlockDeleteAccount
             onShowSettingsPopup={props.onShowSettingsPopup}

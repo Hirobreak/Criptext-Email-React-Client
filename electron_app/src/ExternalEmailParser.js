@@ -1,21 +1,36 @@
 const fs = require('fs');
 const path = require('path');
 const Mbox = require('node-mbox');
+const { app, dialog } = require('electron');
 const MailParser = require('mailparser').MailParser;
 const { getBasepathAndFilenameFromPath } = require('./utils/stringUtils');
-const { databasePath } = require('./models');
 const ALLOWED_EXTENSIONS = ['.mbox'];
 
 /*  Temp Directory
 ----------------------------- */
-const TempFolderName = 'Imported';
-const TempDirectory = path.join(databasePath, '..', TempFolderName);
+const getTempDirectory = node_env => {
+  switch (node_env) {
+    case 'development': {
+      return path
+        .join(__dirname, '/ImportTemp');
+    }
+    default: {
+      const userDataPath = app.getPath('userData');
+      return path
+        .join(userDataPath, '/ImportTemp.txt')
+        .replace('/app.asar', '')
+        .replace('/src/database', '');
+    }
+  }
+};
+
 const MODES = {
   CREATE: 'create',
   RESUME: 'resume'
 };
 
 const checkTempDirectory = mode => {
+  const TempDirectory = getTempDirectory(process.env.NODE_ENV)
   try {
     if (mode === 'create') {
       if (fs.existsSync(TempDirectory)) {
@@ -52,6 +67,7 @@ function checkEmailFileExtension(filepath) {
 }
 
 const parseFileAndSplitEmailsInFiles = mboxFilepath => {
+  const TempDirectory = getTempDirectory(process.env.NODE_ENV)
   return new Promise(resolve => {
     let count = 0;
     const labelsFound = {};
@@ -117,6 +133,7 @@ const parseFileAndSplitEmailsInFiles = mboxFilepath => {
 
 // Parse One Email
 const parseIndividualEmailFiles = async () => {
+  const TempDirectory = getTempDirectory(process.env.NODE_ENV)
   try {
     if (fs.existsSync(TempDirectory)) {
       for (const folder of fs.readdirSync(TempDirectory)) {
@@ -133,7 +150,6 @@ const parseIndividualEmailFiles = async () => {
           if (!bodyResponse.error) {
             const bodyFilepath = path.join(subFolderPath, 'body.txt');
             fs.writeFileSync(bodyFilepath, bodyResponse.message); // 3 files now
-            console.log(bodyResponse.emailData);
           }
         }
       }
@@ -192,6 +208,7 @@ const parseEmailFromFile = pathtoemail => {
       });
       mailparser.on('error', err => handleError(err.toString()));
       mailparser.on('end', () => {
+        console.log(pathtoemail, recipients, labels);
         mailparser.updateImageLinks(
           (attachment, done) => {
             const type = attachment.contentType;
@@ -219,9 +236,40 @@ const parseEmailFromFile = pathtoemail => {
 };
 
 const parseEmailHeaders = headers => {
+  let metadata = {};
   for (const [clave, valor] of headers.entries()) {
     console.log('\x1b[36m%s\x1b[0m', `${clave} = ${valor}`);
+    if(clave === 'from' || clave === 'to' || clave === 'cc' || clave === 'bcc') {
+      const value = valor.value;
+      if (Array.isArray(value)) {
+        metadata[clave] = value.map( recipient => {
+          return {
+            name: recipient.name,
+            email: recipient.address
+          }
+        })
+      } else {
+        metadata[clave] = {
+          name: value.name,
+          email: value.address
+        }
+      }
+    }
+    if(clave === 'subject' || clave === 'date') {
+      metadata[clave] = valor
+    }
+    if(clave === 'message-id') {
+      metadata['messageId'] = valor
+    }
+    if(clave.includes('labels')) {
+      metadata['labels'] = valor.split(',');
+    }
+    if(clave.includes('reply')) {
+      metadata['in-reply-to'] = valor
+    }
   }
+
+  console.log('METADATA : ', metadata);
 };
 
 const parseEmailData = (data, attachmentsArray) => {
@@ -305,6 +353,5 @@ const handleParseMailboxFile = async filepath => {
 
 module.exports = {
   handleParseMailboxFile,
-
   parseIndividualEmailFiles
 };

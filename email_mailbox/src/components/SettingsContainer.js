@@ -17,6 +17,7 @@ import { updateAlias, activateAddress, getCustomDomain } from '../utils/ipc';
 import { appDomain } from '../utils/const';
 import string from './../lang';
 import AddressManager from './AddressManager';
+import ImportMailboxWrapper from './ImportMailboxWrapper';
 
 const { sidebar, settings } = string;
 
@@ -24,12 +25,14 @@ const Setting = SettingsHOC(Settings);
 const Domains = SettingsHOC(CustomDomainsWrapper);
 const Alias = SettingsHOC(AliasesWrapper);
 const Manager = SettingsHOC(AddressManager);
+const Import = SettingsHOC(ImportMailboxWrapper);
 
 const PANEL = {
   SETTINGS: 'settings',
   DOMAIN: 'custom-domains',
   ALIAS: 'alias',
-  MANAGER: 'address-manager'
+  MANAGER: 'address-manager',
+  IMPORT: 'import-mailbox'
 };
 
 class SettingsContainer extends Component {
@@ -86,6 +89,14 @@ class SettingsContainer extends Component {
           <Manager
             isHiddenSettingsPopup={this.state.isHiddenSettingsPopup}
             titlePath={[sidebar.settings, settings.addresses]}
+            onChangePanel={this.handleChangePanel}
+          />
+        );
+      case PANEL.IMPORT:
+        return (
+          <Import
+            isHiddenSettingsPopup={this.state.isHiddenSettingsPopup}
+            titlePath={[sidebar.settings, settings.import]}
             onChangePanel={this.handleChangePanel}
           />
         );

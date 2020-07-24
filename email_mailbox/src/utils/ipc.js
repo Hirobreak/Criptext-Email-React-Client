@@ -681,3 +681,10 @@ export const reportContentUnencryptedBob = async error => {
 export const reportUncaughtError = async error => {
   return await ipc.callMain('nucleups-report-uncaught-error', error);
 };
+
+/* Import Emails
+----------------------------- */
+
+export const startImportEmails = async filepath => {
+  return await ipc.callMain('import-emails-start', filepath);
+}

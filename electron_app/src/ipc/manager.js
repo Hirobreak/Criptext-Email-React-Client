@@ -1,5 +1,6 @@
 const { ipcMain: ipc } = require('@criptext/electron-better-ipc');
 const dbManager = require('./../database');
+const { handleParseMailboxFile, parseIndividualEmailFiles } = require('../ExternalEmailParser');
 const fileUtils = require('./../utils/FileUtils');
 const globalManager = require('../globalManager');
 const { APP_DOMAIN } = require('../utils/const');
@@ -11,6 +12,11 @@ const getUsername = () => {
   if (!myAccount.recipientId) return '';
   return myAccount.email;
 };
+
+ipc.answerRenderer('import-emails-start', async filepath => {
+  await handleParseMailboxFile(filepath);
+  await parseIndividualEmailFiles();
+})
 
 ipc.answerRenderer('db-delete-emails-by-threadid-and-labelid', async params => {
   const data = params.accountId

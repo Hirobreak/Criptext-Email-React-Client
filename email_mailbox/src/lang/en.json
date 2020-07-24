@@ -960,6 +960,12 @@
         "backup_mailbox_success": "Backup file exported successfully!"
       }
     },
+    "import": "Import Mailbox",
+    "import_mailbox": {
+      "title": "Import Mailbox",
+      "import": "Import",
+      "description": "Using a .mbox file you can import your emails from another email client"
+    },
     "restore_backup": {
       "label": "Restore Backup",
       "button": "Restore",
