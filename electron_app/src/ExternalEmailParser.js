@@ -11,8 +11,7 @@ const ALLOWED_EXTENSIONS = ['.mbox'];
 const getTempDirectory = node_env => {
   switch (node_env) {
     case 'development': {
-      return path
-        .join(__dirname, '/ImportTemp');
+      return path.join(__dirname, '/ImportTemp');
     }
     default: {
       const userDataPath = app.getPath('userData');
@@ -30,7 +29,7 @@ const MODES = {
 };
 
 const checkTempDirectory = mode => {
-  const TempDirectory = getTempDirectory(process.env.NODE_ENV)
+  const TempDirectory = getTempDirectory(process.env.NODE_ENV);
   try {
     if (mode === 'create') {
       if (fs.existsSync(TempDirectory)) {
@@ -67,7 +66,7 @@ function checkEmailFileExtension(filepath) {
 }
 
 const parseFileAndSplitEmailsInFiles = mboxFilepath => {
-  const TempDirectory = getTempDirectory(process.env.NODE_ENV)
+  const TempDirectory = getTempDirectory(process.env.NODE_ENV);
   return new Promise(resolve => {
     let count = 0;
     const labelsFound = {};
@@ -133,7 +132,7 @@ const parseFileAndSplitEmailsInFiles = mboxFilepath => {
 
 // Parse One Email
 const parseIndividualEmailFiles = async () => {
-  const TempDirectory = getTempDirectory(process.env.NODE_ENV)
+  const TempDirectory = getTempDirectory(process.env.NODE_ENV);
   try {
     if (fs.existsSync(TempDirectory)) {
       for (const folder of fs.readdirSync(TempDirectory)) {
@@ -239,33 +238,38 @@ const parseEmailHeaders = headers => {
   let metadata = {};
   for (const [clave, valor] of headers.entries()) {
     console.log('\x1b[36m%s\x1b[0m', `${clave} = ${valor}`);
-    if(clave === 'from' || clave === 'to' || clave === 'cc' || clave === 'bcc') {
+    if (
+      clave === 'from' ||
+      clave === 'to' ||
+      clave === 'cc' ||
+      clave === 'bcc'
+    ) {
       const value = valor.value;
       if (Array.isArray(value)) {
-        metadata[clave] = value.map( recipient => {
+        metadata[clave] = value.map(recipient => {
           return {
             name: recipient.name,
             email: recipient.address
-          }
-        })
+          };
+        });
       } else {
         metadata[clave] = {
           name: value.name,
           email: value.address
-        }
+        };
       }
     }
-    if(clave === 'subject' || clave === 'date') {
-      metadata[clave] = valor
+    if (clave === 'subject' || clave === 'date') {
+      metadata[clave] = valor;
     }
-    if(clave === 'message-id') {
-      metadata['messageId'] = valor
+    if (clave === 'message-id') {
+      metadata['messageId'] = valor;
     }
-    if(clave.includes('labels')) {
+    if (clave.includes('labels')) {
       metadata['labels'] = valor.split(',');
     }
-    if(clave.includes('reply')) {
-      metadata['in-reply-to'] = valor
+    if (clave.includes('reply')) {
+      metadata['in-reply-to'] = valor;
     }
   }
 

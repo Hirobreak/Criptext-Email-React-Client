@@ -1,11 +1,12 @@
 const { ipcMain: ipc } = require('@criptext/electron-better-ipc');
 const dbManager = require('./../database');
-const { handleParseMailboxFile, parseIndividualEmailFiles } = require('../ExternalEmailParser');
+const { runImport } = require('../importer/index');
 const fileUtils = require('./../utils/FileUtils');
 const globalManager = require('../globalManager');
 const { APP_DOMAIN } = require('../utils/const');
 const rekeyHandler = require('../rekeyHandler');
 const myAccount = require('../Account');
+const { send } = require('../windows/mailbox')
 
 const getUsername = () => {
   if (!Object.keys(myAccount)) return '';
@@ -14,9 +15,19 @@ const getUsername = () => {
 };
 
 ipc.answerRenderer('import-emails-start', async filepath => {
-  await handleParseMailboxFile(filepath);
-  await parseIndividualEmailFiles();
-})
+  try {
+    await runImport({
+      dbPath: '',
+      key: globalManager.databaseKey.get(),
+      recipientId: myAccount.recipientId,
+      mboxPath: filepath
+    }, data => {
+      send('import-progress', data);
+    });
+  } catch (ex) {
+    console.log(ex);
+  }
+});
 
 ipc.answerRenderer('db-delete-emails-by-threadid-and-labelid', async params => {
   const data = params.accountId
@@ -75,7 +86,7 @@ ipc.answerRenderer('db-get-email-with-body', async params => {
   const [email] = await dbManager.getEmailByKey(params);
   const body = await fileUtils.getEmailBody({
     username: getUsername(),
-    metadataKey: parseInt(params.key),
+    metadataKey: parseInt(params.key) || params.key,
     password: globalManager.databaseKey.get()
   });
   if (!body) {
@@ -95,7 +106,7 @@ ipc.answerRenderer('db-get-emails-by-ids', async params => {
     emails.map(async email => {
       const body = await fileUtils.getEmailBody({
         username: getUsername(),
-        metadataKey: parseInt(email.key),
+        metadataKey: parseInt(email.key) || email.key,
         password: globalManager.databaseKey.get()
       });
       if (!body) {
@@ -122,7 +133,7 @@ ipc.answerRenderer('db-get-emails-by-threadid', async params => {
     emails.map(async email => {
       const body = await fileUtils.getEmailBody({
         username: getUsername(),
-        metadataKey: parseInt(email.key),
+        metadataKey: parseInt(email.key) || email.key,
         password: globalManager.databaseKey.get()
       });
       if (!body) {
@@ -141,7 +152,7 @@ ipc.answerRenderer('db-delete-email-by-keys', async params => {
   await Promise.all(
     params.keys.map(key =>
       fileUtils.deleteEmailContent({
-        metadataKey: parseInt(key),
+        metadataKey: parseInt(key) || key,
         username: getUsername()
       })
     )
