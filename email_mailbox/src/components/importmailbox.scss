@@ -11,8 +11,11 @@
   flex-direction: column;
 
   .import-step-container {
-    height: 300px;
+    height: 100%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 
     h4 {
       margin-bottom: 30px;
@@ -37,6 +40,35 @@
 
     span {
       font-size: 15px;
+    }
+
+    .import-input-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    select {
+      margin-top: 20px; 
+      width: 230px;
+    }
+
+    input{
+      background-color: transparent;
+      border: none;
+      border-bottom: solid 1px #8a8a8a;
+      font-size: 12px;
+      font-weight: 300;
+      outline: none;
+      margin: 20px 10px 10px 10px;
+      width: 200px;
+      height: 30px;
+      padding-right: 20px;
+
+      &:focus {
+        border-bottom: solid 1px #0091ff;
+      }
     }
   }
 }

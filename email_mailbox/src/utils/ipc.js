@@ -687,4 +687,8 @@ export const reportUncaughtError = async error => {
 
 export const startImportEmails = async filepath => {
   return await ipc.callMain('import-emails-start', filepath);
-}
+};
+
+export const importFromGmail = async params => {
+  return await ipc.callMain('import-gmail', params);
+};

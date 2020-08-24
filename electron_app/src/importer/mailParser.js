@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { saveEmailBody, remove } = require('../utils/FileUtils');
-const { MailParser, simpleParser} = require('mailparser');
+const { MailParser, simpleParser } = require('mailparser');
 const { createEmail } = require('../database/DBEmanager');
 const moment = require('moment');
 
@@ -188,7 +188,7 @@ const parseEmailData = (data, attachmentsArray) => {
     }
     data.content.on('error', () => {
       console.log('EEEEEERROR');
-    })
+    });
     data.content.on('readable', () => {
       let chunk;
       while ((chunk = data.content.read()) !== null) {
@@ -215,23 +215,19 @@ const parseAddresses = addresses => {
       return `${recipient.name} <${recipient.address}>`;
     });
   } else {
-    return value.name
-      ? [`${value.name} <${value.address}>`]
-      : [value.address];
+    return value.name ? [`${value.name} <${value.address}>`] : [value.address];
   }
-}
+};
 
-const parseSimpleEmail = async (emailPath, labelsMap, newKey, accountId) => {
-  let myResult = await simpleParser(fs.readFileSync(emailPath, {
-    encoding: 'utf-8'
-  }), {});
+const parseSimpleEmail = async (rawEmail, labelsMap, newKey, accountId) => {
+  let myResult = await simpleParser(rawEmail, {});
 
   const recipients = {
     from: parseAddresses(myResult.from),
     to: parseAddresses(myResult.to),
     cc: parseAddresses(myResult.cc),
-    bcc: parseAddresses(myResult.bcc),
-  }
+    bcc: parseAddresses(myResult.bcc)
+  };
 
   const body = myResult.html || myResult.text;
 
@@ -246,11 +242,11 @@ const parseSimpleEmail = async (emailPath, labelsMap, newKey, accountId) => {
     threadId: myResult.inReplyTo || myResult.messageId,
     key: newKey,
     content: ''
-  }
+  };
 
   const labels = [];
 
-  myResult.headerLines.forEach( header => {
+  myResult.headerLines.forEach(header => {
     if (header.key && header.key.toLowerCase().includes('labels')) {
       const headerlineIndex = header.line.indexOf(':');
       const headerLine = header.line.slice(headerlineIndex + 2);
@@ -265,7 +261,7 @@ const parseSimpleEmail = async (emailPath, labelsMap, newKey, accountId) => {
         })
       );
     }
-  })
+  });
 
   return {
     email: metadata,
@@ -273,16 +269,13 @@ const parseSimpleEmail = async (emailPath, labelsMap, newKey, accountId) => {
     labels: [].concat.apply([], labels),
     accountId,
     body
-  }
-}
+  };
+};
 
-const parseIndividualEmailFiles = async ({
-  TempDirectory,
-  accountEmail,
-  accountId,
-  databaseKey,
-  labels
-}, progress) => {
+const parseIndividualEmailFiles = async (
+  { TempDirectory, accountEmail, accountId, databaseKey, labels },
+  progress
+) => {
   try {
     if (fs.existsSync(TempDirectory)) {
       let pendingEmails = true;
@@ -296,11 +289,18 @@ const parseIndividualEmailFiles = async ({
         for (const folder of folders) {
           const subFolderPath = path.join(TempDirectory, folder);
           for (const email of fs.readdirSync(subFolderPath)) {
-
             try {
               const emailPath = path.join(subFolderPath, email);
               const headersResponse = await getHeadersFromEmailFile(emailPath);
-              const myResult = await parseSimpleEmail(emailPath, labels, folder, accountId);
+              const rawEmail = fs.readFileSync(emailPath, {
+                encoding: 'utf-8'
+              });
+              const myResult = await parseSimpleEmail(
+                rawEmail,
+                labels,
+                folder,
+                accountId
+              );
 
               await createEmail(myResult);
 
@@ -310,15 +310,15 @@ const parseIndividualEmailFiles = async ({
                 metadataKey: folder,
                 username: accountEmail,
                 password: databaseKey
-              })
+              });
               progress({
                 email: folder
-              })
+              });
             } catch (ex) {
               progress({
                 error: ex,
                 email: folder
-              })
+              });
             }
           }
           await remove(subFolderPath);
@@ -336,5 +336,6 @@ const parseIndividualEmailFiles = async ({
 };
 
 module.exports = {
-  parseIndividualEmailFiles
+  parseIndividualEmailFiles,
+  parseSimpleEmail
 };

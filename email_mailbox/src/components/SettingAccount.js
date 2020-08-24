@@ -63,7 +63,7 @@ const SettingAccount = props => (
           onShowSettingsPopup={props.onShowSettingsPopup}
           devicesQuantity={props.devicesQuantity}
         />
-        <ImportMailboxBlock {...props}/>
+        <ImportMailboxBlock {...props} />
         {!props.isEnterprise && (
           <SettingBlockDeleteAccount
             onShowSettingsPopup={props.onShowSettingsPopup}

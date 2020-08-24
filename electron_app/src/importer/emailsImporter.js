@@ -84,24 +84,28 @@ const start = async () => {
   process.send({
     totalEmails: count,
     type: 'import'
-  })
+  });
 
-  try{
+  try {
     const existingLabels = await getLabelsByText({
       accountId: account.id,
       text: labels
     });
 
-    const labelsToCreate = labels.filter( label => {
-      return existingLabels.find( dbLabel => dbLabel.text === label) === undefined
-    }).map( label => {
-      return {
-        visible: true,
-        type: 'imported',
-        text: label,
-        accountId: account.id
-      }
-    })
+    const labelsToCreate = labels
+      .filter(label => {
+        return (
+          existingLabels.find(dbLabel => dbLabel.text === label) === undefined
+        );
+      })
+      .map(label => {
+        return {
+          visible: true,
+          type: 'imported',
+          text: label,
+          accountId: account.id
+        };
+      });
 
     await createLabel(labelsToCreate);
 
@@ -111,7 +115,7 @@ const start = async () => {
     });
 
     const labelsMap = labels.reduce((result, label) => {
-      const dbLabel = existingAllLabels.find( dbLabel => dbLabel.text === label );
+      const dbLabel = existingAllLabels.find(dbLabel => dbLabel.text === label);
       return {
         ...result,
         [label.toLowerCase()]: dbLabel.id
@@ -124,26 +128,29 @@ const start = async () => {
         process.send({
           error: data.error,
           interrupted: false
-        })
+        });
         return;
-      };
+      }
 
       process.send({
         parsedEmails,
         totalEmails: count,
         lastEmail: data.email,
         type: 'progress'
-      })
-    }
+      });
+    };
 
-    await parseIndividualEmailFiles({
-      TempDirectory: tempBackupDirectory,
-      databaseKey: key,
-      key,
-      accountEmail,
-      accountId: account.id,
-      labels: labelsMap
-    }, handleProgress);
+    await parseIndividualEmailFiles(
+      {
+        TempDirectory: tempBackupDirectory,
+        databaseKey: key,
+        key,
+        accountEmail,
+        accountId: account.id,
+        labels: labelsMap
+      },
+      handleProgress
+    );
   } catch (ex) {
     throw new Error(ex.toString());
   }

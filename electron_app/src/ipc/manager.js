@@ -1,12 +1,13 @@
 const { ipcMain: ipc } = require('@criptext/electron-better-ipc');
 const dbManager = require('./../database');
 const { runImport } = require('../importer/index');
+const { initConnection } = require('../importer/imap');
 const fileUtils = require('./../utils/FileUtils');
 const globalManager = require('../globalManager');
 const { APP_DOMAIN } = require('../utils/const');
 const rekeyHandler = require('../rekeyHandler');
 const myAccount = require('../Account');
-const { send } = require('../windows/mailbox')
+const { send } = require('../windows/mailbox');
 
 const getUsername = () => {
   if (!Object.keys(myAccount)) return '';
@@ -16,14 +17,37 @@ const getUsername = () => {
 
 ipc.answerRenderer('import-emails-start', async filepath => {
   try {
-    await runImport({
-      dbPath: '',
-      key: globalManager.databaseKey.get(),
-      recipientId: myAccount.recipientId,
-      mboxPath: filepath
-    }, data => {
-      send('import-progress', data);
-    });
+    await runImport(
+      {
+        dbPath: '',
+        key: globalManager.databaseKey.get(),
+        recipientId: myAccount.recipientId,
+        mboxPath: filepath
+      },
+      data => {
+        send('import-progress', data);
+      }
+    );
+  } catch (ex) {
+    console.log(ex);
+  }
+});
+
+ipc.answerRenderer('import-gmail', async ({ email, password, client }) => {
+  try {
+    initConnection(
+      {
+        email,
+        password,
+        client,
+        accountId: myAccount.id,
+        accountEmail: myAccount.email,
+        databaseKey: globalManager.databaseKey.get()
+      },
+      data => {
+        send('import-progress', data);
+      }
+    );
   } catch (ex) {
     console.log(ex);
   }

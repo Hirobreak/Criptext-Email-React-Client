@@ -39,7 +39,8 @@ const runImport = (
 
     worker.on('message', data => {
       console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'progress' || data.type === 'import') progressCallback(data);
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
     });
 
     worker.on('error', code => {
