@@ -5,6 +5,7 @@ import MenuHOC from './MenuHOC';
 import PopupHOC from './PopupHOC';
 import DialogPopup from './DialogPopup';
 import BlockRemoteContentPopup from './BlockRemoteContentPopup';
+import CustomIframe from './CustomIframe';
 import EmailMoreInfo from './EmailMoreInfo';
 import EmailActions from './EmailActions';
 import EmailBlocked from './EmailBlocked';
@@ -102,7 +103,7 @@ const Email = props => (
       <hr />
       <div className="email-body">
         <div disabled={props.hideView || props.isUnsend} className="email-text">
-          <div dangerouslySetInnerHTML={{ __html: theMail(props) }} />
+          <CustomIframe content={theMail(props)}/>
         </div>
         {!!props.files.length &&
           isExpand(props.displayEmail, props.staticOpen) && (
@@ -326,7 +327,11 @@ const renderIconSecure = (onMouseEnterTooltip, onMouseLeaveTooltip, id) => {
 const theMail = props => {
   const { content, blockImagesInline } = props;
   if (!blockImagesInline)
-    return `<div class="email-container">${content}</div>`;
+    return `<div class="email-container">
+      <style>
+      </style>
+      ${content}
+    </div>`;
   return getDOM(content);
 };
 
