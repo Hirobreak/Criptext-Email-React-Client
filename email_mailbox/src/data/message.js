@@ -17,7 +17,8 @@ const actionHandlerKeys = {
     emailSent: 'view-message'
   },
   error: {
-    network: 'try-reconnect'
+    network: 'try-reconnect',
+    billing: 'open-billing'
   }
 };
 
@@ -240,6 +241,10 @@ const messagesContent = {
   news: {
     announcement: {
       priority: messagePriorities.MEDIUM,
+      description: ''
+    },
+    requirement: {
+      priority: messagePriorities.LOW,
       description: ''
     }
   }
