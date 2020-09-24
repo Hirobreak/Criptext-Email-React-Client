@@ -33,7 +33,7 @@ ipc.answerRenderer('import-emails-start', async filepath => {
   }
 });
 
-ipc.answerRenderer('import-gmail', async ({ email, password, client }) => {
+ipc.answerRenderer('import-gmail', ({ email, password, client }) => {
   try {
     initConnection(
       {

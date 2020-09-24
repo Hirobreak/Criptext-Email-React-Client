@@ -219,7 +219,13 @@ const parseAddresses = addresses => {
   }
 };
 
-const parseSimpleEmail = async (rawEmail, labelsMap, newKey, accountId) => {
+const parseSimpleEmail = async (
+  rawEmail,
+  labelsMap,
+  newKey,
+  accountId,
+  mailbox
+) => {
   let myResult = await simpleParser(rawEmail, {});
 
   const recipients = {
@@ -229,10 +235,13 @@ const parseSimpleEmail = async (rawEmail, labelsMap, newKey, accountId) => {
     bcc: parseAddresses(myResult.bcc)
   };
 
+  console.log(myResult.attachments);
+  console.log(myResult.headerLines);
+
   const body = myResult.html || myResult.text;
 
   const metadata = {
-    subject: myResult.subject,
+    subject: myResult.subject || '',
     messageId: myResult.messageId,
     replyTo: parseAddresses(myResult.replyTo)[0],
     preview: myResult.text ? myResult.text.slice(0, 200) : '(No Content)',
@@ -252,7 +261,8 @@ const parseSimpleEmail = async (rawEmail, labelsMap, newKey, accountId) => {
       const headerLine = header.line.slice(headerlineIndex + 2);
       const localLabels = headerLine.split(',');
       const filteredLabels = localLabels.filter(
-        label => label.toLowerCase() !== 'unread'
+        label =>
+          label.toLowerCase() !== 'unread' && label.toLowerCase() !== mailbox
       );
       metadata['unread'] = localLabels.length !== filteredLabels.length;
       labels.push(
@@ -266,7 +276,7 @@ const parseSimpleEmail = async (rawEmail, labelsMap, newKey, accountId) => {
   return {
     email: metadata,
     recipients,
-    labels: [].concat.apply([], labels),
+    labels: [].concat.apply(mailbox ? [labelsMap[mailbox]] : [], labels),
     accountId,
     body
   };

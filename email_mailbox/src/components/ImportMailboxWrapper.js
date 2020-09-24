@@ -179,6 +179,7 @@ class ImportMailboxWrapper extends Component {
           error: data.error,
           interrupted: data.interrupted
         });
+        break;
       default:
         break;
     }
