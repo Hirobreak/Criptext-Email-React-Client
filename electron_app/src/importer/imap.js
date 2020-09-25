@@ -1,5 +1,4 @@
 const Imap = require('imap');
-const inspect = require('util').inspect;
 const { parseSimpleEmail } = require('./mailParser');
 const {
   createEmail,
@@ -8,7 +7,6 @@ const {
 } = require('../database/DBEmanager');
 const { saveEmailBody } = require('../utils/FileUtils');
 
-let imap;
 const BATCH = 20;
 
 const getUrlByClient = client => {
@@ -20,41 +18,9 @@ const getUrlByClient = client => {
   }
 };
 
-const initConnection = async (
-  { email, password, client, accountId, accountEmail, databaseKey },
-  progressCallback
-) => {
-  const clientUrl = getUrlByClient(client);
-  const server = await initializeImap({
-    user: email, //andres.menoscal1993@gmail.com
-    password: password, //$1$2$3$4
-    host: clientUrl,
-    port: 993,
-    tls: true,
-    tlsOptions: {
-      servername: clientUrl
-    }
-  });
-  const labelsMap = await getMailLabels(server, accountId);
-  console.log(labelsMap);
-  for (const mailbox in labelsMap) {
-    await getMailboxEmails(
-      {
-        mailbox,
-        server,
-        labelsMap,
-        accountId,
-        accountEmail,
-        databaseKey
-      },
-      progressCallback
-    );
-  }
-};
-
 const initializeImap = params => {
   return new Promise((resolve, reject) => {
-    imap = new Imap(params);
+    const imap = new Imap(params);
     imap.once('error', err => {
       console.log('Error Connect :', err);
       reject(err);
@@ -83,7 +49,7 @@ const getMailboxEmails = (
     server.openBox(mailbox, (error, box) => {
       console.log(mailbox, box);
 
-      if (box.messages.total <= 0) {
+      if (!box || !box.messages || box.messages.total <= 0) {
         resolve();
         return;
       }
@@ -271,7 +237,7 @@ const storeEmail = async ({ data, newKey, accountEmail, databaseKey }) => {
   await createEmail(data);
   await saveEmailBody({
     body: data ? data.body : 'No body',
-    headers: '',
+    headers: data.headers || undefined,
     metadataKey: newKey,
     username: accountEmail,
     password: databaseKey
@@ -298,5 +264,8 @@ const handleEmailData = ({
 };
 
 module.exports = {
-  initConnection
+  getUrlByClient,
+  initializeImap,
+  getMailLabels,
+  getMailboxEmails
 };

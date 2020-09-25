@@ -29,7 +29,6 @@ const getHeadersFromEmailFile = pathtoemail => {
 const parseEmailFromFile = (pathtoemail, labels, newKey) => {
   return new Promise(resolve => {
     const handleError = err => {
-      console.log('ERROOOOR: ', err);
       resolve({
         error: true,
         message: typeof err === 'string' ? err : err.toString()
@@ -186,8 +185,8 @@ const parseEmailData = (data, attachmentsArray) => {
         }
       }
     }
-    data.content.on('error', () => {
-      console.log('EEEEEERROR');
+    data.content.on('error', error => {
+      console.log(error);
     });
     data.content.on('readable', () => {
       let chunk;
@@ -197,7 +196,6 @@ const parseEmailData = (data, attachmentsArray) => {
       }
     });
     data.content.on('end', () => {
-      console.log('ENDIIIIIING');
       data.buf = Buffer.concat(data.chunks, data.chunklen);
       data.release();
       attachmentsArray.push(fileDataObject);
@@ -235,10 +233,14 @@ const parseSimpleEmail = async (
     bcc: parseAddresses(myResult.bcc)
   };
 
-  console.log(myResult.attachments);
-  console.log(myResult.headerLines);
-
   const body = myResult.html || myResult.text;
+  let headers = '';
+
+  for (const header in myResult.headerLines) {
+    headers += myResult.headerLines[header] + '\n';
+  }
+
+  console.log(myResult.attachments);
 
   const metadata = {
     subject: myResult.subject || '',
@@ -278,7 +280,8 @@ const parseSimpleEmail = async (
     recipients,
     labels: [].concat.apply(mailbox ? [labelsMap[mailbox]] : [], labels),
     accountId,
-    body
+    body,
+    headers
   };
 };
 

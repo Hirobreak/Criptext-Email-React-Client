@@ -9,7 +9,8 @@ import './importmailbox.scss';
 const STEP = {
   SELECT: 'select',
   MBOX: 'mbox',
-  IMPORT: 'import'
+  IMPORT: 'import',
+  SUCCESS: 'success'
 };
 
 class ImportMailboxWrapper extends Component {
@@ -32,10 +33,12 @@ class ImportMailboxWrapper extends Component {
 
   componentDidMount() {
     addEvent(Event.IMPORT_PROGRESS, this.handleProgress);
+    addEvent(Event.IMPORT_END, this.handleProcessEnd);
   }
 
   componentWillUnmount() {
     removeEvent(Event.IMPORT_PROGRESS, this.handleProgress);
+    removeEvent(Event.IMPORT_END, this.handleProcessEnd);
   }
 
   render() {
@@ -90,9 +93,20 @@ class ImportMailboxWrapper extends Component {
             </div>
           </div>
         );
-      default:
+      case STEP.SUCCESS:
         return (
           <div className="import-step-container">
+            <div className="import-success-circle">
+              <i className="icon-check" />
+            </div>
+            <div>
+              <span>Mailbox Successfully Imported</span>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="import-step-container import-options">
             <div>
               <h4>Import Mailbox</h4>
               <div>
@@ -184,6 +198,12 @@ class ImportMailboxWrapper extends Component {
         break;
     }
   };
+
+  handleProcessEnd = () => {
+    this.setState({
+      step: STEP.SUCCESS
+    })
+  }
 
   handleSelectFile = async () => {
     const { filePaths } = await showOpenFileDialog();

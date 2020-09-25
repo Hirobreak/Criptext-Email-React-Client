@@ -1659,6 +1659,10 @@ ipcRenderer.on('import-progress', (ev, data) => {
   emitter.emit(Event.IMPORT_PROGRESS, data);
 });
 
+ipcRenderer.on('import-end', ev => {
+  emitter.emit(Event.IMPORT_END);
+});
+
 ipcRenderer.on('socket-message', async (ev, message) => {
   const { cmd, recipientId, domain } = message;
   if (cmd === 400) {
@@ -2367,6 +2371,7 @@ export const Event = {
   DISPLAY_MESSAGE: 'display-message',
   ENABLE_WINDOW: 'remove-window-overlay',
   IMPORT_PROGRESS: 'import-progress',
+  IMPORT_END: 'import-end',
   LINK_DEVICE_END: 'link-devices-finished',
   LINK_DEVICE_GETTING_KEYS: 'getting-keys',
   LINK_DEVICE_MAILBOX_UPLOADED: 'mailbox-uploaded-successfully',

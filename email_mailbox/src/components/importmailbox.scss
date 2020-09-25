@@ -10,8 +10,11 @@
   align-items: center;
   flex-direction: column;
 
-  .import-step-container {
+  .import-options {
     height: 100%;
+  }
+
+  .import-step-container {
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -69,6 +72,19 @@
       &:focus {
         border-bottom: solid 1px #0091ff;
       }
+    }
+
+    .import-success-circle {
+      background: #58a40b;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 30px;
+      border-radius: 50%;
+      margin: 20px auto;
     }
   }
 }

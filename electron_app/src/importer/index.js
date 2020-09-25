@@ -1,8 +1,11 @@
-const { spawn } = require('child_process');
+const { spawn, fork } = require('child_process');
 const path = require('path');
 const { app } = require('electron');
+const { databasePath } = require('../database/DBEmodel');
+const { getUserEmailsPath } = require('../utils/FileUtils');
 
 const importerPath = path.join(__dirname, 'emailsImporter.js');
+const imapImporterPath = path.join(__dirname, 'imapImporter.js');
 
 const getTempDirectory = nodeEnv => {
   const folderName = 'ImportTempData';
@@ -28,7 +31,6 @@ const runImport = (
 ) => {
   const tempDir = getTempDirectory(process.env.NODE_ENV);
   return new Promise((resolve, reject) => {
-    let backupSize = 0;
     const worker = spawn(
       'node',
       [importerPath, mboxPath, dbPath, recipientId, tempDir],
@@ -50,7 +52,7 @@ const runImport = (
 
     worker.on('close', code => {
       console.log(`child process closed with code ${code}`);
-      resolve(backupSize);
+      resolve();
     });
 
     worker.send({
@@ -60,6 +62,46 @@ const runImport = (
   });
 };
 
+const runImapImport = (
+  { key, email, password, client, accountId, accountEmail },
+  progressCallback
+) => {
+  return new Promise((resolve, reject) => {
+    const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
+      env: {
+        NODE_ENV: 'script',
+        DBPATH: databasePath,
+        FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
+      },
+      stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+    });
+
+    worker.on('message', data => {
+      console.log(`message: ${JSON.stringify(data)}`);
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    });
+
+    worker.on('error', code => {
+      console.log(`child process exited with error ${code}`);
+      reject(code);
+    });
+
+    worker.on('close', code => {
+      console.log(`child process closed with code ${code}`);
+      resolve();
+    });
+
+    worker.send({
+      step: 'init',
+      key,
+      email,
+      password
+    });
+  });
+};
+
 module.exports = {
-  runImport
+  runImport,
+  runImapImport
 };
