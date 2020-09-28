@@ -1,5 +1,5 @@
 const { ipcMain: ipc } = require('@criptext/electron-better-ipc');
-const { app } = require('electron');
+const { app, shell } = require('electron');
 const unusedFilename = require('unused-filename');
 const { download } = require('electron-dl');
 const path = require('path');
@@ -67,6 +67,12 @@ ipc.answerRenderer('print-to-pdf', async ({ emailId, threadId }) => {
 
 ipc.answerRenderer('open-email-source', async ({ key, accountId }) => {
   await buildEmailSource({ key, accountId });
+});
+
+ipc.answerRenderer('open-local-file', async ({ metadataKey, filename }) => {
+  const myPath = await getUserEmailsPath(process.env.NODE_ENV, myAccount.email);
+  const filePath = `${myPath}/${metadataKey}/${filename}`;
+  return shell.openItem(filePath);
 });
 
 ipc.answerRenderer(

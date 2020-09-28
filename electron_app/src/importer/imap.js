@@ -5,7 +5,7 @@ const {
   getLabelsByText,
   createLabel
 } = require('../database/DBEmanager');
-const { saveEmailBody } = require('../utils/FileUtils');
+const { saveEmailBody, storeAttachment } = require('../utils/FileUtils');
 
 const BATCH = 20;
 
@@ -242,6 +242,16 @@ const storeEmail = async ({ data, newKey, accountEmail, databaseKey }) => {
     username: accountEmail,
     password: databaseKey
   });
+  if (data.files && data.files.length) {
+    for (const attachment of data.files) {
+      await storeAttachment({
+        data: attachment.data,
+        filename: attachment.name,
+        username: accountEmail,
+        metadataKey: newKey
+      });
+    }
+  }
 };
 
 const handleEmailData = ({

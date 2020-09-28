@@ -9,7 +9,11 @@ import {
   setCryptoInterfaces
 } from './../utils/FileManager';
 import File, { FileStatus, UNSENT_FILE_STATUS } from './File';
-import { downloadFileInFileSystem, openFileExplorer } from '../utils/ipc';
+import {
+  downloadFileInFileSystem,
+  openFileExplorer,
+  openFilePath
+} from '../utils/ipc';
 
 class FileWrapper extends Component {
   constructor(props) {
@@ -53,12 +57,40 @@ class FileWrapper extends Component {
   };
 
   handleDownload = async () => {
+    if (this.props.file.status === 2) {
+      this.handleLocalOpen();
+      return;
+    }
     const { token, name } = this.props.file;
     await setDownloadHandler(token, name);
     this.setState({
       displayProgressBar: true,
       status: FileStatus.DOWNLOADING
     });
+  };
+
+  handleLocalOpen = () => {
+    this.setState(
+      {
+        displayProgressBar: true,
+        status: FileStatus.DOWNLOADING
+      },
+      async () => {
+        const result = await openFilePath({
+          metadataKey: this.props.email.key,
+          filename: this.props.file.name
+        });
+        if (result) {
+          this.setState({
+            percentage: 100,
+            displayProgressBar: false,
+            status: FileStatus.DOWNLOADED
+          });
+        } else {
+          this.handleDownloadError({ token: this.props.file.token });
+        }
+      }
+    );
   };
 
   handleClickCancelDownload = async e => {

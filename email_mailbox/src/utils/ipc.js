@@ -165,6 +165,10 @@ export const checkFileDownloaded = async ({ filename, metadataKey, type }) => {
   });
 };
 
+export const openFilePath = async ({ filename, metadataKey }) => {
+  return await ipc.callMain('open-local-file', { filename, metadataKey });
+};
+
 export const storeRecoveryKey = async params => {
   return await ipc.callMain('store-recovery-key', params);
 };

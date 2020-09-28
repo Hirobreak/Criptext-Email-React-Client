@@ -88,6 +88,14 @@ const saveEmailBody = async ({
   }
 };
 
+const storeAttachment = async ({ filename, data, username, metadataKey }) => {
+  console.log(filename, username, metadataKey, data);
+  const myPath = await getUserEmailsPath(process.env.NODE_ENV, username);
+  const emailPath = `${myPath}/${metadataKey}`;
+  await createIfNotExist(emailPath);
+  await store(`${myPath}/${metadataKey}/${filename}`, data);
+};
+
 const getEmailBody = async ({ username, metadataKey, password }) => {
   const myPath = await getUserEmailsPath(process.env.NODE_ENV, username);
 
@@ -260,5 +268,6 @@ module.exports = {
   checkIfExists,
   createPathRecursive,
   store,
+  storeAttachment,
   retrieve: retrieveBuffer
 };

@@ -1659,7 +1659,7 @@ ipcRenderer.on('import-progress', (ev, data) => {
   emitter.emit(Event.IMPORT_PROGRESS, data);
 });
 
-ipcRenderer.on('import-end', ev => {
+ipcRenderer.on('import-end', () => {
   emitter.emit(Event.IMPORT_END);
 });
 

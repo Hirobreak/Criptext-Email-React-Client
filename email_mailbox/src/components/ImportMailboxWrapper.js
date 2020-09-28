@@ -49,7 +49,7 @@ class ImportMailboxWrapper extends Component {
           <div>
             <h5>Error Found:</h5>
             <span>
-              {this.state.error} : interrupted => {this.state.interrupted}
+              {this.state.error} : interrupted : {this.state.interrupted}
             </span>
           </div>
         )}
@@ -202,8 +202,8 @@ class ImportMailboxWrapper extends Component {
   handleProcessEnd = () => {
     this.setState({
       step: STEP.SUCCESS
-    })
-  }
+    });
+  };
 
   handleSelectFile = async () => {
     const { filePaths } = await showOpenFileDialog();

@@ -240,8 +240,6 @@ const parseSimpleEmail = async (
     headers += myResult.headerLines[header] + '\n';
   }
 
-  console.log(myResult.attachments);
-
   const metadata = {
     subject: myResult.subject || '',
     messageId: myResult.messageId,
@@ -254,6 +252,19 @@ const parseSimpleEmail = async (
     key: newKey,
     content: ''
   };
+
+  console.log(myResult.attachments);
+
+  const attachments = myResult.attachments.map(attachment => ({
+    data: attachment.content,
+    token: attachment.contentId,
+    status: 2,
+    mimeType: attachment.contentType,
+    readOnly: false,
+    size: attachment.size,
+    name: attachment.filename,
+    cid: attachment.cid && body.includes(attachment.cid) ? attachment.cid : null
+  }));
 
   const labels = [];
 
@@ -281,7 +292,8 @@ const parseSimpleEmail = async (
     labels: [].concat.apply(mailbox ? [labelsMap[mailbox]] : [], labels),
     accountId,
     body,
-    headers
+    headers,
+    files: attachments
   };
 };
 
