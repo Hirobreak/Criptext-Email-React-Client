@@ -107,47 +107,47 @@ class ImportMailboxWrapper extends Component {
       default:
         return (
           <div className="import-step-container import-options">
-            <div>
+            <div className="import-mbox-container">
               <h4>Import Mailbox</h4>
               <div>
                 <span>Please select a .mbox file to import your emails.</span>
+                <button onClick={this.handleSelectFile}>Select Mbox File</button>
               </div>
-              <button onClick={this.handleSelectFile}>Select Mbox File</button>
             </div>
-            <div>
+            <div className="import-imap-container">
               <h4>Import from Imap</h4>
               <div>
-                <span>Import emails from an email service through IMAP</span>
+                <div className="import-input-container">
+                  <span>Import emails from an email service through IMAP</span>
+                  <select
+                    onChange={this.handleChangeClient}
+                    value={this.state.client}
+                  >
+                    {this.clients.map((client, index) => {
+                      return (
+                        <option key={index} value={client}>
+                          {client}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <input
+                    placeholder="email"
+                    type="text"
+                    value={this.state.email}
+                    onChange={this.handleChangeEmail}
+                  />
+                  <input
+                    placeholder="password"
+                    type="password"
+                    value={this.state.password}
+                    onChange={this.handleChangePassword}
+                  />
+                </div>
+                <button onClick={this.handleImportFromGmail}>
+                  Import from Gmail
+                </button>
               </div>
-              <div className="import-input-container">
-                <select
-                  onChange={this.handleChangeClient}
-                  value={this.state.client}
-                >
-                  {this.clients.map((client, index) => {
-                    return (
-                      <option key={index} value={client}>
-                        {client}
-                      </option>
-                    );
-                  })}
-                </select>
-                <input
-                  placeholder="email"
-                  type="text"
-                  value={this.state.email}
-                  onChange={this.handleChangeEmail}
-                />
-                <input
-                  placeholder="password"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.handleChangePassword}
-                />
-              </div>
-              <button onClick={this.handleImportFromGmail}>
-                Import from Gmail
-              </button>
             </div>
           </div>
         );

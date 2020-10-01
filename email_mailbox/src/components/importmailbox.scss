@@ -10,19 +10,62 @@
   align-items: center;
   flex-direction: column;
 
+  .import-mbox-container,
+  .import-imap-container {
+
+    h4 {
+      padding: 0px 28px;
+      align-items: center;
+      display: flex;
+      height: 41px;
+      color: #6a707e;
+      background-color: #f7f7f7;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0px;
+      font-size: 13px;  
+    }
+  }
+
+  .import-mbox-container {
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-left: 66px;
+      height: 60px;
+
+      button {
+        font-size: 13px;
+        background-color: transparent;
+        color: #0091ff;
+      }
+    }
+  }
+
+  .import-imap-container {
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-left: 66px;
+      height: 60px;
+
+      button {
+        font-size: 13px;
+        background-color: transparent;
+        color: #0091ff;
+      }
+    }
+  }
+
   .import-options {
     height: 100%;
   }
 
   .import-step-container {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-
-    h4 {
-      margin-bottom: 30px;
-    }
+    width: 100%;
+    background-color: white;
 
     button {
       color: white;
@@ -34,7 +77,6 @@
       height: 26px;
       padding: 0 15px;
       margin: auto;
-      margin-top: 30px;
     }
 
     .dialog-container {
@@ -42,7 +84,7 @@
     }
 
     span {
-      font-size: 15px;
+      font-size: 13px;
     }
 
     .import-input-container{
