@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SingleLoading, statusType } from './Loading';
-import { startImportEmails, importFromGmail } from '../utils/ipc';
+import { startImportEmails, importFromGmail, importFromImapEmails } from '../utils/ipc';
 import { showOpenFileDialog } from '../utils/electronInterface';
 import { addEvent, removeEvent, Event } from '../utils/electronEventInterface';
 import './importmailbox.scss';
+import ImportMailboxMoveLabelsWrapper from './ImportMailboxMoveLabelsWrapper';
 
 const STEP = {
   SELECT: 'select',
-  MBOX: 'mbox',
+  EXTRACTING: 'extracting',
   IMPORT: 'import',
-  SUCCESS: 'success'
+  SUCCESS: 'success',
+  LABELS: 'labels'
 };
 
 class ImportMailboxWrapper extends Component {
@@ -25,7 +27,8 @@ class ImportMailboxWrapper extends Component {
       interrupted: true,
       email: '',
       password: '',
-      client: 'gmail'
+      client: 'gmail',
+      mailboxes: undefined
     };
 
     this.clients = ['gmail', 'outlook'];
@@ -61,7 +64,7 @@ class ImportMailboxWrapper extends Component {
     switch (this.state.step) {
       case STEP.IMPORT:
         return (
-          <div className="import-step-container">
+          <div className="importing-step-container">
             <h4>Importing Emails</h4>
             <SingleLoading
               percent={parseInt(
@@ -73,20 +76,15 @@ class ImportMailboxWrapper extends Component {
               <span>This may take a while... {this.state.parsedEmails}</span> /{' '}
               <span>{this.state.totalEmails}</span>
             </div>
-            {this.state.lastEmail && (
-              <div>
-                <span>Last Parsed : {this.state.lastEmail}</span>
-              </div>
-            )}
           </div>
         );
-      case STEP.MBOX:
+      case STEP.EXTRACTING:
         return (
-          <div className="import-step-container">
-            <h4>Extracting File</h4>
+          <div className="extracting-step-container">
+            <h4>Extracting Mailbox Data</h4>
             <SingleLoading percent={100} animationClass={statusType.RUNNING} />
             <div>
-              <span>Reading your MBOX file</span>
+              <span>Reading your mailbox</span>
             </div>
             <div>
               <span>This may take a while...</span>
@@ -95,7 +93,7 @@ class ImportMailboxWrapper extends Component {
         );
       case STEP.SUCCESS:
         return (
-          <div className="import-step-container">
+          <div className="success-step-container">
             <div className="import-success-circle">
               <i className="icon-check" />
             </div>
@@ -104,6 +102,8 @@ class ImportMailboxWrapper extends Component {
             </div>
           </div>
         );
+      case STEP.LABELS:
+        return <ImportMailboxMoveLabelsWrapper onImportImapEmails={this.handleImportImapEmails} labels={this.props.labels} mailboxes={this.state.mailboxes} />;
       default:
         return (
           <div className="import-step-container import-options">
@@ -119,30 +119,39 @@ class ImportMailboxWrapper extends Component {
               <div>
                 <div className="import-input-container">
                   <span>Import emails from an email service through IMAP</span>
-                  <select
-                    onChange={this.handleChangeClient}
-                    value={this.state.client}
-                  >
-                    {this.clients.map((client, index) => {
-                      return (
-                        <option key={index} value={client}>
-                          {client}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <input
-                    placeholder="email"
-                    type="text"
-                    value={this.state.email}
-                    onChange={this.handleChangeEmail}
-                  />
-                  <input
-                    placeholder="password"
-                    type="password"
-                    value={this.state.password}
-                    onChange={this.handleChangePassword}
-                  />
+                  <div className="import-input-wrapper">
+                    <span>Email Client</span> 
+                    <select
+                      onChange={this.handleChangeClient}
+                      value={this.state.client}
+                    >
+                      {this.clients.map((client, index) => {
+                        return (
+                          <option key={index} value={client}>
+                            {client}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="import-input-wrapper">
+                    <span>Email</span> 
+                    <input
+                      placeholder="email"
+                      type="text"
+                      value={this.state.email}
+                      onChange={this.handleChangeEmail}
+                    />
+                  </div>
+                  <div className="import-input-wrapper">
+                    <span>Password</span> 
+                    <input
+                      placeholder="password"
+                      type="password"
+                      value={this.state.password}
+                      onChange={this.handleChangePassword}
+                    />
+                  </div>
                 </div>
                 <button onClick={this.handleImportFromGmail}>
                   Import from Gmail
@@ -215,17 +224,39 @@ class ImportMailboxWrapper extends Component {
     }
     startImportEmails(filePaths[0]);
     this.setState({
-      step: STEP.MBOX
+      step: STEP.EXTRACTING
     });
   };
 
   handleImportFromGmail = () => {
-    importFromGmail({
-      email: this.state.email,
-      password: this.state.password,
-      client: this.state.client
-    });
+    this.setState({
+      step: STEP.EXTRACTING
+    }, async () => {
+      const mailboxes = await importFromGmail({
+        email: this.state.email,
+        password: this.state.password,
+        client: this.state.client
+      });
+      this.setState({
+        mailboxes,
+        step: STEP.LABELS
+      })
+    })
   };
+
+  handleImportImapEmails = (defaultLabel, labelsMap) => {
+    this.setState({
+      step: STEP.IMPORT
+    }, async () => {
+      await importFromImapEmails({
+        email: this.state.email,
+        password: this.state.password,
+        client: this.state.client,
+        labelsMap,
+        addedLabels: defaultLabel ? [defaultLabel] : []
+      });
+    })
+  }
 }
 
 ImportMailboxWrapper.propTypes = {

@@ -40,7 +40,8 @@ const getMailboxEmails = (
     labelsMap,
     accountEmail,
     accountId,
-    databaseKey
+    databaseKey,
+    addedLabels
   },
   progressCallback
 ) => {
@@ -88,7 +89,8 @@ const getMailboxEmails = (
               externalIndex,
               labelsMap,
               fetchUids,
-              mailbox
+              mailbox,
+              addedLabels
             },
             progressCallback
           );
@@ -113,7 +115,8 @@ const fetchAndParseEmails = (
     externalIndex,
     labelsMap,
     fetchUids,
-    mailbox
+    mailbox,
+    addedLabels
   },
   progressCallback
 ) => {
@@ -137,10 +140,10 @@ const fetchAndParseEmails = (
             mailbox,
             buffer,
             accountId,
-            accountEmail,
             labelsMap,
             newKey: `EXT${externalIndex}${sequenceNumber}`,
-            databaseKey
+            databaseKey,
+            addedLabels
           });
           emailsToCreate[prefix] = result;
 
@@ -194,6 +197,18 @@ const getMailLabels = (server, accountId) => {
   });
 };
 
+const getMailboxes = (server) => {
+  return new Promise((resolve, reject) => {
+    server.getBoxes(async (error, mailbox) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(Object.keys(mailbox));
+    });
+  });
+};
+
 const handleLabels = async (labels, accountId) => {
   const existingLabels = await getLabelsByText({
     accountId,
@@ -209,7 +224,7 @@ const handleLabels = async (labels, accountId) => {
     .map(label => {
       return {
         visible: true,
-        type: 'imported',
+        type: 'custom',
         text: label,
         accountId: accountId
       };
@@ -258,24 +273,18 @@ const handleEmailData = ({
   mailbox,
   buffer,
   accountId,
-  accountEmail,
   newKey,
-  labelsMap
+  labelsMap,
+  addedLabels
 }) => {
-  return parseSimpleEmail(buffer, labelsMap, newKey, accountId, mailbox);
-  /*await createEmail(result);
-  await saveEmailBody({
-    body: result ? result.body : 'No body',
-    headers: '',
-    metadataKey: newKey,
-    username: accountEmail,
-    password: databaseKey
-  });*/
+  return parseSimpleEmail(buffer, labelsMap, newKey, accountId, mailbox, addedLabels);
 };
 
 module.exports = {
   getUrlByClient,
   initializeImap,
   getMailLabels,
-  getMailboxEmails
+  getMailboxEmails,
+  getMailboxes,
+  handleLabels
 };

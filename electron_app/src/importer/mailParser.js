@@ -222,7 +222,8 @@ const parseSimpleEmail = async (
   labelsMap,
   newKey,
   accountId,
-  mailbox
+  mailbox,
+  addedLabels
 ) => {
   let myResult = await simpleParser(rawEmail, {});
 
@@ -266,7 +267,7 @@ const parseSimpleEmail = async (
     cid: attachment.cid && body.includes(attachment.cid) ? attachment.cid : null
   }));
 
-  const labels = [];
+  const labels = addedLabels ? [...addedLabels] : [];
 
   myResult.headerLines.forEach(header => {
     if (header.key && header.key.toLowerCase().includes('labels')) {

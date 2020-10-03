@@ -30,8 +30,11 @@ import {
 } from '../utils/electronEventInterface';
 import string from '../lang';
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = state => {
+  const labels = state.get('labels');
+  return {
+    labels: labels.toJS()
+  };
 };
 
 const formatDevicesData = devices => {

@@ -696,3 +696,7 @@ export const startImportEmails = async filepath => {
 export const importFromGmail = async params => {
   return await ipc.callMain('import-gmail', params);
 };
+
+export const importFromImapEmails = async params => {
+  return await ipc.callMain('import-imap-emails', params);
+};

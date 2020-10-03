@@ -98,6 +98,7 @@ class SettingsContainer extends Component {
             isHiddenSettingsPopup={this.state.isHiddenSettingsPopup}
             titlePath={[sidebar.settings, settings.import]}
             onChangePanel={this.handleChangePanel}
+            labels={this.props.labels}
           />
         );
       default:

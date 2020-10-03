@@ -101,7 +101,89 @@ const runImapImport = (
   });
 };
 
+const runImapMailboxes = ({ key, email, password, client, accountId, accountEmail }) => {
+  return new Promise((resolve, reject) => {
+    let mailboxes;
+    
+    const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
+      env: {
+        NODE_ENV: 'script',
+        DBPATH: databasePath,
+        FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
+      },
+      stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+    });
+
+    worker.on('message', data => {
+      console.log(`message: ${JSON.stringify(data)}`);
+      if (data.type === 'mailboxes')
+        mailboxes = data.mailboxes;
+    });
+
+    worker.on('error', code => {
+      console.log(`child process exited with error ${code}`);
+      reject(code);
+    });
+
+    worker.on('close', code => {
+      console.log(`child process closed with code ${code}`);
+      resolve(mailboxes);
+    });
+
+    worker.send({
+      step: 'init',
+      type: 'mailboxes',
+      key,
+      email,
+      password
+    });
+  });
+}
+
+const runImapEmails = ({ key, email, password, client, accountId, accountEmail, labelsMap, addedLabels }) => {
+  return new Promise((resolve, reject) => {
+    let mailboxes;
+    
+    const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
+      env: {
+        NODE_ENV: 'script',
+        DBPATH: databasePath,
+        FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
+      },
+      stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+    });
+
+    worker.on('message', data => {
+      console.log(`message: ${JSON.stringify(data)}`);
+      if (data.type === 'mailboxes')
+        mailboxes = data.mailboxes;
+    });
+
+    worker.on('error', code => {
+      console.log(`child process exited with error ${code}`);
+      reject(code);
+    });
+
+    worker.on('close', code => {
+      console.log(`child process closed with code ${code}`);
+      resolve(mailboxes);
+    });
+
+    worker.send({
+      step: 'init',
+      type: 'emails',
+      key,
+      email,
+      password,
+      labelsMap, 
+      addedLabels
+    });
+  });
+}
+
 module.exports = {
   runImport,
-  runImapImport
+  runImapImport,
+  runImapMailboxes,
+  runImapEmails
 };

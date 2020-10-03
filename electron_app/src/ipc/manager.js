@@ -1,6 +1,6 @@
 const { ipcMain: ipc } = require('@criptext/electron-better-ipc');
 const dbManager = require('./../database');
-const { runImport, runImapImport } = require('../importer/index');
+const { runImport, runImapImport, runImapMailboxes, runImapEmails } = require('../importer/index');
 const fileUtils = require('./../utils/FileUtils');
 const globalManager = require('../globalManager');
 const { APP_DOMAIN } = require('../utils/const');
@@ -35,7 +35,7 @@ ipc.answerRenderer('import-emails-start', async filepath => {
 
 ipc.answerRenderer('import-gmail', async ({ email, password, client }) => {
   try {
-    await runImapImport(
+    const mailboxes = await runImapMailboxes(
       {
         email,
         password,
@@ -43,6 +43,27 @@ ipc.answerRenderer('import-gmail', async ({ email, password, client }) => {
         accountId: myAccount.id,
         accountEmail: myAccount.email,
         key: globalManager.databaseKey.get()
+      }
+    );
+    console.log(mailboxes);
+    return mailboxes;
+  } catch (ex) {
+    console.log(ex);
+  }
+});
+
+ipc.answerRenderer('import-imap-emails', async ({ email, password, client, labelsMap, addedLabels }) => {
+  try {
+    await runImapEmails(
+      {
+        email,
+        password,
+        client,
+        accountId: myAccount.id,
+        accountEmail: myAccount.email,
+        key: globalManager.databaseKey.get(),
+        labelsMap,
+        addedLabels
       },
       data => {
         send('import-progress', data);
