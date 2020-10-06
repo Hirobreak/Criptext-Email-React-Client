@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'react-switch-input';
+import Button, { ButtonTypes } from './Button';
 
 import './importmailboxmovelabels.scss';
 
@@ -52,8 +53,8 @@ class ImportMailboxMoveLabelsWrapper extends Component {
             }
           </div>
         </div>
-        <div>
-          <button onClick={this.handleStartImport}>Import</button>
+        <div className="import-button-wrapper">
+          <Button onClick={this.handleStartImport} text="Import" type={ButtonTypes.PRIMARY} />
         </div>
       </div>
     </div>)

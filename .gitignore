@@ -12,6 +12,7 @@ electron_app/src/__integrations__/**@criptext.com/
 #dev
 electron_app/userData/
 electron_app/src/userData/
+ImportTempData/
 valgrind-out.txt
 CriptextEncrypt.db-shm
 CriptextEncrypt.db-wal

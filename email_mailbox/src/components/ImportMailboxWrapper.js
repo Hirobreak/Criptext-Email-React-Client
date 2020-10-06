@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SingleLoading, statusType } from './Loading';
-import { startImportEmails, importFromGmail, importFromImapEmails } from '../utils/ipc';
+import { importEmailsFromMbox, importMailboxesFromMbox, importFromGmail, importFromImapEmails } from '../utils/ipc';
 import { showOpenFileDialog } from '../utils/electronInterface';
 import { addEvent, removeEvent, Event } from '../utils/electronEventInterface';
 import './importmailbox.scss';
@@ -14,6 +14,11 @@ const STEP = {
   SUCCESS: 'success',
   LABELS: 'labels'
 };
+
+const IMPORT = {
+  MBOX: 'mbox',
+  IMAP: 'imap'
+}
 
 class ImportMailboxWrapper extends Component {
   constructor(props) {
@@ -28,7 +33,8 @@ class ImportMailboxWrapper extends Component {
       email: '',
       password: '',
       client: 'gmail',
-      mailboxes: undefined
+      mailboxes: undefined,
+      import: undefined
     };
 
     this.clients = ['gmail', 'outlook'];
@@ -103,7 +109,7 @@ class ImportMailboxWrapper extends Component {
           </div>
         );
       case STEP.LABELS:
-        return <ImportMailboxMoveLabelsWrapper onImportImapEmails={this.handleImportImapEmails} labels={this.props.labels} mailboxes={this.state.mailboxes} />;
+        return <ImportMailboxMoveLabelsWrapper onImportImapEmails={this.handleImportEmails} labels={this.props.labels} mailboxes={this.state.mailboxes} />;
       default:
         return (
           <div className="import-step-container import-options">
@@ -222,15 +228,22 @@ class ImportMailboxWrapper extends Component {
       });
       return;
     }
-    startImportEmails(filePaths[0]);
     this.setState({
-      step: STEP.EXTRACTING
+      step: STEP.EXTRACTING,
+      import: IMPORT.MBOX
+    }, async () => {
+      const mailboxes = await importMailboxesFromMbox(filePaths[0]);
+      this.setState({
+        mailboxes,
+        step: STEP.LABELS
+      })
     });
   };
 
   handleImportFromGmail = () => {
     this.setState({
-      step: STEP.EXTRACTING
+      step: STEP.EXTRACTING,
+      import: IMPORT.IMAP
     }, async () => {
       const mailboxes = await importFromGmail({
         email: this.state.email,
@@ -243,6 +256,26 @@ class ImportMailboxWrapper extends Component {
       })
     })
   };
+
+  handleImportEmails = (defaultLabel, labelsMap) => {
+    if (this.state.import === IMPORT.IMAP) {
+      this.handleImportImapEmails(defaultLabel, labelsMap);
+    } else {
+      this.handleImportMboxEmails(defaultLabel, labelsMap);
+    }
+  }
+
+  handleImportMboxEmails = (defaultLabel, labelsMap) => {
+    this.setState({
+      step: STEP.IMPORT
+    }, async () => {
+      await importEmailsFromMbox({
+        count: 100,
+        labelsMap,
+        addedLabels: defaultLabel ? [defaultLabel] : []
+      });
+    })
+  }
 
   handleImportImapEmails = (defaultLabel, labelsMap) => {
     this.setState({

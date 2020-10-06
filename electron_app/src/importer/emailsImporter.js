@@ -1,4 +1,5 @@
 const { handleParseMailboxFile } = require('./mboxParser');
+const { handleLabels } = require('./imap');
 const { parseIndividualEmailFiles } = require('./mailParser');
 const fs = require('fs');
 const path = require('path');
@@ -8,8 +9,6 @@ const { createLabel, getLabelsByText } = require('../database/DBEmanager');
 const startTimeout = setTimeout(() => {
   start();
 }, 5000);
-
-let key;
 
 const removeTempDirectoryRecursive = pathToDelete => {
   if (fs.existsSync(pathToDelete)) {
@@ -36,20 +35,16 @@ const checkTempDirectory = TempDirectory => {
   }
 };
 
-const start = async () => {
+const start = async key => {
   var args = process.argv.slice(2);
   const mboxPath = args[0];
-  const dbPath = args[1];
-  const recipientId = args[2];
+  const accountEmail = args[1];
+  const accountId = args[2];
   const tempBackupDirectory = args[3];
 
   if (!key) {
     throw new Error(`Database key was never received`);
   }
-
-  const accountEmail = recipientId.includes('@')
-    ? recipientId
-    : `${recipientId}@jigl.com`;
 
   let parsedEmails = 0;
   let count = 0;
@@ -69,12 +64,12 @@ const start = async () => {
   try {
     await initDatabaseEncrypted({
       key: key,
-      path: path.join(tempBackupDirectory, 'CriptextEncrypt.db'),
+      path: process.env.DBPATH,
       sync: false
     });
     account = await Account().findOne({
       where: {
-        recipientId
+        id: accountId
       }
     });
   } catch (ex) {
@@ -158,11 +153,115 @@ const start = async () => {
   process.exit(0);
 };
 
+const startMailboxes = async () => {
+  var args = process.argv.slice(2);
+  const mboxPath = args[0];
+  const tempBackupDirectory = args[3];
+
+  let count, labels;
+  try {
+    checkTempDirectory(tempBackupDirectory);
+    const mboxResult = await handleParseMailboxFile(
+      mboxPath,
+      tempBackupDirectory
+    );
+    count = mboxResult.count;
+    labels = mboxResult.labels;
+  } catch (ex) {
+    throw new Error(ex.toString());
+  }
+  process.send({
+    mailboxes: labels,
+    count,
+    type: 'mailboxes'
+  });
+
+  process.exit(0);
+};
+
+const startEmails = async ({ key, labelsMap, count, addedLabels }) => {
+  var args = process.argv.slice(2);
+  const accountEmail = args[1];
+  const accountId = args[2];
+  const tempBackupDirectory = args[3];
+
+  let account;
+  try {
+    await initDatabaseEncrypted({
+      key: key,
+      path: process.env.DBPATH,
+      sync: false
+    });
+    account = await Account().findOne({
+      where: {
+        id: accountId
+      }
+    });
+  } catch (ex) {
+    throw new Error(`Error connecting to db ${ex}`);
+  }
+
+  process.send({
+    totalEmails: count,
+    type: 'import'
+  });
+
+  try {
+    const newLabels = await handleLabels(addedLabels, accountId);
+
+    let parsedEmails = 0;
+    const handleProgress = data => {
+      parsedEmails++;
+      if (data.error) {
+        process.send({
+          error: data.error,
+          interrupted: false
+        });
+        return;
+      }
+
+      process.send({
+        parsedEmails,
+        totalEmails: count,
+        lastEmail: data.email,
+        type: 'progress'
+      });
+    };
+
+    await parseIndividualEmailFiles(
+      {
+        TempDirectory: tempBackupDirectory,
+        databaseKey: key,
+        key,
+        accountEmail,
+        accountId: account.id,
+        labels: labelsMap,
+        addedLabels: Object.keys(newLabels).map(key => newLabels[key])
+      },
+      handleProgress
+    );
+  } catch (ex) {
+    throw new Error(ex.toString());
+  }
+
+  process.exit(0);
+};
+
 process.on('message', data => {
   if (data.step !== 'init') return;
 
-  key = data.key;
+  const { key, type, labelsMap, count, addedLabels } = data;
 
   clearTimeout(startTimeout);
-  start();
+  switch (type) {
+    case 'mailboxes':
+      startMailboxes();
+      break;
+    case 'emails':
+      startEmails({ key, labelsMap, count, addedLabels });
+      break;
+    default:
+      start(key);
+      break;
+  }
 });

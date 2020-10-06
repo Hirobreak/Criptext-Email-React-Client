@@ -57,10 +57,7 @@ const start = async (
   process.exit(0);
 };
 
-const startMailboxes = async (
-  { email, password, client }
-) => {
-  
+const startMailboxes = async ({ email, password, client }) => {
   const clientUrl = getUrlByClient(client);
   const server = await initializeImap({
     user: email, //andres.menoscal1993@gmail.com
@@ -83,7 +80,16 @@ const startMailboxes = async (
 };
 
 const startEmails = async (
-  { email, password, client, accountId, accountEmail, databaseKey, labelsMap, addedLabels },
+  {
+    email,
+    password,
+    client,
+    accountId,
+    accountEmail,
+    databaseKey,
+    labelsMap,
+    addedLabels
+  },
   progressCallback
 ) => {
   try {
@@ -119,7 +125,7 @@ const startEmails = async (
         accountId,
         accountEmail,
         databaseKey,
-        addedLabels: Object.keys(newLabels).map( key => newLabels [key])
+        addedLabels: Object.keys(newLabels).map(key => newLabels[key])
       },
       progressCallback
     );
@@ -143,7 +149,7 @@ process.on('message', data => {
   const { key, email, password, type, labelsMap, addedLabels } = data;
 
   clearTimeout(startTimeout);
-  switch(type) {
+  switch (type) {
     case 'mailboxes':
       startMailboxes(
         { email, password, client, accountId, accountEmail, databaseKey: key },
@@ -152,14 +158,21 @@ process.on('message', data => {
       break;
     case 'emails':
       startEmails(
-        { email, password, client, accountId, accountEmail, databaseKey: key, labelsMap, addedLabels },
+        {
+          email,
+          password,
+          client,
+          accountId,
+          accountEmail,
+          databaseKey: key,
+          labelsMap,
+          addedLabels
+        },
         handleProgress
       );
       break;
     default:
-      start(
-        { email, password, client }
-      );
+      start({ email, password, client });
       break;
   }
 });

@@ -1,6 +1,11 @@
 const { ipcMain: ipc } = require('@criptext/electron-better-ipc');
 const dbManager = require('./../database');
-const { runImport, runImapImport, runImapMailboxes, runImapEmails } = require('../importer/index');
+const {
+  runMboxMailboxes,
+  runMboxEmails,
+  runImapMailboxes,
+  runImapEmails
+} = require('../importer/index');
 const fileUtils = require('./../utils/FileUtils');
 const globalManager = require('../globalManager');
 const { APP_DOMAIN } = require('../utils/const');
@@ -14,37 +19,54 @@ const getUsername = () => {
   return myAccount.email;
 };
 
-ipc.answerRenderer('import-emails-start', async filepath => {
+ipc.answerRenderer('import-mbox-mailboxes', async filepath => {
   try {
-    await runImport(
-      {
-        dbPath: '',
-        key: globalManager.databaseKey.get(),
-        recipientId: myAccount.recipientId,
-        mboxPath: filepath
-      },
-      data => {
-        send('import-progress', data);
-      }
-    );
-    send('import-end');
+    const mailboxes = await runMboxMailboxes({
+      key: globalManager.databaseKey.get(),
+      accountId: myAccount.id,
+      accountEmail: myAccount.email,
+      mboxPath: filepath
+    });
+    return mailboxes;
   } catch (ex) {
     console.log(ex);
   }
 });
 
+ipc.answerRenderer(
+  'import-mbox-emails',
+  async ({ labelsMap, addedLabels, count }) => {
+    try {
+      await runMboxEmails(
+        {
+          key: globalManager.databaseKey.get(),
+          accountId: myAccount.id,
+          accountEmail: myAccount.email,
+          labelsMap,
+          addedLabels,
+          count
+        },
+        data => {
+          send('import-progress', data);
+        }
+      );
+      send('import-end');
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+);
+
 ipc.answerRenderer('import-gmail', async ({ email, password, client }) => {
   try {
-    const mailboxes = await runImapMailboxes(
-      {
-        email,
-        password,
-        client,
-        accountId: myAccount.id,
-        accountEmail: myAccount.email,
-        key: globalManager.databaseKey.get()
-      }
-    );
+    const mailboxes = await runImapMailboxes({
+      email,
+      password,
+      client,
+      accountId: myAccount.id,
+      accountEmail: myAccount.email,
+      key: globalManager.databaseKey.get()
+    });
     console.log(mailboxes);
     return mailboxes;
   } catch (ex) {
@@ -52,28 +74,31 @@ ipc.answerRenderer('import-gmail', async ({ email, password, client }) => {
   }
 });
 
-ipc.answerRenderer('import-imap-emails', async ({ email, password, client, labelsMap, addedLabels }) => {
-  try {
-    await runImapEmails(
-      {
-        email,
-        password,
-        client,
-        accountId: myAccount.id,
-        accountEmail: myAccount.email,
-        key: globalManager.databaseKey.get(),
-        labelsMap,
-        addedLabels
-      },
-      data => {
-        send('import-progress', data);
-      }
-    );
-    send('import-end');
-  } catch (ex) {
-    console.log(ex);
+ipc.answerRenderer(
+  'import-imap-emails',
+  async ({ email, password, client, labelsMap, addedLabels }) => {
+    try {
+      await runImapEmails(
+        {
+          email,
+          password,
+          client,
+          accountId: myAccount.id,
+          accountEmail: myAccount.email,
+          key: globalManager.databaseKey.get(),
+          labelsMap,
+          addedLabels
+        },
+        data => {
+          send('import-progress', data);
+        }
+      );
+      send('import-end');
+    } catch (ex) {
+      console.log(ex);
+    }
   }
-});
+);
 
 ipc.answerRenderer('db-delete-emails-by-threadid-and-labelid', async params => {
   const data = params.accountId

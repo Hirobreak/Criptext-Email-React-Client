@@ -17,6 +17,15 @@
   }
 
   .labels-step-wrapper {
+    .import-button-wrapper {
+      display: flex;
+      padding: 0px 10%;
+
+      button {
+        padding: 0px 20px;
+      }
+    }
+
     .labels-step-general {
       display: flex;
       flex-direction: inherit;
@@ -64,7 +73,7 @@
       }
 
       .labels-step-each-container {
-        padding: 5% 10%;
+        padding: 20px 10%;
 
         .labels-step-each-item {
           display: flex;
@@ -81,6 +90,8 @@
             font-weight: bold;
             width: 114px;
             display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           > select {

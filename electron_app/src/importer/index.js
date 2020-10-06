@@ -1,4 +1,4 @@
-const { spawn, fork } = require('child_process');
+const { fork } = require('child_process');
 const path = require('path');
 const { app } = require('electron');
 const { databasePath } = require('../database/DBEmodel');
@@ -26,15 +26,20 @@ const getTempDirectory = nodeEnv => {
 };
 
 const runImport = (
-  { dbPath, key, recipientId, mboxPath },
+  { key, accountEmail, accountId, mboxPath },
   progressCallback
 ) => {
   const tempDir = getTempDirectory(process.env.NODE_ENV);
   return new Promise((resolve, reject) => {
-    const worker = spawn(
-      'node',
-      [importerPath, mboxPath, dbPath, recipientId, tempDir],
+    const worker = fork(
+      importerPath,
+      [mboxPath, accountEmail, accountId, tempDir],
       {
+        env: {
+          NODE_ENV: 'script',
+          DBPATH: databasePath,
+          FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
+        },
         stdio: ['inherit', 'inherit', 'inherit', 'ipc']
       }
     );
@@ -58,6 +63,92 @@ const runImport = (
     worker.send({
       step: 'init',
       key
+    });
+  });
+};
+
+const runMboxMailboxes = ({ key, accountEmail, accountId, mboxPath }) => {
+  const tempDir = getTempDirectory(process.env.NODE_ENV);
+  return new Promise((resolve, reject) => {
+    let mailboxes;
+    const worker = fork(
+      importerPath,
+      [mboxPath, accountEmail, accountId, tempDir],
+      {
+        env: {
+          NODE_ENV: 'script',
+          DBPATH: databasePath,
+          FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
+        },
+        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+      }
+    );
+
+    worker.on('message', data => {
+      console.log(`message: ${JSON.stringify(data)}`);
+      if (data.type === 'mailboxes') mailboxes = data.mailboxes;
+    });
+
+    worker.on('error', code => {
+      console.log(`child process exited with error ${code}`);
+      reject(code);
+    });
+
+    worker.on('close', code => {
+      console.log(`child process closed with code ${code}`);
+      resolve(mailboxes);
+    });
+
+    worker.send({
+      step: 'init',
+      type: 'mailboxes',
+      key
+    });
+  });
+};
+
+const runMboxEmails = (
+  { key, accountEmail, accountId, mboxPath, labelsMap, addedLabels, count },
+  progressCallback
+) => {
+  const tempDir = getTempDirectory(process.env.NODE_ENV);
+  return new Promise((resolve, reject) => {
+    const worker = fork(
+      importerPath,
+      [mboxPath, accountEmail, accountId, tempDir],
+      {
+        env: {
+          NODE_ENV: 'script',
+          DBPATH: databasePath,
+          FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
+        },
+        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+      }
+    );
+
+    worker.on('message', data => {
+      console.log(`message: ${JSON.stringify(data)}`);
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    });
+
+    worker.on('error', code => {
+      console.log(`child process exited with error ${code}`);
+      reject(code);
+    });
+
+    worker.on('close', code => {
+      console.log(`child process closed with code ${code}`);
+      resolve();
+    });
+
+    worker.send({
+      step: 'init',
+      type: 'emails',
+      key,
+      labelsMap,
+      addedLabels,
+      count
     });
   });
 };
@@ -101,10 +192,17 @@ const runImapImport = (
   });
 };
 
-const runImapMailboxes = ({ key, email, password, client, accountId, accountEmail }) => {
+const runImapMailboxes = ({
+  key,
+  email,
+  password,
+  client,
+  accountId,
+  accountEmail
+}) => {
   return new Promise((resolve, reject) => {
     let mailboxes;
-    
+
     const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
       env: {
         NODE_ENV: 'script',
@@ -116,8 +214,7 @@ const runImapMailboxes = ({ key, email, password, client, accountId, accountEmai
 
     worker.on('message', data => {
       console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'mailboxes')
-        mailboxes = data.mailboxes;
+      if (data.type === 'mailboxes') mailboxes = data.mailboxes;
     });
 
     worker.on('error', code => {
@@ -138,12 +235,21 @@ const runImapMailboxes = ({ key, email, password, client, accountId, accountEmai
       password
     });
   });
-}
+};
 
-const runImapEmails = ({ key, email, password, client, accountId, accountEmail, labelsMap, addedLabels }) => {
+const runImapEmails = ({
+  key,
+  email,
+  password,
+  client,
+  accountId,
+  accountEmail,
+  labelsMap,
+  addedLabels
+}) => {
   return new Promise((resolve, reject) => {
     let mailboxes;
-    
+
     const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
       env: {
         NODE_ENV: 'script',
@@ -155,8 +261,7 @@ const runImapEmails = ({ key, email, password, client, accountId, accountEmail, 
 
     worker.on('message', data => {
       console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'mailboxes')
-        mailboxes = data.mailboxes;
+      if (data.type === 'mailboxes') mailboxes = data.mailboxes;
     });
 
     worker.on('error', code => {
@@ -175,14 +280,16 @@ const runImapEmails = ({ key, email, password, client, accountId, accountEmail, 
       key,
       email,
       password,
-      labelsMap, 
+      labelsMap,
       addedLabels
     });
   });
-}
+};
 
 module.exports = {
   runImport,
+  runMboxMailboxes,
+  runMboxEmails,
   runImapImport,
   runImapMailboxes,
   runImapEmails

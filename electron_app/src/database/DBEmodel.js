@@ -577,7 +577,7 @@ const initDatabaseEncrypted = async (
   );
 
   const emailDef = await Email.describe();
-  if (emailDef.accountId && localVersion.value === CURRENT_VERSION) return;
+  if (emailDef.accountId && localVersion.value >= CURRENT_VERSION) return;
 
   if (migrationStartCallback) migrationStartCallback();
 

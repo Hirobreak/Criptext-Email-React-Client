@@ -134,13 +134,6 @@ const parseEmailHeaders = (headers, labelsMap, newKey) => {
     }
   }
   metadata['fromAddress'] = recipients['from'][0];
-
-  const data = {
-    email: metadata,
-    recipients,
-    labels
-  };
-  //console.log('METADATA : ', data);
 };
 
 const parseEmailData = (data, attachmentsArray) => {
@@ -212,9 +205,8 @@ const parseAddresses = addresses => {
       if (!recipient.name) return recipient.address;
       return `${recipient.name} <${recipient.address}>`;
     });
-  } else {
-    return value.name ? [`${value.name} <${value.address}>`] : [value.address];
   }
+  return value.name ? [`${value.name} <${value.address}>`] : [value.address];
 };
 
 const parseSimpleEmail = async (
@@ -225,7 +217,7 @@ const parseSimpleEmail = async (
   mailbox,
   addedLabels
 ) => {
-  let myResult = await simpleParser(rawEmail, {});
+  const myResult = await simpleParser(rawEmail, {});
 
   const recipients = {
     from: parseAddresses(myResult.from),
@@ -238,7 +230,7 @@ const parseSimpleEmail = async (
   let headers = '';
 
   for (const header in myResult.headerLines) {
-    headers += myResult.headerLines[header] + '\n';
+    headers += myResult.headerLines[header].line + '\n';
   }
 
   const metadata = {
@@ -253,8 +245,6 @@ const parseSimpleEmail = async (
     key: newKey,
     content: ''
   };
-
-  console.log(myResult.attachments);
 
   const attachments = myResult.attachments.map(attachment => ({
     data: attachment.content,
@@ -287,10 +277,14 @@ const parseSimpleEmail = async (
     }
   });
 
+  const finalLabels = [].concat
+    .apply(mailbox ? [labelsMap[mailbox]] : [], labels)
+    .filter(label => label !== undefined && label !== null);
+
   return {
     email: metadata,
     recipients,
-    labels: [].concat.apply(mailbox ? [labelsMap[mailbox]] : [], labels),
+    labels: finalLabels,
     accountId,
     body,
     headers,
@@ -299,61 +293,65 @@ const parseSimpleEmail = async (
 };
 
 const parseIndividualEmailFiles = async (
-  { TempDirectory, accountEmail, accountId, databaseKey, labels },
+  { TempDirectory, accountEmail, accountId, databaseKey, labels, addedLabels },
   progress
 ) => {
   try {
-    if (fs.existsSync(TempDirectory)) {
-      let pendingEmails = true;
-      while (pendingEmails) {
-        const folders = fs.readdirSync(TempDirectory);
-        if (folders.length <= 0) {
-          pendingEmails = false;
-          continue;
-        }
-        let emailsParsed = 0;
-        for (const folder of folders) {
-          const subFolderPath = path.join(TempDirectory, folder);
-          for (const email of fs.readdirSync(subFolderPath)) {
-            try {
-              const emailPath = path.join(subFolderPath, email);
-              const headersResponse = await getHeadersFromEmailFile(emailPath);
-              const rawEmail = fs.readFileSync(emailPath, {
-                encoding: 'utf-8'
-              });
-              const myResult = await parseSimpleEmail(
-                rawEmail,
-                labels,
-                folder,
-                accountId
-              );
+    if (!fs.existsSync(TempDirectory)) {
+      return;
+    }
 
-              await createEmail(myResult);
+    let pendingEmails = true;
+    while (pendingEmails) {
+      const folders = fs.readdirSync(TempDirectory);
+      if (folders.length <= 0) {
+        pendingEmails = false;
+        continue;
+      }
+      let emailsParsed = 0;
+      for (const folder of folders) {
+        const subFolderPath = path.join(TempDirectory, folder);
+        for (const email of fs.readdirSync(subFolderPath)) {
+          try {
+            const emailPath = path.join(subFolderPath, email);
+            const headersResponse = await getHeadersFromEmailFile(emailPath);
+            const rawEmail = fs.readFileSync(emailPath, {
+              encoding: 'utf-8'
+            });
+            const myResult = await parseSimpleEmail(
+              rawEmail,
+              labels,
+              folder,
+              accountId,
+              addedLabels
+            );
+            console.log(myResult);
+            await createEmail(myResult);
 
-              await saveEmailBody({
-                body: myResult ? myResult.body : '',
-                headers: !headersResponse.error ? headersResponse.message : '',
-                metadataKey: folder,
-                username: accountEmail,
-                password: databaseKey
-              });
-              progress({
-                email: folder
-              });
-            } catch (ex) {
-              progress({
-                error: ex,
-                email: folder
-              });
-            }
+            await saveEmailBody({
+              body: myResult ? myResult.body : '',
+              headers: !headersResponse.error ? headersResponse.message : '',
+              metadataKey: folder,
+              username: accountEmail,
+              password: databaseKey
+            });
+            progress({
+              email: folder
+            });
+          } catch (ex) {
+            progress({
+              error: ex,
+              email: folder
+            });
           }
-          await remove(subFolderPath);
-          emailsParsed++;
-          if (emailsParsed > 100) break;
         }
+        await remove(subFolderPath);
+        emailsParsed++;
+        if (emailsParsed > 100) break;
       }
     }
   } catch (parseErr) {
+    console.log(parseErr);
     return {
       error: parseErr.toString(),
       message: 'Failed to parse emails files'
@@ -362,6 +360,7 @@ const parseIndividualEmailFiles = async (
 };
 
 module.exports = {
+  parseEmailFromFile,
   parseIndividualEmailFiles,
   parseSimpleEmail
 };

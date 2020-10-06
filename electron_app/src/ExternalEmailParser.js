@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Mbox = require('node-mbox');
-const { app, dialog } = require('electron');
+const { app } = require('electron');
 const MailParser = require('mailparser').MailParser;
 const { getBasepathAndFilenameFromPath } = require('./utils/stringUtils');
 const ALLOWED_EXTENSIONS = ['.mbox'];
@@ -235,7 +235,7 @@ const parseEmailFromFile = pathtoemail => {
 };
 
 const parseEmailHeaders = headers => {
-  let metadata = {};
+  const metadata = {};
   for (const [clave, valor] of headers.entries()) {
     console.log('\x1b[36m%s\x1b[0m', `${clave} = ${valor}`);
     if (

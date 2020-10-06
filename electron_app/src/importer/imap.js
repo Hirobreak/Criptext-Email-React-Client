@@ -130,7 +130,7 @@ const fetchAndParseEmails = (
 
     fetch.on('message', (message, sequenceNumber) => {
       const prefix = '(#' + sequenceNumber + ') ';
-      message.on('body', function(stream, info) {
+      message.on('body', function(stream) {
         var buffer = '';
         stream.on('data', function(chunk) {
           buffer += chunk.toString('utf8');
@@ -174,9 +174,6 @@ const fetchAndParseEmails = (
           resolve();
         });
       });
-      message.once('attributes', function(attrs) {
-        //console.log(prefix + 'Attributes: %s', inspect(attrs, false, 8));
-      });
       message.once('end', () => {
         console.log(prefix + 'Finished');
       });
@@ -197,9 +194,9 @@ const getMailLabels = (server, accountId) => {
   });
 };
 
-const getMailboxes = (server) => {
+const getMailboxes = server => {
   return new Promise((resolve, reject) => {
-    server.getBoxes(async (error, mailbox) => {
+    server.getBoxes((error, mailbox) => {
       if (error) {
         reject(error);
         return;
@@ -277,7 +274,14 @@ const handleEmailData = ({
   labelsMap,
   addedLabels
 }) => {
-  return parseSimpleEmail(buffer, labelsMap, newKey, accountId, mailbox, addedLabels);
+  return parseSimpleEmail(
+    buffer,
+    labelsMap,
+    newKey,
+    accountId,
+    mailbox,
+    addedLabels
+  );
 };
 
 module.exports = {
