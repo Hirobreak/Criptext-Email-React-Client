@@ -40,6 +40,7 @@ import {
   setShownEnableBackupPopup,
   getShownEnableBackupPopup
 } from '../utils/storage';
+import { SnackbarId } from './Snackbar'
 
 const MAILBOX_POPUP_TYPES = {
   ACCOUNT_DELETED: 'account-deleted',
@@ -68,7 +69,9 @@ class PanelWrapper extends Component {
       isOpenWelcome: true,
       mailboxPopupType: undefined,
       mailboxPopupData: undefined,
-      backupSnackbar: undefined,
+      snackbars: {
+        displayOrder: []
+      },
       sectionSelected: {
         type: SectionType.MAILBOX,
         params: {
@@ -112,7 +115,7 @@ class PanelWrapper extends Component {
         sectionSelected={this.state.sectionSelected}
         onUpdateNow={this.handleUpdateNow}
         onUpdateWebsite={this.handleUpdateWebsite}
-        backupSnackbar={this.state.backupSnackbar}
+        snackbars={this.state.snackbars}
         onDismissSnackbar={this.handleSnackbarDismiss}
         {...this.props}
       />
@@ -415,6 +418,10 @@ class PanelWrapper extends Component {
     addEvent(Event.LOCAL_BACKUP_STARTED, this.handleBackupStarted);
     addEvent(Event.LOCAL_BACKUP_SUCCESS, this.handleBackupFinish);
     addEvent(Event.LOCAL_BACKUP_FAILED, this.handleBackupFailed);
+
+    addEvent(Event.IMPORT_START, this.handleImportStart);
+    addEvent(Event.IMPORT_PROGRESS, this.handleImportProgress);
+    addEvent(Event.IMPORT_END, this.handleImportEnd);
   };
 
   removeEventHandlers = () => {
@@ -473,6 +480,10 @@ class PanelWrapper extends Component {
     removeEvent(Event.LOCAL_BACKUP_STARTED, this.handleBackupStarted);
     removeEvent(Event.LOCAL_BACKUP_SUCCESS, this.handleBackupFinish);
     removeEvent(Event.LOCAL_BACKUP_FAILED, this.handleBackupFailed);
+
+    removeEvent(Event.IMPORT_START, this.handleImportStart);
+    removeEvent(Event.IMPORT_PROGRESS, this.handleImportProgress);
+    removeEvent(Event.IMPORT_END, this.handleImportEnd);
   };
 
   enableWindowListenerCallback = () => {
@@ -675,54 +686,67 @@ class PanelWrapper extends Component {
     this.props.onChangingTrustedContact(eventParams);
   };
 
-  handleSnackbarDismiss = () => {
-    const currentSnackbar = this.state.backupSnackbar || {};
+  handleSnackbarDismiss = snackbarId => {
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    const removeIndex = currentSnackbars.displayOrder.findIndex( id => {
+      return id === snackbarId;
+    })
+    if (removeIndex > -1) {
+      currentSnackbars.displayOrder.splice(removeIndex, 1);
+    }
     this.setState({
-      backupSnackbar: {
-        ...currentSnackbar,
-        hide: true
-      }
+      snackbars: currentSnackbars
     });
   };
 
   handleBackupProgress = data => {
-    const currentSnackbar = this.state.backupSnackbar;
-    if (!currentSnackbar) return;
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    if (!currentSnackbars[SnackbarId.BACKUP]) return;
+    currentSnackbars[SnackbarId.BACKUP] = {
+      ...currentSnackbars[SnackbarId.BACKUP],
+      ...data
+    }
     this.setState({
-      backupSnackbar: {
-        ...currentSnackbar,
-        ...data
-      }
+      snackbars: currentSnackbars
     });
   };
 
   handleBackupStarted = data => {
     if (!data.backupInBackground) return;
     if (this.dismissSnackbarTimer) clearTimeout(this.dismissSnackbarTimer);
+    const currentSnackbars = { ...this.state.snackbars } || {};
     const color = randomcolor({
       seed: data.name || data.email,
       luminosity: mySettings.theme === 'dark' ? 'dark' : 'bright'
     });
     const avatarUrl = `${avatarBaseUrl}${data.domain}/${data.username}`;
+    const currentIndex = currentSnackbars.displayOrder.findIndex( id => {
+      return id === SnackbarId.BACKUP;
+    })
+    if (currentIndex <= -1) {
+      currentSnackbars.displayOrder.push(SnackbarId.BACKUP);
+    }
+    currentSnackbars[SnackbarId.BACKUP] = {
+      color,
+      avatarUrl,
+      ...data,
+      progress: 0
+    }
     this.setState({
-      backupSnackbar: {
-        color,
-        avatarUrl,
-        ...data,
-        progress: 0
-      }
+      snackbars: currentSnackbars
     });
   };
 
   handleBackupFinish = () => {
-    if (!this.state.backupSnackbar) return;
-    const currentSnackbar = this.state.backupSnackbar;
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    if (!currentSnackbars[SnackbarId.BACKUP]) return;
+    currentSnackbars[SnackbarId.BACKUP] = {
+      ...currentSnackbars[SnackbarId.BACKUP],
+      progress: 100
+    }
     this.setState(
       {
-        backupSnackbar: {
-          ...currentSnackbar,
-          progress: 100
-        }
+        snackbars: currentSnackbars
       },
       () => {
         this.dismissSnackbarTimer = setTimeout(this.handleBackupCleanUp, 2000);
@@ -731,14 +755,15 @@ class PanelWrapper extends Component {
   };
 
   handleBackupFailed = () => {
-    if (!this.state.backupSnackbar) return;
-    const currentSnackbar = this.state.backupSnackbar || {};
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    if (!currentSnackbars[SnackbarId.BACKUP]) return;
+    currentSnackbars[SnackbarId.BACKUP] = {
+      ...currentSnackbars[SnackbarId.BACKUP],
+      progress: -1
+    }
     this.setState(
       {
-        backupSnackbar: {
-          ...currentSnackbar,
-          progress: -1
-        }
+        snackbars: currentSnackbars
       },
       () => {
         this.dismissSnackbarTimer = setTimeout(this.handleBackupCleanUp, 2000);
@@ -747,8 +772,84 @@ class PanelWrapper extends Component {
   };
 
   handleBackupCleanUp = () => {
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    const removeIndex = currentSnackbars.displayOrder.findIndex( id => {
+      return id === SnackbarId.BACKUP;
+    })
+    delete currentSnackbars[SnackbarId.BACKUP];
+    if (removeIndex > -1) {
+      currentSnackbars.displayOrder.splice(removeIndex, 1);
+    }
     this.setState({
-      backupSnackbar: undefined
+      snackbars: currentSnackbars
+    });
+  };
+
+  handleImportStart = data => {
+    if (this.dismissSnackbarTimer) clearTimeout(this.dismissSnackbarTimer);
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    const color = randomcolor({
+      seed: data.name || data.email,
+      luminosity: mySettings.theme === 'dark' ? 'dark' : 'bright'
+    });
+    const avatarUrl = `${avatarBaseUrl}${data.domain}/${data.username}`;
+    const currentIndex = currentSnackbars.displayOrder.findIndex( id => {
+      return id === SnackbarId.IMPORT;
+    })
+    if (currentIndex <= -1) {
+      currentSnackbars.displayOrder.push(SnackbarId.IMPORT);
+    }
+    currentSnackbars[SnackbarId.IMPORT] = {
+      color,
+      avatarUrl,
+      ...data,
+      progress: 0
+    }
+    this.setState({
+      snackbars: currentSnackbars
+    });
+  };
+
+  handleImportProgress = data => {
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    if (!currentSnackbars[SnackbarId.IMPORT]) return;
+    currentSnackbars[SnackbarId.IMPORT] = {
+      ...currentSnackbars[SnackbarId.IMPORT],
+      progress: parseInt(100*data.parsedEmails/data.totalEmails)
+    }
+    this.setState({
+      snackbars: currentSnackbars
+    });
+  };
+
+  handleImportEnd = () => {
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    if (!currentSnackbars[SnackbarId.IMPORT]) return;
+    currentSnackbars[SnackbarId.IMPORT] = {
+      ...currentSnackbars[SnackbarId.IMPORT],
+      progress: 100
+    }
+    this.setState(
+      {
+        snackbars: currentSnackbars
+      },
+      () => {
+        this.dismissSnackbarTimer = setTimeout(this.handleImportCleanUp, 2000);
+      }
+    );
+  };
+
+  handleImportCleanUp = () => {
+    const currentSnackbars = { ...this.state.snackbars } || {};
+    const removeIndex = currentSnackbars.displayOrder.findIndex( id => {
+      return id === SnackbarId.IMPORT;
+    })
+    delete currentSnackbars[SnackbarId.IMPORT];
+    if (removeIndex > -1) {
+      currentSnackbars.displayOrder.splice(removeIndex, 1);
+    }
+    this.setState({
+      snackbars: currentSnackbars
     });
   };
 

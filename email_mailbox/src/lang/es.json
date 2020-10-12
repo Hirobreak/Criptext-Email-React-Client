@@ -114,6 +114,10 @@
     "title": "Respaldando Cuenta",
     "hide": "Ocultar" 
   },
+  "import": {
+    "title": "Importando Correos",
+    "hide": "Ocultar" 
+  },
   "crash": {
     "title": "¡Ups! Parece que algo falló",
     "counter": {

@@ -1655,6 +1655,10 @@ ipcRenderer.on('backup-progress', (ev, data) => {
   emitter.emit(Event.BACKUP_PROGRESS, data);
 });
 
+ipcRenderer.on('import-start', (ev, data) => {
+  emitter.emit(Event.IMPORT_START, data);
+});
+
 ipcRenderer.on('import-progress', (ev, data) => {
   emitter.emit(Event.IMPORT_PROGRESS, data);
 });
@@ -2370,6 +2374,7 @@ export const Event = {
   DISABLE_WINDOW: 'add-window-overlay',
   DISPLAY_MESSAGE: 'display-message',
   ENABLE_WINDOW: 'remove-window-overlay',
+  IMPORT_START: 'import-start',
   IMPORT_PROGRESS: 'import-progress',
   IMPORT_END: 'import-end',
   LINK_DEVICE_END: 'link-devices-finished',

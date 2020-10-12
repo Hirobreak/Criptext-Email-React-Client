@@ -26,6 +26,7 @@ require('./src/ipc/dataTransfer.js');
 require('./src/ipc/backup.js');
 require('./src/ipc/nucleus.js');
 require('./src/ipc/client.js');
+require('./src/ipc/importer.js');
 const ipcUtils = require('./src/ipc/utils.js');
 const { checkDatabaseStep, deleteNotEncryptDatabase } = require('./src/utils/dataBaseUtils');
 const { APP_DOMAIN } = require('./src/utils/const');

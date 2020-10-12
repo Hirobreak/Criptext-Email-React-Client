@@ -697,8 +697,8 @@ export const importEmailsFromMbox = async filepath => {
   return await ipc.callMain('import-mbox-emails', filepath);
 };
 
-export const importFromGmail = async params => {
-  return await ipc.callMain('import-gmail', params);
+export const importFromImapMailboxes = async params => {
+  return await ipc.callMain('import-imap-mailboxes', params);
 };
 
 export const importFromImapEmails = async params => {

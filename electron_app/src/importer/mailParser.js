@@ -325,7 +325,6 @@ const parseIndividualEmailFiles = async (
               accountId,
               addedLabels
             );
-            console.log(myResult);
             await createEmail(myResult);
 
             await saveEmailBody({

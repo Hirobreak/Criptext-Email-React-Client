@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SingleLoading, statusType } from './Loading';
-import { importEmailsFromMbox, importMailboxesFromMbox, importFromGmail, importFromImapEmails } from '../utils/ipc';
+import { importEmailsFromMbox, importMailboxesFromMbox, importFromImapMailboxes, importFromImapEmails } from '../utils/ipc';
 import { showOpenFileDialog } from '../utils/electronInterface';
 import { addEvent, removeEvent, Event } from '../utils/electronEventInterface';
 import './importmailbox.scss';
@@ -54,14 +54,6 @@ class ImportMailboxWrapper extends Component {
     return (
       <div className="settings-import-container">
         {this.renderStep()}
-        {this.state.error && (
-          <div>
-            <h5>Error Found:</h5>
-            <span>
-              {this.state.error} : interrupted : {this.state.interrupted}
-            </span>
-          </div>
-        )}
       </div>
     );
   }
@@ -118,6 +110,12 @@ class ImportMailboxWrapper extends Component {
               <div>
                 <span>Please select a .mbox file to import your emails.</span>
                 <button onClick={this.handleSelectFile}>Select Mbox File</button>
+                {
+                  this.state.error && this.state.error.mbox &&
+                  (<span className="import-error">
+                    {this.state.error.mbox}
+                  </span>)
+                }
               </div>
             </div>
             <div className="import-imap-container">
@@ -159,9 +157,15 @@ class ImportMailboxWrapper extends Component {
                     />
                   </div>
                 </div>
-                <button onClick={this.handleImportFromGmail}>
-                  Import from Gmail
+                <button onClick={this.handleImportFromImap}>
+                  Authenticate and Import
                 </button>
+                {
+                  this.state.error && this.state.error.imap &&
+                  (<span className="import-error">
+                    {this.state.error.imap}
+                  </span>)
+                }
               </div>
             </div>
           </div>
@@ -224,38 +228,83 @@ class ImportMailboxWrapper extends Component {
     const { filePaths } = await showOpenFileDialog();
     if (!filePaths[0]) {
       this.setState({
-        error: 'Please select a .mbox file to continue'
+        error: {
+          mbox: 'Please select a .mbox file to continue'
+        }
       });
       return;
     }
     this.setState({
       step: STEP.EXTRACTING,
       import: IMPORT.MBOX
-    }, async () => {
-      const mailboxes = await importMailboxesFromMbox(filePaths[0]);
-      this.setState({
-        mailboxes,
-        step: STEP.LABELS
-      })
+    }, () => {
+      this.requestMboxMailboxes(filePaths[0])
     });
   };
 
-  handleImportFromGmail = () => {
+  requestMboxMailboxes = async filepath => {
+    const { mailboxes, count, error } = await importMailboxesFromMbox(filepath);
+    if (error) {
+      this.setState({
+        step: STEP.SELECT,
+        error: {
+          mbox: 'Unable to retrieve malboxes'
+        }
+      })
+      return;
+    }
+    if (!mailboxes) {
+      this.setState({
+        step: STEP.SELECT,
+        error: {
+          mbox: 'No mailboxes to import emails from'
+        }
+      })
+      return
+    }
+    this.setState({
+      mailboxes,
+      count,
+      step: STEP.LABELS
+    })
+  }
+
+  handleImportFromImap = () => {
     this.setState({
       step: STEP.EXTRACTING,
       import: IMPORT.IMAP
-    }, async () => {
-      const mailboxes = await importFromGmail({
-        email: this.state.email,
-        password: this.state.password,
-        client: this.state.client
-      });
-      this.setState({
-        mailboxes,
-        step: STEP.LABELS
-      })
-    })
+    }, this.requestImapMailboxes)
   };
+
+  requestImapMailboxes = async () => {
+    const { mailboxes, error } = await importFromImapMailboxes({
+      email: this.state.email,
+      password: this.state.password,
+      client: this.state.client
+    });
+    if (error) {
+      this.setState({
+        step: STEP.SELECT,
+        error: {
+          imap: 'Unable to retrieve malboxes'
+        }
+      })
+      return;
+    }
+    if (!mailboxes) {
+      this.setState({
+        step: STEP.SELECT,
+        error: {
+          imap: 'No mailboxes to import emails from'
+        }
+      })
+      return
+    }
+    this.setState({
+      mailboxes,
+      step: STEP.LABELS
+    })
+  }
 
   handleImportEmails = (defaultLabel, labelsMap) => {
     if (this.state.import === IMPORT.IMAP) {
@@ -270,7 +319,7 @@ class ImportMailboxWrapper extends Component {
       step: STEP.IMPORT
     }, async () => {
       await importEmailsFromMbox({
-        count: 100,
+        count: this.state.count,
         labelsMap,
         addedLabels: defaultLabel ? [defaultLabel] : []
       });

@@ -25,140 +25,9 @@ const getTempDirectory = nodeEnv => {
   }
 };
 
-const runImport = (
-  { key, accountEmail, accountId, mboxPath },
-  progressCallback
-) => {
-  const tempDir = getTempDirectory(process.env.NODE_ENV);
+const startFork = ({ path, args, params, accountEmail }, callback) => {
   return new Promise((resolve, reject) => {
-    const worker = fork(
-      importerPath,
-      [mboxPath, accountEmail, accountId, tempDir],
-      {
-        env: {
-          NODE_ENV: 'script',
-          DBPATH: databasePath,
-          FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
-        },
-        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-      }
-    );
-
-    worker.on('message', data => {
-      console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'progress' || data.type === 'import')
-        progressCallback(data);
-    });
-
-    worker.on('error', code => {
-      console.log(`child process exited with error ${code}`);
-      reject(code);
-    });
-
-    worker.on('close', code => {
-      console.log(`child process closed with code ${code}`);
-      resolve();
-    });
-
-    worker.send({
-      step: 'init',
-      key
-    });
-  });
-};
-
-const runMboxMailboxes = ({ key, accountEmail, accountId, mboxPath }) => {
-  const tempDir = getTempDirectory(process.env.NODE_ENV);
-  return new Promise((resolve, reject) => {
-    let mailboxes;
-    const worker = fork(
-      importerPath,
-      [mboxPath, accountEmail, accountId, tempDir],
-      {
-        env: {
-          NODE_ENV: 'script',
-          DBPATH: databasePath,
-          FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
-        },
-        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-      }
-    );
-
-    worker.on('message', data => {
-      console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'mailboxes') mailboxes = data.mailboxes;
-    });
-
-    worker.on('error', code => {
-      console.log(`child process exited with error ${code}`);
-      reject(code);
-    });
-
-    worker.on('close', code => {
-      console.log(`child process closed with code ${code}`);
-      resolve(mailboxes);
-    });
-
-    worker.send({
-      step: 'init',
-      type: 'mailboxes',
-      key
-    });
-  });
-};
-
-const runMboxEmails = (
-  { key, accountEmail, accountId, mboxPath, labelsMap, addedLabels, count },
-  progressCallback
-) => {
-  const tempDir = getTempDirectory(process.env.NODE_ENV);
-  return new Promise((resolve, reject) => {
-    const worker = fork(
-      importerPath,
-      [mboxPath, accountEmail, accountId, tempDir],
-      {
-        env: {
-          NODE_ENV: 'script',
-          DBPATH: databasePath,
-          FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
-        },
-        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-      }
-    );
-
-    worker.on('message', data => {
-      console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'progress' || data.type === 'import')
-        progressCallback(data);
-    });
-
-    worker.on('error', code => {
-      console.log(`child process exited with error ${code}`);
-      reject(code);
-    });
-
-    worker.on('close', code => {
-      console.log(`child process closed with code ${code}`);
-      resolve();
-    });
-
-    worker.send({
-      step: 'init',
-      type: 'emails',
-      key,
-      labelsMap,
-      addedLabels,
-      count
-    });
-  });
-};
-
-const runImapImport = (
-  { key, email, password, client, accountId, accountEmail },
-  progressCallback
-) => {
-  return new Promise((resolve, reject) => {
-    const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
+    const worker = fork(path, args, {
       env: {
         NODE_ENV: 'script',
         DBPATH: databasePath,
@@ -169,8 +38,7 @@ const runImapImport = (
 
     worker.on('message', data => {
       console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'progress' || data.type === 'import')
-        progressCallback(data);
+      callback(data);
     });
 
     worker.on('error', code => {
@@ -184,15 +52,107 @@ const runImapImport = (
     });
 
     worker.send({
-      step: 'init',
-      key,
-      email,
-      password
+      ...params,
+      step: 'init'
     });
   });
 };
 
-const runImapMailboxes = ({
+const runImport = async (
+  { key, accountEmail, accountId, mboxPath },
+  progressCallback
+) => {
+  const tempDir = getTempDirectory(process.env.NODE_ENV);
+  await startFork(
+    {
+      accountEmail,
+      path: importerPath,
+      args: [mboxPath, accountEmail, accountId, tempDir],
+      params: {
+        key
+      }
+    },
+    data => {
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    }
+  );
+};
+
+const runMboxMailboxes = async ({ key, accountEmail, accountId, mboxPath }) => {
+  const tempDir = getTempDirectory(process.env.NODE_ENV);
+  let mailboxes, count;
+  await startFork(
+    {
+      accountEmail,
+      path: importerPath,
+      args: [mboxPath, accountEmail, accountId, tempDir],
+      params: {
+        type: 'mailboxes',
+        key
+      }
+    },
+    data => {
+      if (data.type === 'mailboxes') {
+        mailboxes = data.mailboxes;
+        count = data.count;
+      }
+    }
+  );
+  return {
+    mailboxes,
+    count
+  };
+};
+
+const runMboxEmails = async (
+  { key, accountEmail, accountId, mboxPath, labelsMap, addedLabels, count },
+  progressCallback
+) => {
+  const tempDir = getTempDirectory(process.env.NODE_ENV);
+  await startFork(
+    {
+      accountEmail,
+      path: importerPath,
+      args: [mboxPath, accountEmail, accountId, tempDir],
+      params: {
+        type: 'emails',
+        key,
+        labelsMap,
+        addedLabels,
+        count
+      }
+    },
+    data => {
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    }
+  );
+};
+
+const runImapImport = async (
+  { key, email, password, client, accountId, accountEmail },
+  progressCallback
+) => {
+  await startFork(
+    {
+      accountEmail,
+      path: imapImporterPath,
+      args: [accountId, accountEmail, client],
+      params: {
+        key,
+        email,
+        password
+      }
+    },
+    data => {
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    }
+  );
+};
+
+const runImapMailboxes = async ({
   key,
   email,
   password,
@@ -200,90 +160,58 @@ const runImapMailboxes = ({
   accountId,
   accountEmail
 }) => {
-  return new Promise((resolve, reject) => {
-    let mailboxes;
-
-    const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
-      env: {
-        NODE_ENV: 'script',
-        DBPATH: databasePath,
-        FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
-      },
-      stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-    });
-
-    worker.on('message', data => {
-      console.log(`message: ${JSON.stringify(data)}`);
+  let mailboxes;
+  await startFork(
+    {
+      accountEmail,
+      path: imapImporterPath,
+      args: [accountId, accountEmail, client],
+      params: {
+        type: 'mailboxes',
+        key,
+        email,
+        password
+      }
+    },
+    data => {
       if (data.type === 'mailboxes') mailboxes = data.mailboxes;
-    });
-
-    worker.on('error', code => {
-      console.log(`child process exited with error ${code}`);
-      reject(code);
-    });
-
-    worker.on('close', code => {
-      console.log(`child process closed with code ${code}`);
-      resolve(mailboxes);
-    });
-
-    worker.send({
-      step: 'init',
-      type: 'mailboxes',
-      key,
-      email,
-      password
-    });
-  });
+    }
+  );
+  return mailboxes;
 };
 
-const runImapEmails = ({
-  key,
-  email,
-  password,
-  client,
-  accountId,
-  accountEmail,
-  labelsMap,
-  addedLabels
-}) => {
-  return new Promise((resolve, reject) => {
-    let mailboxes;
-
-    const worker = fork(imapImporterPath, [accountId, accountEmail, client], {
-      env: {
-        NODE_ENV: 'script',
-        DBPATH: databasePath,
-        FSPATH: getUserEmailsPath(process.env.NODE_ENV, accountEmail)
-      },
-      stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-    });
-
-    worker.on('message', data => {
-      console.log(`message: ${JSON.stringify(data)}`);
-      if (data.type === 'mailboxes') mailboxes = data.mailboxes;
-    });
-
-    worker.on('error', code => {
-      console.log(`child process exited with error ${code}`);
-      reject(code);
-    });
-
-    worker.on('close', code => {
-      console.log(`child process closed with code ${code}`);
-      resolve(mailboxes);
-    });
-
-    worker.send({
-      step: 'init',
-      type: 'emails',
-      key,
-      email,
-      password,
-      labelsMap,
-      addedLabels
-    });
-  });
+const runImapEmails = async (
+  {
+    key,
+    email,
+    password,
+    client,
+    accountId,
+    accountEmail,
+    labelsMap,
+    addedLabels
+  },
+  progressCallback
+) => {
+  await startFork(
+    {
+      accountEmail,
+      path: imapImporterPath,
+      args: [accountId, accountEmail, client],
+      params: {
+        type: 'emails',
+        key,
+        email,
+        password,
+        labelsMap,
+        addedLabels
+      }
+    },
+    data => {
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    }
+  );
 };
 
 module.exports = {

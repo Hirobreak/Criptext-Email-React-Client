@@ -12,6 +12,7 @@
 
   .import-mbox-container,
   .import-imap-container {
+    position: relative;
 
     h4 {
       padding: 0px 28px;
@@ -25,6 +26,12 @@
       margin: 0px;
       font-size: 13px;  
     }
+  }
+
+  .import-error {
+    position: absolute;
+    bottom: 0px;
+    color: #bf2626;
   }
 
   .import-options {
@@ -103,6 +110,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding-bottom: 20px;
 
       > span {
         display: flex;

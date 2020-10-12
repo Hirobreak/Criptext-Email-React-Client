@@ -60,10 +60,9 @@ const Panel = props => (
         ...props
       })}
     <UserGuide />
-    {props.backupSnackbar &&
-      !props.backupSnackbar.hide && (
+    {props.snackbars.displayOrder.length > 0 && (
         <Snackbar
-          {...props.backupSnackbar}
+          {...props.snackbars}
           onDismissSnackbar={props.onDismissSnackbar}
         />
       )}
@@ -215,7 +214,7 @@ renderMailboxPopup.propTypes = {
 };
 
 Panel.propTypes = {
-  backupSnackbar: PropTypes.object,
+  snackbars: PropTypes.object,
   isHiddenMailboxPopup: PropTypes.bool,
   isOpenActivityPanel: PropTypes.bool,
   isOpenSideBar: PropTypes.bool,
