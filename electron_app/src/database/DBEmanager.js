@@ -1350,6 +1350,10 @@ const updateFilesByEmailId = ({ emailId, status }) => {
   return File().update(params, { where: { emailId } });
 };
 
+const updateFileByToken = (params, token) => {
+  return File().update(params, { where: { token } });
+};
+
 /* Feed Item
 ----------------------------- */
 const createFeedItem = params => {
@@ -1944,6 +1948,7 @@ module.exports = {
   updateEmails,
   updateFeedItems,
   updateFilesByEmailId,
+  updateFileByToken,
   updateLabel,
   updateSettings,
   updateUnreadEmailByThreadIds

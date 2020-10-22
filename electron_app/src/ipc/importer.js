@@ -5,7 +5,8 @@ const {
   runMboxMailboxes,
   runMboxEmails,
   runImapMailboxes,
-  runImapEmails
+  runImapEmails,
+  runUploadAttachments
 } = require('../importer/index');
 const myAccount = require('../Account');
 
@@ -104,6 +105,11 @@ ipc.answerRenderer(
         }
       );
       send('import-end');
+      await runUploadAttachments({
+        accountId: myAccount.id,
+        accountEmail: myAccount.email,
+        key: globalManager.databaseKey.get()
+      });
     } catch (ex) {
       console.log(ex);
     }

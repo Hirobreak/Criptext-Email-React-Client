@@ -89,11 +89,12 @@ const saveEmailBody = async ({
 };
 
 const storeAttachment = async ({ filename, data, username, metadataKey }) => {
-  console.log(filename, username, metadataKey, data);
   const myPath = await getUserEmailsPath(process.env.NODE_ENV, username);
   const emailPath = `${myPath}/${metadataKey}`;
+  const filePath = `${myPath}/${metadataKey}/${filename}`;
   await createIfNotExist(emailPath);
-  await store(`${myPath}/${metadataKey}/${filename}`, data);
+  await store(filePath, data);
+  return filePath;
 };
 
 const getEmailBody = async ({ username, metadataKey, password }) => {
@@ -254,11 +255,29 @@ const createPathRecursive = (fullpath, oldUser, newUser) => {
   }, initDir);
 };
 
+const loadJson = path => {
+  if (!fs.existsSync(path)) return {};
+  const data = fs.readFileSync(path, { encoding: 'utf-8' });
+  const json = JSON.parse(data);
+  return json;
+};
+
+const writeJson = (path, object) => {
+  const data = JSON.stringify(object);
+  fs.writeFileSync(path, data, { encoding: 'utf-8' });
+};
+
+const deleteFile = path => {
+  return fs.unlinkSync(path);
+};
+
 module.exports = {
   saveEmailBody,
   getEmailBody,
   getEmailHeaders,
   deleteEmailContent,
+  deleteFile,
+  loadJson,
   remove,
   removeEmailsCopy,
   removeUserDir,
@@ -269,5 +288,6 @@ module.exports = {
   createPathRecursive,
   store,
   storeAttachment,
-  retrieve: retrieveBuffer
+  retrieve: retrieveBuffer,
+  writeJson
 };

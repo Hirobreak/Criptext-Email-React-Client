@@ -1,13 +1,24 @@
 const Imap = require('imap');
+const path = require('path');
+const fs = require('fs');
 const { parseSimpleEmail } = require('./mailParser');
 const {
   createEmail,
   getLabelsByText,
   createLabel
 } = require('../database/DBEmanager');
-const { saveEmailBody, storeAttachment } = require('../utils/FileUtils');
+const {
+  saveEmailBody,
+  storeAttachment,
+  getUserEmailsPath
+} = require('../utils/FileUtils');
 
 const BATCH = 20;
+const attachmentsAuditPath = path.join(
+  getUserEmailsPath(process.env.NODE_ENV),
+  '../temp-attachments.audit'
+);
+const stream = fs.createWriteStream(attachmentsAuditPath, { flags: 'a' });
 
 const getUrlByClient = client => {
   switch (client) {
@@ -256,12 +267,15 @@ const storeEmail = async ({ data, newKey, accountEmail, databaseKey }) => {
   });
   if (data.files && data.files.length) {
     for (const attachment of data.files) {
-      await storeAttachment({
+      const attachPath = await storeAttachment({
         data: attachment.data,
         filename: attachment.name,
         username: accountEmail,
         metadataKey: newKey
       });
+      stream.write(
+        `{"token": "${attachment.token}", "path": "${attachPath}"}\n`
+      );
     }
   }
 };

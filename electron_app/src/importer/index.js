@@ -6,6 +6,7 @@ const { getUserEmailsPath } = require('../utils/FileUtils');
 
 const importerPath = path.join(__dirname, 'emailsImporter.js');
 const imapImporterPath = path.join(__dirname, 'imapImporter.js');
+const attachmentsUploaderPath = path.join(__dirname, 'attachments/index.js');
 
 const getTempDirectory = nodeEnv => {
   const folderName = 'ImportTempData';
@@ -25,7 +26,7 @@ const getTempDirectory = nodeEnv => {
   }
 };
 
-const startFork = ({ path, args, params, accountEmail }, callback) => {
+const startFork = ({ path, args, params = {}, accountEmail }, callback) => {
   return new Promise((resolve, reject) => {
     const worker = fork(path, args, {
       env: {
@@ -214,11 +215,34 @@ const runImapEmails = async (
   );
 };
 
+const runUploadAttachments = async (
+  { accountId, accountEmail, key },
+  progressCallback
+) => {
+  console.log('GONNA RUN ', attachmentsUploaderPath);
+  await startFork(
+    {
+      accountEmail,
+      path: attachmentsUploaderPath,
+      args: [accountId, accountEmail],
+      params: {
+        key,
+        step: 'init'
+      }
+    },
+    data => {
+      if (data.type === 'progress' || data.type === 'import')
+        progressCallback(data);
+    }
+  );
+};
+
 module.exports = {
   runImport,
   runMboxMailboxes,
   runMboxEmails,
   runImapImport,
   runImapMailboxes,
-  runImapEmails
+  runImapEmails,
+  runUploadAttachments
 };
